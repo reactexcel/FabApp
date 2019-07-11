@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View ,FlatList,Image,StyleSheet} from 'react-native'
 import exhibitionList from "../constants/exhibition.json"
+import Layout from "../helper/Layout";
 
 export default class ExhibitionList extends Component {
     _renderItem=({item,index})=>{
@@ -11,7 +12,7 @@ export default class ExhibitionList extends Component {
                         <Image style={styles.img} source={require('../../assets/images/confabricatordirectory.jpg')}/>
                     </View>
                     <View style={styles.exhibitionTextView}>
-                        <Text>{item.exhibitionName}</Text>
+                        <Text style={styles.exhibitionText}>{item.exhibitionName}</Text>
                     </View>
                 </View>
                 <View style={styles.horizontalLine}></View>
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
    },
    flatlistWrapper:{
        paddingLeft:17,
+       backgroundColor:"#ffffff"
    },
    rowWrapper:{
        flexDirection:"row",
@@ -61,5 +63,10 @@ const styles = StyleSheet.create({
        alignSelf:"flex-end",
        borderBottomColor:"#D7DBDD",
        marginTop:5
+   },
+   exhibitionText:{
+       color:"#17202A",
+       fontSize:15,
+       fontWeight:"bold"
    }
 })

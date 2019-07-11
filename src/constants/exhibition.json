@@ -1,14 +1,14 @@
 [
-    {"id":1, "exhibitionName":"hotels"},
-    {"id":1, "exhibitionName":"hotels"},
-    {"id":1, "exhibitionName":"hotels"},
-    {"id":1, "exhibitionName":"hotels"},
-    {"id":1, "exhibitionName":"hotels"},
-    {"id":1, "exhibitionName":"hotels"},
-    {"id":1, "exhibitionName":"hotels"},
-    {"id":1, "exhibitionName":"hotels"},
-    {"id":1, "exhibitionName":"hotels"},
-    {"id":1, "exhibitionName":"hotels"},
-    {"id":1, "exhibitionName":"hotels"},
-    {"id":1, "exhibitionName":"hotels"}
+    {"id":1, "exhibitionName":"AC Services and Repair"},
+    {"id":1, "exhibitionName":"RO or Water Purifier Repair"},
+    {"id":1, "exhibitionName":"Washing Machine Repair"},
+    {"id":1, "exhibitionName":"Refrigator Repair"},
+    {"id":1, "exhibitionName":"Microwave Repair"},
+    {"id":1, "exhibitionName":"Chimney Cleaning & Repair"},
+    {"id":1, "exhibitionName":"Television, Repair & Installation"},
+    {"id":1, "exhibitionName":"Geyser / Water Heater Repair"},
+    {"id":1, "exhibitionName":"Laptop Repair"},
+    {"id":1, "exhibitionName":"Mobile Screen Repair"},
+    {"id":1, "exhibitionName":"Computer Rapair"},
+    {"id":1, "exhibitionName":"Mixer & Grinder Repair"}
 ]
