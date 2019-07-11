@@ -1,22 +1,24 @@
 import React, { Component } from 'react'
-import { Text, View ,FlatList,Image,StyleSheet} from 'react-native'
+import { Text, View ,FlatList,Image,StyleSheet,TouchableOpacity} from 'react-native'
 import exhibitionList from "../constants/exhibition.json"
 import Layout from "../helper/Layout";
 
 export default class ExhibitionList extends Component {
     _renderItem=({item,index})=>{
         return(
-            <View>
-                <View style={styles.rowWrapper} key={index}>
-                    <View style={styles.imageView}>
-                        <Image style={styles.img} source={require('../../assets/images/confabricatordirectory.jpg')}/>
+            <TouchableOpacity activeOpacity={.5} underlayColor="red" onPress={()=>this.props.toForm()}>
+                <View>
+                    <View style={styles.rowWrapper} key={index}>
+                        <View style={styles.imageView}>
+                            <Image style={styles.img} source={require('../../assets/images/confabricatordirectory.jpg')}/>
+                        </View>
+                        <View style={styles.exhibitionTextView}>
+                            <Text style={styles.exhibitionText}>{item.exhibitionName}</Text>
+                        </View>
                     </View>
-                    <View style={styles.exhibitionTextView}>
-                        <Text style={styles.exhibitionText}>{item.exhibitionName}</Text>
-                    </View>
+                    <View style={styles.horizontalLine}></View>
                 </View>
-                <View style={styles.horizontalLine}></View>
-            </View>
+            </TouchableOpacity>
         )
     }
     _keyExtractor=(item,index)=>{return item}
@@ -26,7 +28,7 @@ export default class ExhibitionList extends Component {
                 <FlatList
                 data={exhibitionList && exhibitionList}
                 renderItem={this._renderItem}
-                // keyExtractor={this._keyExtractor}
+                keyExtractor={(item,index)=>{item.id}}
                 showsVerticalScrollIndicator={false}
                 />
             </View>

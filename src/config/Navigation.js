@@ -2,6 +2,7 @@ import { createStackNavigator } from "react-navigation";
 import { Easing, Animated } from "react-native";
 import HomePage from "../screens/HomePage";
 import Exebition from "../screens/Exebition";
+import WorkerForm from "../screens/Form"
 
 const transitionConfig = () => {
     return {
@@ -44,6 +45,9 @@ const transitionConfig = () => {
       },
       Exebition: {
         screen: Exebition
+      },
+      WorkerForm:{
+          screen:WorkerForm
       }
     },
     {
