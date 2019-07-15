@@ -11,13 +11,22 @@ export default class Exebition extends Component {
     toForm=()=>{
     this.props.navigation.navigate("WorkerForm")
     }
-    
+    goBack=()=>{
+        this.props.navigation.goBack()
+      }
     render() {
         return (
             <>
-                <Header/>
+                <Header 
+                    isLeft={true}
+                    isCenter={true}
+                    centerText={"All Exhibititions"}
+                    leftIcon={"arrowleft"}
+                    isNotRightThenWidth={"75%"}
+                    goBack={this.goBack}
+                 />
                 <ScrollView>
-                  <ExhibitionList toForm={this.toForm}/>
+                  <ExhibitionList  toForm={this.toForm}/>
                 </ScrollView>
             </>
         )

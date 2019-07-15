@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native'
+import { Text, View, FlatList, StyleSheet, TouchableOpacity, BackHandler } from 'react-native'
 import Layout from "../helper/Layout";
 import {Icon} from "native-base";
 
@@ -13,20 +13,42 @@ export default class ExhibitorForm extends Component {
         return(
         <View key={index} style={styles.contentCard}>
             <View>
-                <Text>{index}sizepnemnrejfw k;ln',nbvjnkml;,</Text>
+                <Text>{index}dvdvdvsdvs</Text>
             </View>
         </View>
         )
     }
 
     scrollToIndex = (index,length) => {
-        if( length > index){
-        this.flatListRef.scrollToIndex({animated: true, index: index});
+        const {scrollToIndex} = this.state;
+        if(length>index){
+            this.flatListRef.scrollToIndex({animated: true, index:index});
         }
-        if( length-1 > index){
-            this.setState({scrollToIndex:this.state.scrollToIndex+1})
+        if( length > index){
+            this.setState({scrollToIndex:scrollToIndex+1})
         }
     }
+
+    componentDidMount() {
+        this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+      }
+    
+      componentWillUnmount() {
+        this.backHandler.remove()
+      }
+    
+      handleBackPress =async () => {
+        const {scrollToIndex} = this.state;
+            if(scrollToIndex > 0){
+                this.setState({scrollToIndex:scrollToIndex-1},()=>{
+                    this.flatListRef.scrollToIndex({animated: true, index:scrollToIndex});
+                })
+            }
+            else{
+                this.props.goBack();
+            }
+      }
+
     render() {
         const {scrollToIndex} = this.state;
         return (

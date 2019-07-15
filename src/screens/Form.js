@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, StyleSheet,Text } from 'react-native';
-import { TabView, SceneMap } from 'react-native-tab-view';
-import Animated from 'react-native-reanimated';
+import { View, TouchableOpacity, StyleSheet,Text, BackHandler } from 'react-native';
 import Header from "../generic/Header";
 import ExhibitorForm from "../components/ExhibitorForm";
 
@@ -13,11 +11,24 @@ export default class WorkerForm extends React.Component {
     index: 0,
   };
 
+  goBack=()=>{
+    this.props.navigation.goBack()
+  }
+
+ 
   render() {
     const {index} =this.state;
     return (
         <>
-        <Header/>
+        <Header
+          goBack={this.goBack}
+          isLeft={true}
+          leftIcon={"arrowleft"}
+          isNotRightThenWidth={"70%"}
+          isCenter={true}
+          centerText={"Registration"}
+          goBack={this.goBack}
+         />
         <View style={styles.tabBar}>
             <TouchableOpacity
               style={styles.tabItem}
@@ -32,7 +43,7 @@ export default class WorkerForm extends React.Component {
               <View style={[styles.tabBottomLine,{borderBottomColor:this.state.index ==1 ? "#000000" :"#a59e9e",}]}></View>
             </TouchableOpacity>
       </View>
-        {index ==0 && <ExhibitorForm/>}
+        {index ==0 && <ExhibitorForm  goBack={this.goBack}/>}
       </>
     );
   }
