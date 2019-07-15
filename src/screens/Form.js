@@ -1,77 +1,38 @@
 import * as React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet,Text } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import Animated from 'react-native-reanimated';
 import Header from "../generic/Header";
-
-const FirstRoute = () => (
-  <View style={[styles.container, { backgroundColor: '#ff4081' }]} />
-);
-const SecondRoute = () => (
-  <View style={[styles.container, { backgroundColor: '#673ab7' }]} />
-);
+import ExhibitorForm from "../components/ExhibitorForm";
 
 export default class WorkerForm extends React.Component {
     static navigationOptions = {
         header: null
       };
-
   state = {
     index: 0,
-    routes: [
-      { key: 'first', title: 'Executer' },
-      { key: 'second', title: 'Fabricator' },
-    ],
   };
-
-  _handleIndexChange = index => this.setState({ index });
-
-  _renderTabBar = props => {
-    const inputRange = props.navigationState.routes.map((x, i) => i);
-
-    return (
-      <View style={styles.tabBar}>
-        {props.navigationState.routes.map((route, i) => {
-          const color = Animated.color(
-            Animated.round(
-              Animated.interpolate(props.position, {
-                inputRange,
-                outputRange: inputRange.map(inputIndex =>
-                  inputIndex === i ? 255 : 0
-                ),
-              })
-            ),
-            0,
-            0
-          );
-
-          return (
-            <TouchableOpacity
-              style={styles.tabItem}
-              onPress={() => this.setState({ index: i })}>
-              <Animated.Text style={{ color }}>{route.title}</Animated.Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    );
-  };
-
-  _renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-  });
 
   render() {
+    const {index} =this.state;
     return (
         <>
         <Header/>
-      <TabView
-        navigationState={this.state}
-        renderScene={this._renderScene}
-        renderTabBar={this._renderTabBar}
-        onIndexChange={this._handleIndexChange}
-      />
+        <View style={styles.tabBar}>
+            <TouchableOpacity
+              style={styles.tabItem}
+              onPress={() => this.setState({ index: 0})}>
+              <Text style={ {color:this.state.index ==0 ? "#000000" :"#a59e9e"}}>Exhibitor</Text>
+              <View style={[styles.tabBottomLine,{borderBottomColor:this.state.index ==0 ? "#000000" :"#a59e9e",}]}></View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.tabItem}
+              onPress={() => this.setState({ index: 1})}>
+              <Text style={ {color:this.state.index ==1 ? "#000000" :"#a59e9e"}}>Fabricator</Text>
+              <View style={[styles.tabBottomLine,{borderBottomColor:this.state.index ==1 ? "#000000" :"#a59e9e",}]}></View>
+            </TouchableOpacity>
+      </View>
+        {index ==0 && <ExhibitorForm/>}
       </>
     );
   }
@@ -83,10 +44,22 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     flexDirection: 'row',
+    // borderWidth:1
   },
   tabItem: {
     flex: 1,
     alignItems: 'center',
-    padding: 16,
+    paddingBottom: 16,
+    paddingTop:16,
   },
+  headerText:{
+    fontSize:16
+  },
+  tabBottomLine:{ 
+    borderBottomWidth:2,
+    height:1,
+    width:"100%",
+    position:"absolute",
+    bottom:0 
+  }
 });

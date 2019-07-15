@@ -16,7 +16,7 @@ export default class Headerr extends Component {
                         />
                     </View> */}
                     <View>
-                        <Text style={{color:"#ffffff",fontSize:20,fontWeight:"bold"}}>All Exhibitions</Text>
+                        <Text style={{color:"#ffffff",fontSize:20,fontWeight:"bold"}}>Form</Text>
                     </View>
                     {/* <View>
                         <Text style={{color:"#ffffff"}}>RIGHT</Text>

@@ -1,14 +1,14 @@
 [
     {"id":1, "exhibitionName":"AC Services and Repair"},
-    {"id":1, "exhibitionName":"RO or Water Purifier Repair"},
-    {"id":1, "exhibitionName":"Washing Machine Repair"},
-    {"id":1, "exhibitionName":"Refrigator Repair"},
-    {"id":1, "exhibitionName":"Microwave Repair"},
-    {"id":1, "exhibitionName":"Chimney Cleaning & Repair"},
-    {"id":1, "exhibitionName":"Television, Repair & Installation"},
-    {"id":1, "exhibitionName":"Geyser / Water Heater Repair"},
-    {"id":1, "exhibitionName":"Laptop Repair"},
-    {"id":1, "exhibitionName":"Mobile Screen Repair"},
-    {"id":1, "exhibitionName":"Computer Rapair"},
-    {"id":1, "exhibitionName":"Mixer & Grinder Repair"}
+    {"id":2, "exhibitionName":"RO or Water Purifier Repair"},
+    {"id":3, "exhibitionName":"Washing Machine Repair"},
+    {"id":4, "exhibitionName":"Refrigator Repair"},
+    {"id":5, "exhibitionName":"Microwave Repair"},
+    {"id":6, "exhibitionName":"Chimney Cleaning & Repair"},
+    {"id":7, "exhibitionName":"Television, Repair & Installation"},
+    {"id":8, "exhibitionName":"Geyser / Water Heater Repair"},
+    {"id":9, "exhibitionName":"Laptop Repair"},
+    {"id":10, "exhibitionName":"Mobile Screen Repair"},
+    {"id":11, "exhibitionName":"Computer Rapair"},
+    {"id":12, "exhibitionName":"Mixer & Grinder Repair"}
 ]

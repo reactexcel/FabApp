@@ -28,7 +28,7 @@ export default class ExhibitionList extends Component {
                 <FlatList
                 data={exhibitionList && exhibitionList}
                 renderItem={this._renderItem}
-                keyExtractor={(item,index)=>{item.id}}
+                keyExtractor={(item,index)=>{index.toString()}}
                 showsVerticalScrollIndicator={false}
                 />
             </View>
