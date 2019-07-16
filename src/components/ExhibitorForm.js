@@ -1,17 +1,35 @@
 import React, { Component } from 'react'
-import { Text, View, FlatList, StyleSheet, TouchableOpacity, BackHandler } from 'react-native'
+import { Text, View, FlatList, StyleSheet, TouchableOpacity, BackHandler,Animated } from 'react-native'
 import Layout from "../helper/Layout";
 import {Icon} from "native-base";
 import { Container, Header, Content, Item, Input, Radio } from 'native-base';
 import FromProducts from './FromProducts';
-
 export default class ExhibitorForm extends Component {
     constructor(props){
         super(props)
-        this.state={scrollToIndex:0}
+        this.state={scrollToIndex:0,postion:new Animated.Value(-Layout.window.height),isDropDown:false}
+        
     }
 
+    onDropDownPress=()=>{
+        const {isDropDown} =this.state;
+        if(!isDropDown){
+           this.setState({isDropDown:!isDropDown})
+          Animated.spring(this.state.postion,{
+            toValue:0,
+            duration:2000
+          }).start()
+        }
+        else{
+            this.setState({isDropDown:!isDropDown})
+            Animated.spring(this.state.postion,{
+                toValue:-Layout.window.height,
+                duration:2000
+              }).start()
+        }
+    }
     _renderItem=({item,index})=>{
+        const {isDropDown} =this.state;
         let cardText = index == 0 ? "Stall size" : index == 1 ? "Stall no" : "Color theme"
         return(
         <View key={index} style={styles.contentCard}>
@@ -35,24 +53,27 @@ export default class ExhibitorForm extends Component {
                         <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%"}} >
                             <View style={styles.radioButton}>
                                 <Radio 
-                                    color={"#f0ad4e"}
+                                    color={"#000000"}
                                     selectedColor={"#5cb85c"}
-                                    selected={true}
+                                    selected={false}
                                 />
-                                <Text style={styles.radioButtonText}>Daily Stand Up</Text>
+                                <Text style={styles.radioButtonText}>Select Multiple Furniture</Text>
                             </View>
                         </View>
                         <View style={{}}>
                             <Icon
+                            onPress={this.onDropDownPress}
                                     type="Entypo"
-                                    name="chevron-small-down"
+                                    name={isDropDown ?  "chevron-small-up" : "chevron-small-down"}
                                     // style={styles.iconColor}
                                 />
                         </View>
 
                      </View>
                      <View style={styles.horizontalLinee}></View>
-                    <FromProducts index={index}/>
+                     <Animated.View style={{postion:"absolute",flex:1,top:this.state.postion}} >
+                        <FromProducts index={index}/>
+                     </Animated.View>
                 </View>
              }
         </View>
@@ -96,7 +117,7 @@ const styles = StyleSheet.create({
         flex:1,
         width:"100%",
         width:Layout.window.width,
-        borderWidth:1,
+        // borderWidth:1,
     },
     tapToContinueButtonView:{
         marginTop:5,
@@ -164,9 +185,8 @@ const styles = StyleSheet.create({
         flexDirection:"row"
     },
     radioButtonText:{
-        marginLeft:5
-    },radioButtonText:{
-        marginLeft:5
+        marginLeft:5,
+        color:"#000000"
     },
     inputSizee:{
         borderWidth:1,

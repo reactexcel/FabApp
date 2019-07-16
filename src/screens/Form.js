@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, StyleSheet,Text, BackHandler } from 'react-native';
+import { View, TouchableOpacity, StyleSheet,Text, BackHandler, } from 'react-native';
 import Header from "../generic/Header";
 import ExhibitorForm from "../components/ExhibitorForm";
 
