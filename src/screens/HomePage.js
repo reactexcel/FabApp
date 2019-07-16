@@ -3,13 +3,19 @@ import { Text, View,StyleSheet } from 'react-native'
 import { Container, Content, Button, } from 'native-base';
 import Header from "../generic/Header";
 import LinearGradient from 'react-native-linear-gradient';
+import SplashScreen from 'react-native-splash-screen'
 
 export default class HomePage extends Component {
     static navigationOptions = {
         header: null
       };
+    
     onCategorySelect=(navigationPath)=>{
         this.props.navigation.navigate(navigationPath)
+    }
+
+    componentDidMount(){
+        SplashScreen.hide();
     }
     render() {
         return (

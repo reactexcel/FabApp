@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, TouchableOpacity, StyleSheet,Text, BackHandler, } from 'react-native';
 import Header from "../generic/Header";
 import ExhibitorForm from "../components/ExhibitorForm";
+import FabricatorForm from "../components/FabricatorForm";
 
 export default class WorkerForm extends React.Component {
     static navigationOptions = {
@@ -83,6 +84,11 @@ export default class WorkerForm extends React.Component {
         <ExhibitorForm
           scrollToIndexHandler={this.scrollToIndexHandler}
           scrollToIndex={scrollToIndex}
+        />
+      }{index ==1 &&
+        <FabricatorForm
+          // scrollToIndexHandler={this.scrollToIndexHandler}
+          // scrollToIndex={scrollToIndex}
         />
       }
       </>

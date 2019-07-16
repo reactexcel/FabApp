@@ -1,14 +1,14 @@
 [
-    {"id":1, "exhibitionName":"AC Services and Repair"},
-    {"id":2, "exhibitionName":"RO or Water Purifier Repair"},
-    {"id":3, "exhibitionName":"Washing Machine Repair"},
-    {"id":4, "exhibitionName":"Refrigator Repair"},
-    {"id":5, "exhibitionName":"Microwave Repair"},
-    {"id":6, "exhibitionName":"Chimney Cleaning & Repair"},
-    {"id":7, "exhibitionName":"Television, Repair & Installation"},
-    {"id":8, "exhibitionName":"Geyser / Water Heater Repair"},
-    {"id":9, "exhibitionName":"Laptop Repair"},
-    {"id":10, "exhibitionName":"Mobile Screen Repair"},
-    {"id":11, "exhibitionName":"Computer Rapair"},
-    {"id":12, "exhibitionName":"Mixer & Grinder Repair"}
+    {"id":1, "exhibitionName":"Car Clinic"},
+    {"id":2, "exhibitionName":"Amazon India Fashion Week "},
+    {"id":3, "exhibitionName":"Plumbing Skills Mela "},
+    {"id":4, "exhibitionName":"Get Active Expo"},
+    {"id":5, "exhibitionName":"Outstation Expo"},
+    {"id":6, "exhibitionName":"Imaging Solution India Expo "},
+    {"id":7, "exhibitionName":"Pet Fed Delhi 2016 "},
+    {"id":8, "exhibitionName":"India Art Fair 2017"},
+    {"id":9, "exhibitionName":"Plumbing Skills Mela"},
+    {"id":10, "exhibitionName":"Car Clinic"},
+    {"id":11, "exhibitionName":"Amazon India Fashion Week"},
+    {"id":12, "exhibitionName":"India Art Fair 2017"}
 ]
