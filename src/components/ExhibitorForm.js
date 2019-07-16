@@ -4,10 +4,15 @@ import Layout from "../helper/Layout";
 import {Icon} from "native-base";
 import { Container, Header, Content, Item, Input, Radio } from 'native-base';
 import FromProducts from './FromProducts';
+
+
 export default class ExhibitorForm extends Component {
     constructor(props){
         super(props)
-        this.state={scrollToIndex:0,postion:new Animated.Value(-Layout.window.height),isDropDown:false}
+        this.state={scrollToIndex:0,
+                    postion:new Animated.Value(-Layout.window.height),
+                    isDropDown:false
+                }
         
     }
 
