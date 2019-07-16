@@ -35,24 +35,25 @@ export default class ExhibitorForm extends Component {
     }
     _renderItem=({item,index})=>{
         const {isDropDown} =this.state;
-        let cardText = index == 0 ? "Stall size" : index == 1 ? "Stall no" : "Color theme"
+        let cardText = index == 0 ? "Stall size" : index == 1 ? "Stall no" : index ==2 ? "Color theme" : index ==5 ?  "Carpet Color" : "Website Link"
         return(
         <View key={index} style={styles.contentCard}>
-            {(index ==0 || index ==1 || index ==2) &&
+            {(index ==0 || index ==1 || index ==2 || index ==5 || index ==6) &&
                     <View style={styles.inputView}>
                     <Text style={styles.stallText}>{cardText}</Text>
                     <Item >
                         <Input 
                             style={styles.inputSize}
-                            placeholder='Type here..'
+                            placeholder={index ==6 ? "Optional" : 'Type here..'}      
                             keyboardType={index !=2 ? "phone-pad" : "default"}
+                            placeholderTextColor="#E6E5E2"
                         />
                     </Item>
                 </View>}
-               {index ==3 &&
+               {(index ==3 || index ==4) &&
                 <View style={styles.furnitureWrapper}>
                     <View style={styles.furnitureTextView}>
-                         <Text style={styles.furnitureText}>Furniture</Text>
+                         <Text style={styles.furnitureText}>{index ==3 ? "Branding" :  "Furniture"}</Text>
                     </View>
                     <View style={[styles.listIem,{marginTop:30}]}> 
                         <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%"}} >
@@ -62,7 +63,7 @@ export default class ExhibitorForm extends Component {
                                     selectedColor={"#5cb85c"}
                                     selected={false}
                                 />
-                                <Text style={styles.radioButtonText}>Select Multiple Furniture</Text>
+                                <Text style={styles.radioButtonText}>{index ==3 ? "Select Multiple Branding" : "Select Multiple Furniture"}</Text>
                             </View>
                         </View>
                         <View style={{}}>
