@@ -82,7 +82,7 @@ export default class ExhibitorForm extends Component {
                         <FromProducts index={index}/>
                      </Animated.View>
                 </View>
-             }
+             } 
         </View>
         )
     }
