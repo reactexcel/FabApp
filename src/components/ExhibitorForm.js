@@ -55,27 +55,28 @@ export default class ExhibitorForm extends Component {
                     <View style={styles.furnitureTextView}>
                          <Text style={styles.furnitureText}>{index ==3 ? "Branding" :  "Furniture"}</Text>
                     </View>
-                    <View style={[styles.listIem,{marginTop:30}]}> 
-                        <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%"}} >
-                            <View style={styles.radioButton}>
-                                <Radio 
-                                    color={"#000000"}
-                                    selectedColor={"#5cb85c"}
-                                    selected={false}
-                                />
-                                <Text style={styles.radioButtonText}>{index ==3 ? "Select Multiple Branding" : "Select Multiple Furniture"}</Text>
+                    <TouchableOpacity activeOpacity={.7} onPress={this.onDropDownPress}>
+                        <View style={[styles.listIem,{marginTop:30}]}> 
+                            <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%"}} >
+                                <View style={styles.radioButton}>
+                                    <Radio 
+                                        color={"#000000"}
+                                        selectedColor={"#5cb85c"}
+                                        selected={false}
+                                    />
+                                    <Text style={styles.radioButtonText}>{index ==3 ? "Select Multiple Branding" : "Select Multiple Furniture"}</Text>
+                                </View>
                             </View>
-                        </View>
-                        <View style={{}}>
-                            <Icon
-                            onPress={this.onDropDownPress}
+                            <View style={{}}>
+                                <Icon
                                     type="Entypo"
                                     name={isDropDown ?  "chevron-small-up" : "chevron-small-down"}
                                     // style={styles.iconColor}
                                 />
-                        </View>
+                            </View>
 
-                     </View>
+                        </View>
+                    </TouchableOpacity>
                      <View style={styles.horizontalLinee}></View>
                      <Animated.View style={{postion:"absolute",flex:1,top:this.state.postion}} >
                         <FromProducts index={index}/>
