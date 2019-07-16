@@ -79,7 +79,12 @@ export default class WorkerForm extends React.Component {
               <View style={[styles.tabBottomLine,{borderBottomColor:this.state.index ==1 ? "#000000" :"#a59e9e",}]}></View>
             </TouchableOpacity>
       </View>
-        {index ==0 && <ExhibitorForm scrollToIndexHandler={this.scrollToIndexHandler} scrollToIndex={scrollToIndex} flatListRef={this.flatListRef}  goBack={this.goBack}/>}
+      {index ==0 &&
+        <ExhibitorForm
+          scrollToIndexHandler={this.scrollToIndexHandler}
+          scrollToIndex={scrollToIndex}
+        />
+      }
       </>
     );
   }

@@ -26,7 +26,35 @@ export default class ExhibitorForm extends Component {
                         />
                     </Item>
                 </View>}
-               {index ==3 && <FromProducts index={index}/>}
+               {index ==3 &&
+                <View style={styles.furnitureWrapper}>
+                    <View style={styles.furnitureTextView}>
+                         <Text style={styles.furnitureText}>Furniture</Text>
+                    </View>
+                    <View style={[styles.listIem,{marginTop:30}]}> 
+                        <View style={{flexDirection:"row",justifyContent:"space-between",width:"90%"}} >
+                            <View style={styles.radioButton}>
+                                <Radio 
+                                    color={"#f0ad4e"}
+                                    selectedColor={"#5cb85c"}
+                                    selected={true}
+                                />
+                                <Text style={styles.radioButtonText}>Daily Stand Up</Text>
+                            </View>
+                        </View>
+                        <View style={{}}>
+                            <Icon
+                                    type="Entypo"
+                                    name="chevron-small-down"
+                                    // style={styles.iconColor}
+                                />
+                        </View>
+
+                     </View>
+                     <View style={styles.horizontalLinee}></View>
+                    <FromProducts index={index}/>
+                </View>
+             }
         </View>
         )
     }
@@ -112,5 +140,50 @@ const styles = StyleSheet.create({
         fontWeight:"bold",
         color:"#000000",
         marginBottom:40
+    },
+    furnitureWrapper :{
+        flex:1
+    },
+    furnitureTextView:{
+        flexDirection:"row",
+        justifyContent:"center",
+        alignItems:'center'
+    },
+    furnitureText:{
+        fontSize:24,
+        fontWeight:"bold",
+        color:"#000000",
+        marginTop:20
+    },
+    listIem:{
+        flexDirection:"row",
+        justifyContent:"space-between",
+        paddingHorizontal:20,
+    },
+    radioButton:{
+        flexDirection:"row"
+    },
+    radioButtonText:{
+        marginLeft:5
+    },radioButtonText:{
+        marginLeft:5
+    },
+    inputSizee:{
+        borderWidth:1,
+        borderColor:"#D7DBDD",
+        borderRadius:4,
+        padding:0,
+        height:20,
+        fontSize:15,
+        color:"#000000",
+    },
+    horizontalLinee:{
+        borderBottomWidth:1,
+       width:"95%",
+       flexDirection:"row",
+       alignSelf:"flex-end",
+       borderBottomColor:"#D7DBDD",
+       marginTop:5
     }
+    
 })
