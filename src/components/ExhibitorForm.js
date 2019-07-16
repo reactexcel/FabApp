@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Text, View, FlatList, StyleSheet, TouchableOpacity, BackHandler } from 'react-native'
 import Layout from "../helper/Layout";
 import {Icon} from "native-base";
+import { Container, Header, Content, Item, Input, Radio } from 'native-base';
+import FromProducts from './FromProducts';
 
 export default class ExhibitorForm extends Component {
     constructor(props){
@@ -10,47 +12,26 @@ export default class ExhibitorForm extends Component {
     }
 
     _renderItem=({item,index})=>{
+        let cardText = index == 0 ? "Stall size" : index == 1 ? "Stall no" : "Color theme"
         return(
         <View key={index} style={styles.contentCard}>
-            <View>
-                <Text>{index}dvdvdvsdvs</Text>
-            </View>
+            {(index ==0 || index ==1 || index ==2) &&
+                    <View style={styles.inputView}>
+                    <Text style={styles.stallText}>{cardText}</Text>
+                    <Item >
+                        <Input 
+                            style={styles.inputSize}
+                            placeholder='Type here..'
+                            keyboardType={index !=2 ? "phone-pad" : "default"}
+                        />
+                    </Item>
+                </View>}
+               {index ==3 && <FromProducts index={index}/>}
         </View>
         )
     }
-
-    scrollToIndex = (index,length) => {
-        const {scrollToIndex} = this.state;
-        if(length>index){
-            this.flatListRef.scrollToIndex({animated: true, index:index});
-        }
-        if( length > index){
-            this.setState({scrollToIndex:scrollToIndex+1})
-        }
-    }
-
-    componentDidMount() {
-        this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-      }
-    
-      componentWillUnmount() {
-        this.backHandler.remove()
-      }
-    
-      handleBackPress =async () => {
-        const {scrollToIndex} = this.state;
-            if(scrollToIndex > 0){
-                this.setState({scrollToIndex:scrollToIndex-1},()=>{
-                    this.flatListRef.scrollToIndex({animated: true, index:scrollToIndex});
-                })
-            }
-            else{
-                this.props.goBack();
-            }
-      }
-
     render() {
-        const {scrollToIndex} = this.state;
+        const {scrollToIndex} =this.props;
         return (
             <View style={styles.mainWrapper}>
                 <FlatList 
@@ -63,13 +44,13 @@ export default class ExhibitorForm extends Component {
                     scrollEnabled={false}
                 />
                 <View style={styles.horizontalLine}/>
-                <TouchableOpacity onPress={()=>this.scrollToIndex(scrollToIndex+1,7)} activeOpacity={.7}>
+                <TouchableOpacity onPress={()=>this.props.scrollToIndexHandler(scrollToIndex+1,7,this.flatListRef)} activeOpacity={.7}>
                     <View style={styles.tapToContinueButtonView}>
                             <Text style={styles.continueText}>Continue</Text>
                             <Icon
-                            type="AntDesign"
-                            name="arrowright"
-                            style={{color:"#ffffff"}}
+                                type="AntDesign"
+                                name="arrowright"
+                                style={styles.iconColor}
                             />
                         </View>
                 </TouchableOpacity>
@@ -86,7 +67,8 @@ const styles = StyleSheet.create({
     contentCard:{
         flex:1,
         width:"100%",
-        width:Layout.window.width
+        width:Layout.window.width,
+        borderWidth:1,
     },
     tapToContinueButtonView:{
         marginTop:5,
@@ -108,5 +90,27 @@ const styles = StyleSheet.create({
         width:"100%",
         borderTopWidth:1,
         borderTopColor:"#D7DBDD"
+    },
+    inputView:{
+        paddingHorizontal:10,
+        flex:1,
+        flexDirection:'column',
+        justifyContent:"flex-start",
+        alignItems:"center",
+        marginTop:40
+    },
+    inputSize:{
+        borderWidth:1,
+        borderColor:"#D7DBDD",
+        borderRadius:4
+    },
+    iconColor:{
+        color:"#ffffff"
+    },
+    stallText:{
+        fontSize:24,
+        fontWeight:"bold",
+        color:"#000000",
+        marginBottom:40
     }
 })
