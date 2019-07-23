@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {  View,FlatList, StyleSheet } from 'react-native'
-import item from "../constants/exhibition.json"
+import item from "../constants/furniture.json"
 import {Radio, ListItem,Left, Text,Input,Item, Right} from "native-base";
 
 export default class FromProducts extends Component {
@@ -14,7 +14,7 @@ export default class FromProducts extends Component {
                              selectedColor={"#5cb85c"}
                              selected={true}
                          />
-                        <Text style={styles.radioButtonText}>Daily Stand Up</Text>
+                        <Text style={styles.radioButtonText}>{item.name}</Text>
                     </View>
                     <View>
                         <Input 

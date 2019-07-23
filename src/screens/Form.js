@@ -63,7 +63,9 @@ export default class WorkerForm extends React.Component {
           centerText={"Registration"}
           goBack={this.goBack}
          />
-         <View style={[styles.formCompletionBar,{width:`${scrollToIndex*16.6666}%`}]}></View>
+         {index ==0 && 
+          <View style={[styles.formCompletionBar,{width:`${scrollToIndex*16.6666}%`}]}></View>
+        }
         <View style={styles.tabBar}>
             <TouchableOpacity
               activeOpacity={.7}
@@ -86,10 +88,7 @@ export default class WorkerForm extends React.Component {
           scrollToIndex={scrollToIndex}
         />
       }{index ==1 &&
-        <FabricatorForm
-          // scrollToIndexHandler={this.scrollToIndexHandler}
-          // scrollToIndex={scrollToIndex}
-        />
+        <FabricatorForm/>
       }
       </>
     );
