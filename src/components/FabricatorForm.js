@@ -1,37 +1,77 @@
 import React, { Component } from 'react'
-import { Text, View, FlatList, StyleSheet, TouchableOpacity, BackHandler,Animated } from 'react-native'
+import { Text, View, FlatList, StyleSheet, TouchableOpacity,ScrollView, BackHandler,Animated } from 'react-native'
 import Layout from "../helper/Layout";
-import {Icon} from "native-base";
-import { Container, Header, Content, Item, Input, Radio } from 'native-base';
+import { Container, Header, Content, Item, Input, Radio,Label,Icon,Textarea } from 'native-base';
 import FromProducts from './FromProducts';
 
 
 export default class FabricatorForm extends Component {
     constructor(props){
         super(props)
-        this.state={scrollToIndex:0,
-                    postion:new Animated.Value(-Layout.window.height),
-                    isDropDown:false
-                }
-        
+        this.state={}
     }
 
     render() {
-        const {scrollToIndex} =this.props;
         return (
             <View style={styles.mainWrapper}>
-                <View style={styles.horizontalLine}/>
-                <TouchableOpacity /* onPress={()=>this.props.scrollToIndexHandler(scrollToIndex+1,7,this.flatListRef)} */ activeOpacity={.7}>
-                    <View style={styles.tapToContinueButtonView}>
-                            <Text style={styles.continueText}>Continue</Text>
-                            <Icon
-                                type="AntDesign"
-                                name="arrowright"
-                                style={styles.iconColor}
-                            />
+                <ScrollView>
+                    <View style={styles.contentWrapper}>
+                        <View style={styles.formWrapper}>
+                            <View style={styles.headerTextView}>
+                                <Text style={styles.headerText}>Tell us about you</Text>
+                            </View>
+                            <Item style={styles.fromItem} stackedLabel>
+                                <Label>Name</Label>
+                                <Input 
+                                    style={styles.inputSize}
+                                    placeholder={"Your name..."}      
+                                    placeholderTextColor="#E6E5E2"
+                                />
+                            </Item>
+                            <Item style={styles.fromItem} stackedLabel>
+                                <Label>Mobile No</Label>
+                                <Input 
+                                    style={styles.inputSize}
+                                    placeholder={'Your mobile no...'}      
+                                    keyboardType="phone-pad"
+                                    placeholderTextColor="#E6E5E2"
+                                    maxLength={10}
+                                />
+                            </Item>
+                            <Item style={styles.fromItem} stackedLabel>
+                                <Label>Email id</Label>
+                                <Input 
+                                    style={styles.inputSize}
+                                    placeholder={'Your email-id...'}      
+                                    placeholderTextColor="#E6E5E2"
+                                />
+                            </Item>
+                            <Item style={[styles.fromItem,{borderColor:"transparent"}]} stackedLabel>
+                                <Label>Bio</Label>
+                                <Textarea 
+                                    numberOfLines={8}
+                                    style={styles.inputTextAreaSize}
+                                    placeholder={'Berief yourself...'}      
+                                    placeholderTextColor="#E6E5E2"
+                                />
+                            </Item>
                         </View>
-                </TouchableOpacity>
-            </View>
+                        <View>
+                            <View style={styles.horizontalLine}/>
+                            <TouchableOpacity /* onPress={()=>this.props.scrollToIndexHandler(scrollToIndex+1,7,this.flatListRef)} */ activeOpacity={.7}>
+                                <View style={styles.tapToContinueButtonView}>
+                                    <Text style={styles.continueText}>Continue</Text>
+                                    <Icon
+                                        type="AntDesign"
+                                        name="arrowright"
+                                        style={styles.iconColor}
+                                    />
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </ScrollView>
+             </View>
         )
     }
 }
@@ -39,13 +79,7 @@ export default class FabricatorForm extends Component {
 const styles = StyleSheet.create({
     mainWrapper:{
         flex:1,
-        backgroundColor:"#ffffff"
-    },
-    contentCard:{
-        flex:1,
-        width:"100%",
-        width:Layout.window.width,
-        // borderWidth:1,
+        backgroundColor:"#ffffff",
     },
     tapToContinueButtonView:{
         marginTop:5,
@@ -68,70 +102,42 @@ const styles = StyleSheet.create({
         borderTopWidth:1,
         borderTopColor:"#D7DBDD"
     },
-    inputView:{
-        paddingHorizontal:10,
-        flex:1,
-        flexDirection:'column',
-        justifyContent:"flex-start",
-        alignItems:"center",
-        marginTop:40
-    },
     inputSize:{
-        borderWidth:1,
         borderColor:"#D7DBDD",
-        borderRadius:4
+        borderRadius:4,
+    },
+    inputTextAreaSize:{
+        borderColor:"#D7DBDD",
+        borderRadius:4,
+        width:"100%",
+        height:100,
+        borderWidth:1
+
+    },
+    formWrapper:{
+        paddingHorizontal:20,
     },
     iconColor:{
         color:"#ffffff"
     },
-    stallText:{
-        fontSize:24,
-        fontWeight:"bold",
+    headerTextView:{
+        flexDirection:'row',
+        justifyContent:"center",
+        alignItems:"center"
+    },
+    headerText:{
+        fontSize:20,
         color:"#000000",
+        fontWeight:"bold",
+        marginTop:40,
         marginBottom:40
     },
-    furnitureWrapper :{
-        flex:1
+    contentWrapper:{
+        height:Layout.window.height-(Layout.window.height * .20),
+        flexDirection:"column",
+        justifyContent:"space-between"
     },
-    furnitureTextView:{
-        flexDirection:"row",
-        justifyContent:"center",
-        alignItems:'center'
-    },
-    furnitureText:{
-        fontSize:24,
-        fontWeight:"bold",
-        color:"#000000",
-        marginTop:20
-    },
-    listIem:{
-        flexDirection:"row",
-        justifyContent:"space-between",
-        paddingHorizontal:20,
-    },
-    radioButton:{
-        flexDirection:"row"
-    },
-    radioButtonText:{
-        marginLeft:5,
-        color:"#000000"
-    },
-    inputSizee:{
-        borderWidth:1,
-        borderColor:"#D7DBDD",
-        borderRadius:4,
-        padding:0,
-        height:20,
-        fontSize:15,
-        color:"#000000",
-    },
-    horizontalLinee:{
-        borderBottomWidth:1,
-       width:"95%",
-       flexDirection:"row",
-       alignSelf:"flex-end",
-       borderBottomColor:"#D7DBDD",
-       marginTop:5
+    fromItem:{
+        marginTop:10
     }
-    
 })
