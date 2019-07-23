@@ -5,7 +5,7 @@ import {Icon} from "native-base";
 export default class Headerr extends Component {
 
     render() {
-        const { isCenter,isLeft,isRight,rightText,centerText,leftText,leftIcon,centerIcon,rightIcon,isNotRightThenWidth} =this.props;
+        const { isCenter,isLeft,isRight,rightText,centerText,leftText,leftIcon,centerIcon,rightIcon,isNotRightThenWidth,rightIconCategoty} =this.props;
         return (
             <View style={styles.wrapper}>
                 <StatusBar backgroundColor="#000000" barStyle="light-content" />
@@ -24,7 +24,14 @@ export default class Headerr extends Component {
                     </View>}
                     {isRight && 
                     <View>
-                        <Text style={{color:"#ffffff",fontSize:20,fontWeight:"bold"}}>RIGHT</Text>
+                        {rightText ? <Text style={{color:"#ffffff",fontSize:20,fontWeight:"bold"}}>{rightText}</Text>: 
+                        <Icon
+                            onPress={()=>this.props.goBack()}
+                            type={rightIconCategoty}
+                            name={rightIcon}
+                            style={{color:"#ffffff"}}
+                    />
+                    }
                     </View>}
                 </View>
             </View>

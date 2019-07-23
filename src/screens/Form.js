@@ -17,6 +17,10 @@ export default class WorkerForm extends React.Component {
   goBack=()=>{
     this.props.navigation.goBack()
   }
+  
+  goTo=()=>{
+    this.props.navigation.navigate("FabricatorProfile")
+  }
 
   scrollToIndexHandler = (index,length,flatListRef) => {
     const {scrollToIndex,flatListRefState} = this.state;
@@ -61,7 +65,6 @@ export default class WorkerForm extends React.Component {
           isNotRightThenWidth={"70%"}
           isCenter={true}
           centerText={"Registration"}
-          goBack={this.goBack}
          />
          {index ==0 && 
           <View style={[styles.formCompletionBar,{width:`${scrollToIndex*16.6666}%`}]}></View>
@@ -88,7 +91,9 @@ export default class WorkerForm extends React.Component {
           scrollToIndex={scrollToIndex}
         />
       }{index ==1 &&
-        <FabricatorForm/>
+        <FabricatorForm
+          goTo={this.goTo}
+        />
       }
       </>
     );

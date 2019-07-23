@@ -2,7 +2,8 @@ import { createStackNavigator } from "react-navigation";
 import { Easing, Animated } from "react-native";
 import HomePage from "../screens/HomePage";
 import Exebition from "../screens/Exebition";
-import WorkerForm from "../screens/Form"
+import WorkerForm from "../screens/Form";
+import FabricatorProfile from "../screens/FabricatorProfile";
 
 const transitionConfig = () => {
     return {
@@ -48,6 +49,9 @@ const transitionConfig = () => {
       },
       WorkerForm:{
           screen:WorkerForm
+      },
+      FabricatorProfile:{
+        screen:FabricatorProfile
       }
     },
     {
