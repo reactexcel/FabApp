@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, VirtualizedList, StyleSheet, Image } from 'react-native'
+import { Text, View, VirtualizedList, StyleSheet, Image, TouchableOpacity } from 'react-native'
 
 const portfolio =[{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"}]
 
@@ -9,7 +9,9 @@ export default class FabricatorPortfolio extends Component {
         return(
             <View>
                 <View style={[styles.portfolioView,{marginRight:index == portfolio.length-1 ? 40 : 10 }]}>
-                    <Image resizeMode="cover" style={styles.img} source={require("../../assets/images/avatar.png")}/>
+                    <TouchableOpacity activeOpacity={.7} onPress={this.onPortfolioImagePress}>
+                         <Image resizeMode="cover" style={styles.img} source={require("../../assets/images/avatar.png")}/>
+                    </TouchableOpacity>
                 </View>
             </View>
         )
@@ -21,6 +23,10 @@ export default class FabricatorPortfolio extends Component {
 
     _getItemLayout=(data, index) => {
         return data
+    }
+
+    onPortfolioImagePress=()=>{
+        this.props.onPortfolioImagePress()
     }
 
     render() {

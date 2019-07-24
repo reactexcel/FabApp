@@ -47,7 +47,7 @@ export default class FabricatorForm extends Component {
                                 />
                             </Item>
                             <Item style={[styles.fromItem,{borderColor:"transparent"}]} stackedLabel>
-                                <Label>Bio</Label>
+                                <Label>About your self</Label>
                                 <Textarea 
                                     numberOfLines={8}
                                     style={styles.inputTextAreaSize}
@@ -111,7 +111,8 @@ const styles = StyleSheet.create({
         borderRadius:4,
         width:"100%",
         height:100,
-        borderWidth:1
+        borderWidth:1,
+        marginTop:15
 
     },
     formWrapper:{
