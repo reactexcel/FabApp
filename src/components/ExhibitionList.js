@@ -6,19 +6,21 @@ import Layout from "../helper/Layout";
 export default class ExhibitionList extends Component {
     _renderItem=({item,index})=>{
         return(
-            <TouchableOpacity activeOpacity={.5} underlayColor="red" onPress={()=>this.props.toForm()}>
-                <View>
-                    <View style={styles.rowWrapper} key={index}>
-                        <View style={styles.imageView}>
-                            <Image style={styles.img} source={require('../../assets/images/confabricatordirectory.jpg')}/>
+            <View key={index.toString()}>
+                <TouchableOpacity  activeOpacity={.5} underlayColor="red" onPress={()=>this.props.toForm()}>
+                    
+                        <View style={styles.rowWrapper} key={index}>
+                            <View style={styles.imageView}>
+                                <Image style={styles.img} source={require('../../assets/images/confabricatordirectory.jpg')}/>
+                            </View>
+                            <View style={styles.exhibitionTextView}>
+                                <Text style={styles.exhibitionText}>{item.exhibitionName}</Text>
+                            </View>
                         </View>
-                        <View style={styles.exhibitionTextView}>
-                            <Text style={styles.exhibitionText}>{item.exhibitionName}</Text>
-                        </View>
-                    </View>
-                    <View style={styles.horizontalLine}></View>
-                </View>
-            </TouchableOpacity>
+                        <View style={styles.horizontalLine}></View>
+                </TouchableOpacity>
+            </View>
+
         )
     }
     _keyExtractor=(item,index)=>{return item}

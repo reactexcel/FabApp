@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, ScrollView,TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, Image, ScrollView,TouchableOpacity,TextInput } from 'react-native'
 import Header from "../generic/Header";
 import LinearGradient from "react-native-linear-gradient";
 import StarRating from 'react-native-star-rating';
 import FabricatorPortfolio from "../components/FabricatorPortfolio";
 import Layout from '../helper/Layout';
 import ImageZoom from 'react-native-image-pan-zoom';
-import {Icon} from "native-base"
+import {Icon,Input,Item,Label,Textarea} from "native-base"
 
 export default class FabricatorProfile extends Component {
     static navigationOptions = {
@@ -14,7 +14,11 @@ export default class FabricatorProfile extends Component {
       };
       constructor(props){
           super(props);
-          this.state={zoomer:false}
+          this.state={zoomer:false,
+                    profileEdit:false,
+                    mobileNumber:"9012345678",
+                    aboutYourSelf:"I am johndoe man i can do everything!"
+                }
       }
 
       goBack=()=>{
@@ -24,26 +28,30 @@ export default class FabricatorProfile extends Component {
       onPortfolioImagePress=()=>{
           this.setState({zoomer:!this.state.zoomer})
       }
+
+      onProfileEdit=()=>{
+          this.setState({profileEdit:!this.state.profileEdit})
+      }
     render() {
-        const {zoomer}= this.state
+        const {zoomer,profileEdit,mobileNumber,aboutYourSelf}= this.state
         return (
             <View style={styles.container}>
                 <Header
                     isLeft={true}
                     leftIcon={"arrowleft"}
                     isCenter={true}
-                    leftIconCategory={"AntDesign"}
+                    leftIconCategory={ "AntDesign"}
                     isRight={true}
-                    rightIconCategoty={"Entypo"}
-                    rightIcon={"pencil"}
+                    rightIconCategoty={"MaterialCommunityIcons"}
+                    rightIcon={profileEdit ? "pencil-off" : "pencil"}
                     centerText={"Profile"}
                     goBack={this.goBack}
-                    onPressRight={()=>null}
+                    onPressRight={this.onProfileEdit}
                 />
                 <LinearGradient style={{flex:1}} colors={["#ffffff","#ffffff"]}>
                    {zoomer &&
                      <View style={styles.imageZoomerOverlay}>
-                        <View style={{position:'absolute',right:20,zIndex:10000,top:20}}>
+                        <View style={{position:'absolute',right:15,zIndex:10000,top:15}}>
                             <TouchableOpacity activeOpacity={.7} onPress={this.onPortfolioImagePress}>
                                     <Icon
                                         type={"EvilIcons"}
@@ -83,17 +91,49 @@ export default class FabricatorProfile extends Component {
                             </View>
                         <View style={styles.userInfoContainer}>
                             <View style={styles.itemWrapper}>
-                                <Text  style={styles.title}>Mobile No</Text>
-                                <Text style={styles.item}>9012345678</Text>
+                                <Item style={{borderColor:"transparent"}} stackedLabel>
+                                    <Label style={styles.title}>Mobile No</Label>
+                                    <Input 
+                                        style={[styles.item,{padding:0,height:20}]}
+                                        placeholder={'Your mobile no...'}      
+                                        keyboardType="phone-pad"
+                                        placeholderTextColor="#E6E5E2"
+                                        maxLength={10}
+                                        value={mobileNumber}
+                                        editable={profileEdit}
+                                        autoFocus={profileEdit}
+                                        // underlineColorAndroid="red"
+                                    />
+                                    {/* <Label style={styles.error}>*required field</Label> */}
+                                </Item>
                             </View>
-                            <View style={styles.horizontalLine}></View>
+                            <View style={styles.horizontalLine}/>
                             <View style={styles.itemWrapper}>
-                                <Text  style={styles.title}>About your self</Text>
-                                <Text style={styles.item}>I am johndoe I am johndoe I am johndoe I am johndoe I am johndoe I am johndoe I am johndoeI am johndoe</Text>
+                                <Item style={[styles.fromItem,{borderColor:"transparent"}]} stackedLabel>
+                                <Label style={styles.title}>About your self</Label>
+                                    {!profileEdit ? 
+                                     <Text style={[styles.item,{width:"100%",paddingLeft:5}]} >{aboutYourSelf}</Text> : 
+                                        <Textarea 
+                                            numberOfLines={20}
+                                            value= {aboutYourSelf}
+                                            style={[styles.inputTextAreaSize,{marginTop:profileEdit ? 15 : -10,borderWidth:profileEdit ? 1 : 0,}]}
+                                            placeholder={'About yourself...'}      
+                                            placeholderTextColor="#E6E5E2"
+                                            disabled={!profileEdit}
+                                        /> 
+                                    }
+                            </Item>
                             </View>
-                            <View style={styles.horizontalLine}></View>
+                            <View style={styles.horizontalLine}/>
                             <View style={styles.portfolioWrapper}>
-                                <Text  style={styles.portfoliotitle}>Portfolio</Text>
+                                <View style={styles.plusIconView}>
+                                    <Text  style={styles.portfoliotitle}>Portfolio</Text>
+                                    <Icon
+                                        type={"AntDesign"}
+                                        name={"plus"}
+                                        style={styles.plusIcon}
+                                    />
+                                </View>
                                 <FabricatorPortfolio 
                                     onPortfolioImagePress ={this.onPortfolioImagePress}
                                  />
@@ -162,7 +202,7 @@ const styles = StyleSheet.create({
        flexDirection:"row",
        alignSelf:"flex-end",
        borderBottomColor:"#D7DBDD",
-       marginTop:5
+    //    marginTop:5
     },
     starRatingView:{
         flexDirection:"row",
@@ -183,5 +223,28 @@ const styles = StyleSheet.create({
     icon:{
         color:"#ffffff",
         fontSize:35
+    },
+    plusIcon:{
+        color:"#000000",
+        fontSize:27
+    },
+    plusIconView:{
+        flexDirection:"row",
+        justifyContent:"space-between",
+        alignItems:'center',
+        paddingRight:20
+    },
+    inputTextAreaSize:{
+        borderColor:"#D7DBDD",
+        borderRadius:4,
+        width:"100%",
+        height:100,
+        // borderWidth:1,
+        // marginTop:-15,
+        fontSize:17,
+        color:"#4D4D4C"
+    },
+    error:{
+        color:"red"
     }
 })
