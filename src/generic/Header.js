@@ -13,7 +13,7 @@ export default class Headerr extends Component {
                     {isLeft &&
                          <View>
                              {leftText ?
-                              <Text>{leftText}</Text> : 
+                              <Text style={styles.text}>{leftText}</Text> : 
                                 <Icon
                                     onPress={()=>this.props.goBack()}
                                     type= {leftIconCategory}
@@ -25,7 +25,7 @@ export default class Headerr extends Component {
                     }
                     {isCenter && 
                         <View>
-                            <Text style={styles.centerText}>{text}</Text>
+                            <Text style={styles.text}>{centerText}</Text>
                         </View>
                     }
                     {isRight && 

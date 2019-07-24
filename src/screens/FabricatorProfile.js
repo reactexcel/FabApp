@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, Image, ScrollView } from 'react-native'
 import Header from "../generic/Header";
 import LinearGradient from "react-native-linear-gradient";
 import StarRating from 'react-native-star-rating';
+import FabricatorPortfolio from "../components/FabricatorPortfolio";
 
 export default class FabricatorProfile extends Component {
     static navigationOptions = {
@@ -28,7 +29,7 @@ export default class FabricatorProfile extends Component {
                     onPressRight={()=>null}
                 />
                 <LinearGradient style={{flex:1}} colors={["#ffffff","#ffffff"]}>
-                    <ScrollView >
+                    {/* <ScrollView > */}
                             <View style={styles.profilePicView}>
                                 <View style={styles.avatarView}>
                                     <Image resizeMode="cover" style={styles.img} source={require("../../assets/images/avatar.png")} />
@@ -60,12 +61,12 @@ export default class FabricatorProfile extends Component {
                                 <Text style={styles.item}>I am johndoe I am johndoe I am johndoe I am johndoe I am johndoe I am johndoe I am johndoeI am johndoe</Text>
                             </View>
                             <View style={styles.horizontalLine}></View>
-                            <View style={styles.itemWrapper}>
-                                <Text  style={styles.title}>Portfolio</Text>
-                                <Text style={styles.item}>I am johndoe I am johndoe I am johndoe I am johndoe I am johndoe I am johndoe I am johndoeI am johndoe</Text>
+                            <View style={styles.portfolioWrapper}>
+                                <Text  style={styles.portfoliotitle}>Portfolio</Text>
+                                <FabricatorPortfolio/>
                             </View>
                         </View>
-                    </ScrollView>
+                    {/* </ScrollView> */}
                 </LinearGradient>
             </View>
         )
@@ -104,6 +105,11 @@ const styles = StyleSheet.create({
         fontSize:20,
         color:"#000000"
     },
+    portfoliotitle:{
+        fontSize:20,
+        color:"#000000",
+        marginLeft:20
+    },
     item:{
         fontSize:17,
         color:"#4D4D4C",
@@ -112,6 +118,10 @@ const styles = StyleSheet.create({
         marginTop:10,
         marginBottom:15,
         paddingHorizontal:20
+    },
+    portfolioWrapper:{
+        marginTop:10,
+        marginBottom:15,
     },
     horizontalLine:{
         borderBottomWidth:1,

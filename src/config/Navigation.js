@@ -41,6 +41,9 @@ const transitionConfig = () => {
   };
 
   const Rootstack = createStackNavigator({
+    FabricatorProfile:{
+      screen:FabricatorProfile
+    },
     HomePage: {
         screen: HomePage
       },
@@ -50,12 +53,12 @@ const transitionConfig = () => {
       WorkerForm:{
           screen:WorkerForm
       },
-      FabricatorProfile:{
-        screen:FabricatorProfile
-      }
+      // FabricatorProfile:{
+      //   screen:FabricatorProfile
+      // }
     },
     {
-        initialScreen: "HomePage",
+        initialScreen: "FabricatorProfile",
         transitionConfig
     })
 
