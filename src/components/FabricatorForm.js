@@ -58,7 +58,7 @@ export default class FabricatorForm extends Component {
                         </View>
                         <View>
                             <View style={styles.horizontalLine}/>
-                            <TouchableOpacity onPress={()=>this.props.goTo()} activeOpacity={.7}>
+                            <TouchableOpacity onPress={()=>this.props.goToFabricatorProfile()} activeOpacity={.7}>
                                 <View style={styles.tapToContinueButtonView}>
                                     <Text style={styles.continueText}>Continue</Text>
                                     <Icon

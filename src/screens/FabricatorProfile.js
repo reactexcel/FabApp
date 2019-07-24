@@ -18,12 +18,14 @@ export default class FabricatorProfile extends Component {
                 <Header
                     isLeft={true}
                     leftIcon={"arrowleft"}
-                    // isNotRightThenWidth={"64%"}
                     isCenter={true}
+                    leftIconCategory={"AntDesign"}
                     isRight={true}
+                    rightIconCategoty={"Entypo"}
                     rightIcon={"pencil"}
                     centerText={"Profile"}
                     goBack={this.goBack}
+                    onPressRight={()=>null}
                 />
                 <LinearGradient style={{flex:1}} colors={["#ffffff","#ffffff"]}>
                     <ScrollView >

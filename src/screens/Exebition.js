@@ -22,6 +22,7 @@ export default class Exebition extends Component {
                     isCenter={true}
                     centerText={"All Exhibititions"}
                     leftIcon={"arrowleft"}
+                    leftIconCategory={"AntDesign"}
                     isNotRightThenWidth={"75%"}
                     goBack={this.goBack}
                  />

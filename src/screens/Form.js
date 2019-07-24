@@ -18,7 +18,7 @@ export default class WorkerForm extends React.Component {
     this.props.navigation.goBack()
   }
   
-  goTo=()=>{
+  goToFabricatorProfile=()=>{
     this.props.navigation.navigate("FabricatorProfile")
   }
 
@@ -62,6 +62,7 @@ export default class WorkerForm extends React.Component {
           goBack={this.goBack}
           isLeft={true}
           leftIcon={"arrowleft"}
+          leftIconCategory={"AntDesign"}
           isNotRightThenWidth={"70%"}
           isCenter={true}
           centerText={"Registration"}
@@ -92,7 +93,7 @@ export default class WorkerForm extends React.Component {
         />
       }{index ==1 &&
         <FabricatorForm
-          goTo={this.goTo}
+        goToFabricatorProfile={this.goToFabricatorProfile}
         />
       }
       </>
