@@ -18,25 +18,25 @@ export default class Headerr extends Component {
                                     onPress={()=>this.props.goBack()}
                                     type= {leftIconCategory}
                                     name={leftIcon}
-                                    style={{color:"#ffffff"}}
+                                    style={styles.icon}
                                 />
                             }
                         </View>
                     }
                     {isCenter && 
                         <View>
-                            <Text style={{color:"#ffffff",fontSize:20,fontWeight:"bold"}}>{centerText}</Text>
+                            <Text style={styles.centerText}>{text}</Text>
                         </View>
                     }
                     {isRight && 
                         <View>
                             {rightText ? 
-                                <Text style={{color:"#ffffff",fontSize:20,fontWeight:"bold"}}>{rightText}</Text>: 
+                                <Text style={styles.text}>{rightText}</Text>: 
                                 <Icon
                                     onPress={()=>this.props.onPressRight()}
                                     type={rightIconCategoty}
                                     name={rightIcon}
-                                    style={{color:"#ffffff"}}
+                                    style={styles.icon}
                                 />
                             }
                         </View>
@@ -58,6 +58,13 @@ const styles = StyleSheet.create({
         justifyContent:"space-between",
         alignItems:"center",
         paddingHorizontal:17
-
+    },
+    text:{
+        color:"#ffffff",
+        fontSize:20,
+        fontWeight:"bold"
+    },
+    icon:{
+        color:"#ffffff"
     }
 })
