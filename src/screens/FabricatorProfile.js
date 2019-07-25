@@ -13,8 +13,8 @@ export default class FabricatorProfile extends Component {
         header: null
       };
       constructor(props){
-          super(props);
-          this.state={zoomer:false,
+            super(props);
+            this.state={zoomer:false,
                     profileEdit:false,
                     mobileNumber:"9012345678",
                     aboutYourSelf:"I am johndoe man i can do everything!"
@@ -26,11 +26,12 @@ export default class FabricatorProfile extends Component {
       }
 
       onPortfolioImagePress=()=>{
-          this.setState({zoomer:!this.state.zoomer})
+        this.setState({zoomer:!this.state.zoomer})
       }
 
       onProfileEdit=()=>{
-          this.setState({profileEdit:!this.state.profileEdit})
+        this.refs.mobileNumber._root.focus()
+        this.setState({profileEdit:!this.state.profileEdit})
       }
     render() {
         const {zoomer,profileEdit,mobileNumber,aboutYourSelf}= this.state
@@ -94,6 +95,7 @@ export default class FabricatorProfile extends Component {
                                 <Item style={{borderColor:"transparent"}} stackedLabel>
                                     <Label style={styles.title}>Mobile No</Label>
                                     <Input 
+                                        ref="mobileNumber"
                                         style={[styles.item,{padding:0,height:20}]}
                                         placeholder={'Your mobile no...'}      
                                         keyboardType="phone-pad"
@@ -102,7 +104,7 @@ export default class FabricatorProfile extends Component {
                                         value={mobileNumber}
                                         editable={profileEdit}
                                         autoFocus={profileEdit}
-                                        // underlineColorAndroid="red"
+                                        onSubmitEditing={(e)=>this.refs.aboutYourSelf._root.focus()}
                                     />
                                     {/* <Label style={styles.error}>*required field</Label> */}
                                 </Item>
@@ -114,6 +116,7 @@ export default class FabricatorProfile extends Component {
                                     {!profileEdit ? 
                                      <Text style={[styles.item,{width:"100%",paddingLeft:5}]} >{aboutYourSelf}</Text> : 
                                         <Textarea 
+                                            ref="aboutYourSelf"
                                             numberOfLines={20}
                                             value= {aboutYourSelf}
                                             style={[styles.inputTextAreaSize,{marginTop:profileEdit ? 15 : -10,borderWidth:profileEdit ? 1 : 0,}]}
