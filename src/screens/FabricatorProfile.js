@@ -7,6 +7,7 @@ import FabricatorPortfolio from "../components/FabricatorPortfolio";
 import Layout from '../helper/Layout';
 import ImageZoom from 'react-native-image-pan-zoom';
 import {Icon,Input,Item,Label,Textarea} from "native-base"
+import SplashScreen from "react-native-splash-screen";
 
 export default class FabricatorProfile extends Component {
     static navigationOptions = {
@@ -16,25 +17,47 @@ export default class FabricatorProfile extends Component {
             super(props);
             this.state={zoomer:false,
                     profileEdit:false,
+                    Mobilefocus:false,
+                    aboutYourSelfFocus:false,
                     mobileNumber:"9012345678",
-                    aboutYourSelf:"I am johndoe man i can do everything!"
+                    aboutYourSelf:"I am johndoe man i can do everything!  am johndoe man i can do everything!  am johndoe man i can do everything!  am johndoe man i can do everything!  am johndoe man i can do everything! am johndoe man i can do everything!"
                 }
       }
+    
+    componentDidMount(){
+        SplashScreen.hide();
+    }
 
-      goBack=()=>{
-        this.props.navigation.goBack()
-      }
+    goBack=()=>{
+         this.props.navigation.goBack()
+    }
 
-      onPortfolioImagePress=()=>{
+    onPortfolioImagePress=()=>{
         this.setState({zoomer:!this.state.zoomer})
-      }
+    }
 
-      onProfileEdit=()=>{
-        this.refs.mobileNumber._root.focus()
-        this.setState({profileEdit:!this.state.profileEdit})
-      }
+    onProfileEdit=()=>{
+        const {profileEdit} = this.state;
+        if(!profileEdit){
+            this.refs.mobileNumber._root.focus()
+            this.setState({profileEdit:!this.state.profileEdit})
+        }
+        else{
+            this.setState({profileEdit:!this.state.profileEdit,Mobilefocus:false,aboutYourSelfFocus:false})
+        }
+    }
+
+    onFieldSubmitting=(field)=>{
+        if(field === "aboutYourSelf"){
+            this.setState({Mobilefocus:false,aboutYourSelfFocus:false})
+        }
+        else{
+            this.setState({Mobilefocus:false,aboutYourSelfFocus:false})
+            this.refs.aboutYourSelf._root.focus()
+        }
+    }
     render() {
-        const {zoomer,profileEdit,mobileNumber,aboutYourSelf}= this.state
+        const {zoomer,profileEdit,mobileNumber,aboutYourSelf,Mobilefocus,aboutYourSelfFocus}= this.state
         return (
             <View style={styles.container}>
                 <Header
@@ -96,25 +119,26 @@ export default class FabricatorProfile extends Component {
                                     <Label style={styles.title}>Mobile No</Label>
                                     <Input 
                                         ref="mobileNumber"
-                                        style={[styles.item,{padding:0,height:20}]}
+                                        style={[styles.item,{padding:0,height:20,}]}
                                         placeholder={'Your mobile no...'}      
                                         keyboardType="phone-pad"
                                         placeholderTextColor="#E6E5E2"
                                         maxLength={10}
                                         value={mobileNumber}
                                         editable={profileEdit}
-                                        autoFocus={profileEdit}
-                                        onSubmitEditing={(e)=>this.refs.aboutYourSelf._root.focus()}
+                                        onFocus={()=>{this.setState({Mobilefocus:true,aboutYourSelfFocus:false})}}
+                                        onSubmitEditing={(e)=>this.onFieldSubmitting("")}
+                                        onBlur={(e)=>this.onFieldSubmitting("aboutYourSelf")}
                                     />
-                                    {/* <Label style={styles.error}>*required field</Label> */}
                                 </Item>
                             </View>
-                            <View style={styles.horizontalLine}/>
+                            <View style={[styles.horizontalLine,{borderBottomColor:Mobilefocus ? "#000000" : "#D7DBDD",borderBottomWidth:Mobilefocus ? 2 : 1}]}/>
+                            <Text style={styles.error}>*required field</Text>
                             <View style={styles.itemWrapper}>
                                 <Item style={[styles.fromItem,{borderColor:"transparent"}]} stackedLabel>
                                 <Label style={styles.title}>About your self</Label>
                                     {!profileEdit ? 
-                                     <Text style={[styles.item,{width:"100%",paddingLeft:5}]} >{aboutYourSelf}</Text> : 
+                                     <Text style={[styles.item,{width:"100%",paddingLeft:5,marginBottom:8}]} >{aboutYourSelf}</Text> : 
                                         <Textarea 
                                             ref="aboutYourSelf"
                                             numberOfLines={20}
@@ -123,11 +147,14 @@ export default class FabricatorProfile extends Component {
                                             placeholder={'About yourself...'}      
                                             placeholderTextColor="#E6E5E2"
                                             disabled={!profileEdit}
+                                            onFocus={()=>{this.setState({Mobilefocus:false,aboutYourSelfFocus:true})}}
+                                            onBlur={(e)=>this.onFieldSubmitting("aboutYourSelf")}
                                         /> 
                                     }
                             </Item>
                             </View>
-                            <View style={styles.horizontalLine}/>
+                            <View style={[styles.horizontalLine,{borderBottomColor:aboutYourSelfFocus ? "#000000" : "#D7DBDD",borderBottomWidth:aboutYourSelfFocus ? 2 : 1}]}/>
+                            <Text style={styles.error}>*required field</Text>
                             <View style={styles.portfolioWrapper}>
                                 <View style={styles.plusIconView}>
                                     <Text  style={styles.portfoliotitle}>Portfolio</Text>
@@ -192,20 +219,16 @@ const styles = StyleSheet.create({
     },
     itemWrapper:{
         marginTop:10,
-        marginBottom:15,
         paddingHorizontal:20
     },
     portfolioWrapper:{
-        marginTop:10,
+        marginTop:20,
         marginBottom:15,
     },
     horizontalLine:{
-        borderBottomWidth:1,
        width:"95%",
        flexDirection:"row",
        alignSelf:"flex-end",
-       borderBottomColor:"#D7DBDD",
-    //    marginTop:5
     },
     starRatingView:{
         flexDirection:"row",
@@ -242,12 +265,12 @@ const styles = StyleSheet.create({
         borderRadius:4,
         width:"100%",
         height:100,
-        // borderWidth:1,
-        // marginTop:-15,
+        marginBottom:10,
         fontSize:17,
         color:"#4D4D4C"
     },
     error:{
-        color:"red"
+        color:"red",
+        marginLeft:20
     }
 })
