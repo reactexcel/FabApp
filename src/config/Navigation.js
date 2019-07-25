@@ -4,6 +4,7 @@ import HomePage from "../screens/HomePage";
 import Exebition from "../screens/Exebition";
 import WorkerForm from "../screens/Form";
 import FabricatorProfile from "../screens/FabricatorProfile";
+import Exhibitor from "../screens/Exhibitor";
 
 const transitionConfig = () => {
     return {
@@ -41,8 +42,8 @@ const transitionConfig = () => {
   };
 
   const Rootstack = createStackNavigator({
-    FabricatorProfile:{
-      screen:FabricatorProfile
+    Exhibitor:{
+      screen:Exhibitor
     },
     HomePage: {
         screen: HomePage

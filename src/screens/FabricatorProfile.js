@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, Image, ScrollView,TouchableOpacity,TextInput } 
 import Header from "../generic/Header";
 import LinearGradient from "react-native-linear-gradient";
 import StarRating from 'react-native-star-rating';
-import FabricatorPortfolio from "../components/FabricatorPortfolio";
+import Portfolio from "../components/Portfolio";
 import Layout from '../helper/Layout';
 import ImageZoom from 'react-native-image-pan-zoom';
 import {Icon,Input,Item,Label,Textarea} from "native-base"
@@ -20,6 +20,7 @@ export default class FabricatorProfile extends Component {
                     Mobilefocus:false,
                     aboutYourSelfFocus:false,
                     mobileNumber:"9012345678",
+                    websiteLink:"www.google.com",
                     aboutYourSelf:"I am johndoe man i can do everything!  am johndoe man i can do everything!  am johndoe man i can do everything!  am johndoe man i can do everything!  am johndoe man i can do everything! am johndoe man i can do everything!"
                 }
       }
@@ -57,10 +58,12 @@ export default class FabricatorProfile extends Component {
         }
     }
     render() {
-        const {zoomer,profileEdit,mobileNumber,aboutYourSelf,Mobilefocus,aboutYourSelfFocus}= this.state
+        const {exhitorProfile} =this.props;
+        const {zoomer,profileEdit,mobileNumber,websiteLink,aboutYourSelf,Mobilefocus,aboutYourSelfFocus}= this.state
         return (
             <View style={styles.container}>
-                <Header
+                {!exhitorProfile &&
+                 <Header
                     isLeft={true}
                     leftIcon={"arrowleft"}
                     isCenter={true}
@@ -71,7 +74,7 @@ export default class FabricatorProfile extends Component {
                     centerText={"Profile"}
                     goBack={this.goBack}
                     onPressRight={this.onProfileEdit}
-                />
+                />}
                 <LinearGradient style={{flex:1}} colors={["#ffffff","#ffffff"]}>
                    {zoomer &&
                      <View style={styles.imageZoomerOverlay}>
@@ -114,6 +117,26 @@ export default class FabricatorProfile extends Component {
                                 
                             </View>
                         <View style={styles.userInfoContainer}>
+                        <View style={styles.itemWrapper}>
+                                <Item style={{borderColor:"transparent"}} stackedLabel>
+                                    <Label style={styles.title}>Website Link</Label>
+                                    <Input 
+                                        ref="mobileNumber"
+                                        style={[styles.item,{padding:0,height:20,}]}
+                                        placeholder={'Your mobile no...'}      
+                                        placeholderTextColor="#E6E5E2"
+                                        // maxLength={10}
+                                        value={websiteLink}
+                                        editable={profileEdit}
+                                        onFocus={()=>{this.setState({Mobilefocus:true,aboutYourSelfFocus:false})}}
+                                        onSubmitEditing={(e)=>this.onFieldSubmitting("")}
+                                        onBlur={(e)=>this.onFieldSubmitting("aboutYourSelf")}
+                                    />
+                                </Item>
+                            </View>
+                            <View style={[styles.horizontalLine,{borderBottomColor:Mobilefocus ? "#000000" : "#D7DBDD",borderBottomWidth:Mobilefocus ? 2 : 1}]}/>
+                            {/* <Text style={styles.error}>*required field</Text> */}
+                            
                             <View style={styles.itemWrapper}>
                                 <Item style={{borderColor:"transparent"}} stackedLabel>
                                     <Label style={styles.title}>Mobile No</Label>
@@ -133,10 +156,12 @@ export default class FabricatorProfile extends Component {
                                 </Item>
                             </View>
                             <View style={[styles.horizontalLine,{borderBottomColor:Mobilefocus ? "#000000" : "#D7DBDD",borderBottomWidth:Mobilefocus ? 2 : 1}]}/>
-                            <Text style={styles.error}>*required field</Text>
+                            {/* <Text style={styles.error}>*required field</Text> */}
+                           
+                            
                             <View style={styles.itemWrapper}>
                                 <Item style={[styles.fromItem,{borderColor:"transparent"}]} stackedLabel>
-                                <Label style={styles.title}>About your self</Label>
+                                <Label style={styles.title}>{exhitorProfile ? "Address" : "About your self"}</Label>
                                     {!profileEdit ? 
                                      <Text style={[styles.item,{width:"100%",paddingLeft:5,marginBottom:8}]} >{aboutYourSelf}</Text> : 
                                         <Textarea 
@@ -153,8 +178,11 @@ export default class FabricatorProfile extends Component {
                                     }
                             </Item>
                             </View>
+                            
                             <View style={[styles.horizontalLine,{borderBottomColor:aboutYourSelfFocus ? "#000000" : "#D7DBDD",borderBottomWidth:aboutYourSelfFocus ? 2 : 1}]}/>
-                            <Text style={styles.error}>*required field</Text>
+                            {/* <Text style={styles.error}>*required field</Text> */}
+                            {!exhitorProfile &&
+                            <>
                             <View style={styles.portfolioWrapper}>
                                 <View style={styles.plusIconView}>
                                     <Text  style={styles.portfoliotitle}>Portfolio</Text>
@@ -164,10 +192,11 @@ export default class FabricatorProfile extends Component {
                                         style={styles.plusIcon}
                                     />
                                 </View>
-                                <FabricatorPortfolio 
+                                <Portfolio 
                                     onPortfolioImagePress ={this.onPortfolioImagePress}
                                  />
                             </View>
+                            </>}
                         </View>
                     </ScrollView>
                 </LinearGradient>
@@ -202,7 +231,7 @@ const styles = StyleSheet.create({
         alignSelf:"center"
     },
     userInfoContainer:{
-        // paddingHorizontal:15
+        marginTop:40,
     },
     title:{
         fontSize:20,
