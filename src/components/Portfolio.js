@@ -99,6 +99,7 @@ export default class Portfolio extends Component {
                     getItemCount={this._getItemCount}
                     onEndReached={()=>{console.log("onEndReached")}}
                     showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
                 />
             </View>
         )

@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { View, TouchableOpacity, StyleSheet,Text, BackHandler, } from 'react-native';
+import { View, TouchableOpacity, StyleSheet,Text, BackHandler,Dimensions } from 'react-native';
 import Header from "../generic/Header";
 import SplashScreen from "react-native-splash-screen";
 import FabricatorProfile from "./FabricatorProfile";
 import ExhibitorQuotes from "../components/ExhibitorQuotes";
+import { TabView,TabBar, SceneMap } from 'react-native-tab-view';
 
 
 export default class Exhibitor extends React.Component {
@@ -12,9 +13,11 @@ export default class Exhibitor extends React.Component {
       };
   state = {
     index: 0,
-    scrollToIndex:0,
-    flatListRefState :'',
-    profileEdit:false
+    profileEdit:false,
+    routes: [
+      { key: 'profile', title: 'Profile',labelStyle:{color:'red'} },
+      { key: 'quotes', title: 'Quotes' },
+    ],
   };
 
   goBack=()=>{
@@ -52,28 +55,26 @@ export default class Exhibitor extends React.Component {
           goBack={this.goBack}
           onPressRight={this.onProfileEdit}
         />
-        <View style={styles.tabBar}>
-            <TouchableOpacity
-              activeOpacity={.7}
-              style={styles.tabItem}
-              onPress={() => this.setState({ index: 0})}>
-              <Text style={ {color:this.state.index ==0 ? "#000000" :"#a59e9e"}}>Profile</Text>
-              <View style={[styles.tabBottomLine,{borderBottomColor:this.state.index ==0 ? "#000000" :"#a59e9e",}]}></View>
-            </TouchableOpacity>
-            <TouchableOpacity
-             activeOpacity={.7}
-              style={styles.tabItem}
-              onPress={() => this.setState({ index: 1})}>
-              <Text style={ {color:this.state.index ==1 ? "#000000" :"#a59e9e"}}>Quotes</Text>
-              <View style={[styles.tabBottomLine,{borderBottomColor:this.state.index ==1 ? "#000000" :"#a59e9e",}]}></View>
-            </TouchableOpacity>
-      </View>
-      {index ==0 &&
-        <FabricatorProfile exhitorProfile={true}/>
-      }
-      {index ==1 &&
-        <ExhibitorQuotes />
-      }
+        <TabView
+          navigationState={this.state}
+          renderTabBar={props =>
+            <TabBar
+              {...props}
+              indicatorStyle={{ backgroundColor: '#000000', }}
+              style={{ backgroundColor:'#ffffff',}}
+              activeColor="#000000"
+              inactiveColor="#a59e9e"
+            />
+          }
+          renderScene={SceneMap({
+            profile:()=> <FabricatorProfile exhitorProfile={true}/>,
+            quotes:()=> <ExhibitorQuotes />,
+          })}
+          onIndexChange={index => this.setState({ index })}
+          initialLayout={{ width: Dimensions.get('window').width }}
+          indicatorStyle={{backgroundColor:'red',width:500}}
+          
+      />
       </>
     );
   }
@@ -105,6 +106,9 @@ const styles = StyleSheet.create({
   formCompletionBar:{
     height:4,
     backgroundColor:"#E1C811"
-  }
+  },
+  scene: {
+    flex: 1,
+  },
 });
 
