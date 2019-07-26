@@ -3,7 +3,7 @@ import { Text, View, FlatList, StyleSheet, TouchableOpacity, BackHandler,Animate
 import Layout from "../helper/Layout";
 import {Icon} from "native-base";
 import { Container, Header, Content, Item, Input, Radio } from 'native-base';
-import FromProducts from './FromProducts';
+import FormProducts from './FormProducts';
 import FabricatorForm from './FabricatorForm';
 
 
@@ -35,8 +35,18 @@ export default class ExhibitorForm extends Component {
               }).start()
         }
     }
+
+    onChangeText=(value,name)=>{
+        this.props.onTextChange(value,name)
+    }
+
+    onRadioButtonPress=(index)=>{
+        this.props.onRadioButtonPress(index)
+    }
+
     _renderItem=({item,index})=>{
         const {isDropDown} =this.state;
+        const {exhibitorDetail,productItem} =this.props;
         let cardText = index == 0 ? "Stall size" : index == 1 ? "Stall no" : index ==2 ? "Color theme" : index ==5 ?  "Carpet Color" : "Website Link"
         let name = index == 0 ? "stallSize" : index == 1 ? "stallNo" : index ==2 ? "colorTheme" : index == 5 ? "carpetColor" : "websiteLink"
         return(
@@ -46,11 +56,12 @@ export default class ExhibitorForm extends Component {
                     <Text style={styles.stallText}>{cardText}</Text>
                     <Item >
                         <Input 
-                            name={}
+                            value={index == 0 ? exhibitorDetail.stallSize : index == 1 ? exhibitorDetail.stallNo : index ==2 ? exhibitorDetail.colorTheme : index ==5 ?  exhibitorDetail.carpetColor : exhibitorDetail.websiteLink}
                             style={styles.inputSize}
                             placeholder={index ==6 ? "Optional" : 'Type here..'}      
                             keyboardType={index !=2 ? "phone-pad" : "default"}
                             placeholderTextColor="#E6E5E2"
+                            onChangeText={(value)=>this.onChangeText(value,name)}
                         />
                     </Item>
                 </View>}
@@ -66,7 +77,9 @@ export default class ExhibitorForm extends Component {
                                     <Radio 
                                         color={"#000000"}
                                         selectedColor={"#5cb85c"}
-                                        selected={false}
+                                        selected={isDropDown}
+                                        
+                                        
                                     />
                                     <Text style={styles.radioButtonText}>{index ==3 ? "Select Multiple Branding" : "Select Multiple Furniture"}</Text>
                                 </View>
@@ -83,12 +96,20 @@ export default class ExhibitorForm extends Component {
                     </TouchableOpacity>
                      <View style={styles.horizontalLinee}></View>
                      <Animated.View style={{postion:"absolute",flex:1,top:this.state.postion}} >
-                        <FromProducts  index={index}/>
+                        <FormProducts 
+                            item={productItem}
+                            index={index}
+                            onRadioButtonPress={this.onRadioButtonPress}
+                        />
                      </Animated.View>
                 </View>
              } 
              {index == 7 &&
-                <FabricatorForm exhibitorForm={true}/>
+                <FabricatorForm 
+                    onChangeText={this.onChangeText}
+                    exhibitorDetail={exhibitorDetail}
+                    exhibitorForm={true}
+                />
              }
 
         </View>

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Text, View, FlatList, StyleSheet, TouchableOpacity,ScrollView, BackHandler,Animated } from 'react-native'
 import Layout from "../helper/Layout";
 import { Container, Header, Content, Item, Input, Radio,Label,Icon,Textarea } from 'native-base';
-import FromProducts from './FromProducts';
 
 
 export default class FabricatorForm extends Component {
@@ -11,8 +10,11 @@ export default class FabricatorForm extends Component {
         this.state={}
     }
 
+    onTextChange =(value, name)=>{
+        this.props.onChangeText(value, name);
+    }
     render() {
-        const {exhibitorForm} = this.props;
+        const {exhibitorForm,exhibitorDetail} = this.props;
         return (
             <View style={styles.mainWrapper}>
                 <ScrollView>
@@ -24,36 +26,44 @@ export default class FabricatorForm extends Component {
                             <Item style={styles.fromItem} stackedLabel>
                                 <Label>Name</Label>
                                 <Input 
+                                    value={exhibitorDetail.name}
                                     style={styles.inputSize}
                                     placeholder={"Your name..."}      
                                     placeholderTextColor="#E6E5E2"
+                                    onChangeText={(value)=>this.onTextChange(value, "name")}
                                 />
                             </Item>
                             <Item style={styles.fromItem} stackedLabel>
                                 <Label>Mobile No</Label>
                                 <Input 
+                                    value={exhibitorDetail.mobileNo}
                                     style={styles.inputSize}
                                     placeholder={'Your mobile no...'}      
                                     keyboardType="phone-pad"
                                     placeholderTextColor="#E6E5E2"
                                     maxLength={10}
+                                    onChangeText={(value)=>this.onTextChange(value, "mobileNo")}
                                 />
                             </Item>
                             <Item style={styles.fromItem} stackedLabel>
                                 <Label>Email id</Label>
                                 <Input 
+                                    value={exhibitorDetail.email}
                                     style={styles.inputSize}
                                     placeholder={'Your email-id...'}      
                                     placeholderTextColor="#E6E5E2"
+                                    onChangeText={(value)=>this.onTextChange(value, "email")}
                                 />
                             </Item>
                             <Item style={[styles.fromItem,{borderColor:"transparent"}]} stackedLabel>
                                 <Label>About your self</Label>
                                 <Textarea 
+                                    value={exhibitorDetail.aboutYourSelf}
                                     numberOfLines={8}
                                     style={styles.inputTextAreaSize}
                                     placeholder={'Berief yourself...'}      
                                     placeholderTextColor="#E6E5E2"
+                                    onChangeText={(value)=>this.onTextChange(value, "aboutYourSelf")}
                                 />
                             </Item>
                         </View>

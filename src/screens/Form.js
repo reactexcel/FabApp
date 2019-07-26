@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet,Text, BackHandler, } from 'react-nat
 import Header from "../generic/Header";
 import ExhibitorForm from "../components/ExhibitorForm";
 import FabricatorForm from "../components/FabricatorForm";
+import item from "../constants/furniture.json"
 
 export default class WorkerForm extends React.Component {
     static navigationOptions = {
@@ -13,7 +14,21 @@ export default class WorkerForm extends React.Component {
     scrollToIndex:0,
     flatListRefState :'',
     errors:{},
-    exhibitorDetail:{stallSize:'',stallNo:'',colorTheme:[],branding:[],furniture:[],carpetColor:'',websiteLink:'',name:'',mobileNo:'',email:'',aboutYourSelf:''}
+    formProduct:item,
+    exhibitorDetail:{
+                      stallSize:'2',
+                      stallNo:'12',
+                      colorTheme:'red',
+                      branding:[],
+                      furniture:[],
+                      products:[], 
+                      carpetColor:'blue',
+                      websiteLink:'www.google.com',
+                      name:'johndoe',
+                      mobileNo:'9012345678',
+                      email:'johndoe@gamil.com',
+                      aboutYourSelf:'its me johndoe'
+                    }
   };
 
   goBack=()=>{
@@ -55,9 +70,24 @@ export default class WorkerForm extends React.Component {
             this.props.navigation.goBack();
         }
   }
+
+  onTextChange=(value,name)=>{
+    let exhibitorDetail = {...this.state.exhibitorDetail}
+    exhibitorDetail[name] =value
+    this.setState({exhibitorDetail})
+  }
+
+  onRadioButtonPress=(index)=>{
+        console.log(index,'indexindex');
+        let formProduct = this.state.formProduct;
+        formProduct[index].selected = !formProduct[index].selected
+        this.setState({formProduct})
+  }
  
   render() {
-    const {index,scrollToIndex} =this.state;
+    const {index,scrollToIndex,exhibitorDetail,formProduct} =this.state;
+    console.log(formProduct,'formProduct');
+    
     return (
         <>
         <Header
@@ -90,12 +120,17 @@ export default class WorkerForm extends React.Component {
       </View>
       {index ==0 &&
         <ExhibitorForm
+          onTextChange={this.onTextChange}
+          exhibitorDetail={exhibitorDetail}
           scrollToIndexHandler={this.scrollToIndexHandler}
           scrollToIndex={scrollToIndex}
+          productItem={formProduct}
+          onRadioButtonPress={this.onRadioButtonPress}
         />
       }{index ==1 &&
         <FabricatorForm
-        goToFabricatorProfile={this.goToFabricatorProfile}
+          goToFabricatorProfile={this.goToFabricatorProfile}
+          onTextChange={this.onTextChange}
         />
       }
       </>
