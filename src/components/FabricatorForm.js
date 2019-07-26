@@ -12,6 +12,7 @@ export default class FabricatorForm extends Component {
     }
 
     render() {
+        const {exhibitorForm} = this.props;
         return (
             <View style={styles.mainWrapper}>
                 <ScrollView>
@@ -56,7 +57,8 @@ export default class FabricatorForm extends Component {
                                 />
                             </Item>
                         </View>
-                        <View>
+                       {!exhibitorForm && 
+                         <View>
                             <View style={styles.horizontalLine}/>
                             <TouchableOpacity onPress={()=>this.props.goToFabricatorProfile()} activeOpacity={.7}>
                                 <View style={styles.tapToContinueButtonView}>
@@ -68,7 +70,8 @@ export default class FabricatorForm extends Component {
                                     />
                                 </View>
                             </TouchableOpacity>
-                        </View>
+                         </View>
+                        }
                     </View>
                 </ScrollView>
              </View>

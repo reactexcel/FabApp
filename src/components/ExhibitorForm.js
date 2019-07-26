@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Text, View, FlatList, StyleSheet, TouchableOpacity, BackHandler,Animated } from 'react-native'
+import { Text, View, FlatList, StyleSheet, TouchableOpacity, BackHandler,Animated,VirtualizedList } from 'react-native'
 import Layout from "../helper/Layout";
 import {Icon} from "native-base";
 import { Container, Header, Content, Item, Input, Radio } from 'native-base';
 import FromProducts from './FromProducts';
+import FabricatorForm from './FabricatorForm';
 
 
 export default class ExhibitorForm extends Component {
@@ -15,6 +16,7 @@ export default class ExhibitorForm extends Component {
                 }
         
     }
+
 
     onDropDownPress=()=>{
         const {isDropDown} =this.state;
@@ -83,24 +85,43 @@ export default class ExhibitorForm extends Component {
                      </Animated.View>
                 </View>
              } 
+             {index == 7 &&
+                <FabricatorForm exhibitorForm={true}/>
+             }
+
         </View>
         )
     }
+
+    _getItemCount=(data)=>{
+        return 8
+    }
+
+    _getItemLayout=(data, index) => {
+        return  { key: index };
+    }
+
     render() {
         const {scrollToIndex} =this.props;
         return (
             <View style={styles.mainWrapper}>
-                <FlatList 
-                    ref={(ref) => { this.flatListRef = ref; }}
-                    data={[1,2,3,4,5,6,7]}
-                    keyExtractor={(item,index)=>index.toString()}
+                <VirtualizedList
+                     ref={(ref) => { this.flatListRef = ref; }}
+                    data={[1,2,3,4,5,6,7,8]}
                     renderItem={this._renderItem}
-                    horizontal={true}
+                    keyExtractor={(item,index)=>index.toString()}
+                    initialNumToRender={1}
+                    getItem={this._getItemLayout}
+                    windowSize={21}
+                    maxToRenderPerBatch={1}
+                    horizontal={true }
+                    getItemCount={this._getItemCount}
+                    onEndReached={()=>{console.log("onEndReached")}}
                     showsHorizontalScrollIndicator={false}
-                    scrollEnabled={false}
+                    showsVerticalScrollIndicator={false}
                 />
                 <View style={styles.horizontalLine}/>
-                <TouchableOpacity onPress={()=>this.props.scrollToIndexHandler(scrollToIndex+1,7,this.flatListRef)} activeOpacity={.7}>
+                <TouchableOpacity onPress={()=>this.props.scrollToIndexHandler(scrollToIndex+1,8,this.flatListRef)} activeOpacity={.7}>
                     <View style={styles.tapToContinueButtonView}>
                             <Text style={styles.continueText}>Continue</Text>
                             <Icon

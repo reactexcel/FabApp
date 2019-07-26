@@ -42,21 +42,21 @@ const transitionConfig = () => {
   };
 
   const Rootstack = createStackNavigator({
-    Exhibitor:{
-      screen:Exhibitor
-    },
-    HomePage: {
-        screen: HomePage
-      },
+    // HomePage: {
+    //     screen: HomePage
+    //   },
       Exebition: {
         screen: Exebition
       },
       WorkerForm:{
           screen:WorkerForm
       },
-      // FabricatorProfile:{
-      //   screen:FabricatorProfile
-      // }
+      FabricatorProfile:{
+        screen:FabricatorProfile
+      },
+      Exhibitor:{
+        screen:Exhibitor
+      },
     },
     {
         initialScreen: "FabricatorProfile",

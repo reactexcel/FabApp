@@ -56,6 +56,8 @@ export default class WorkerForm extends React.Component {
  
   render() {
     const {index,scrollToIndex} =this.state;
+    console.log(index,scrollToIndex,'scrollToIndex' );
+    
     return (
         <>
         <Header
@@ -68,7 +70,7 @@ export default class WorkerForm extends React.Component {
           centerText={"Registration"}
          />
          {index ==0 && 
-          <View style={[styles.formCompletionBar,{width:`${scrollToIndex*16.6666}%`}]}></View>
+          <View style={[styles.formCompletionBar,{width:`${scrollToIndex*14.2857}%`}]}></View>
         }
         <View style={styles.tabBar}>
             <TouchableOpacity
@@ -81,7 +83,7 @@ export default class WorkerForm extends React.Component {
             <TouchableOpacity
              activeOpacity={.7}
               style={styles.tabItem}
-              onPress={() => this.setState({ index: 1})}>
+              onPress={() => this.setState({ index: 1,})}>
               <Text style={ {color:this.state.index ==1 ? "#000000" :"#a59e9e"}}>Fabricator</Text>
               <View style={[styles.tabBottomLine,{borderBottomColor:this.state.index ==1 ? "#000000" :"#a59e9e",}]}></View>
             </TouchableOpacity>

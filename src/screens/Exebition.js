@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, View,ScrollView } from 'react-native'
 import ExhibitionList from "../components/ExhibitionList";
 import Header from "../generic/Header";
-
+import SplashScreen from 'react-native-splash-screen'
 export default class Exebition extends Component {
     static navigationOptions = {
         header: null
@@ -14,6 +14,11 @@ export default class Exebition extends Component {
     goBack=()=>{
         this.props.navigation.goBack()
       }
+
+    componentDidMount() {
+      SplashScreen.hide();
+    }
+
     render() {
         return (
             <>
