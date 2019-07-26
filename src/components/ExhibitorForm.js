@@ -38,6 +38,7 @@ export default class ExhibitorForm extends Component {
     _renderItem=({item,index})=>{
         const {isDropDown} =this.state;
         let cardText = index == 0 ? "Stall size" : index == 1 ? "Stall no" : index ==2 ? "Color theme" : index ==5 ?  "Carpet Color" : "Website Link"
+        let name = index == 0 ? "stallSize" : index == 1 ? "stallNo" : index ==2 ? "colorTheme" : index == 5 ? "carpetColor" : "websiteLink"
         return(
         <View key={index} style={styles.contentCard}>
             {(index ==0 || index ==1 || index ==2 || index ==5 || index ==6) &&
@@ -45,6 +46,7 @@ export default class ExhibitorForm extends Component {
                     <Text style={styles.stallText}>{cardText}</Text>
                     <Item >
                         <Input 
+                            name={}
                             style={styles.inputSize}
                             placeholder={index ==6 ? "Optional" : 'Type here..'}      
                             keyboardType={index !=2 ? "phone-pad" : "default"}
@@ -81,7 +83,7 @@ export default class ExhibitorForm extends Component {
                     </TouchableOpacity>
                      <View style={styles.horizontalLinee}></View>
                      <Animated.View style={{postion:"absolute",flex:1,top:this.state.postion}} >
-                        <FromProducts index={index}/>
+                        <FromProducts  index={index}/>
                      </Animated.View>
                 </View>
              } 

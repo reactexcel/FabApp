@@ -11,7 +11,9 @@ export default class WorkerForm extends React.Component {
   state = {
     index: 0,
     scrollToIndex:0,
-    flatListRefState :''
+    flatListRefState :'',
+    errors:{},
+    exhibitorDetail:{stallSize:'',stallNo:'',colorTheme:[],branding:[],furniture:[],carpetColor:'',websiteLink:'',name:'',mobileNo:'',email:'',aboutYourSelf:''}
   };
 
   goBack=()=>{
@@ -56,8 +58,6 @@ export default class WorkerForm extends React.Component {
  
   render() {
     const {index,scrollToIndex} =this.state;
-    console.log(index,scrollToIndex,'scrollToIndex' );
-    
     return (
         <>
         <Header
