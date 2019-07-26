@@ -119,6 +119,7 @@ export default class ExhibitorForm extends Component {
                     onEndReached={()=>{console.log("onEndReached")}}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
+                    scrollEnabled={false}
                 />
                 <View style={styles.horizontalLine}/>
                 <TouchableOpacity onPress={()=>this.props.scrollToIndexHandler(scrollToIndex+1,8,this.flatListRef)} activeOpacity={.7}>
