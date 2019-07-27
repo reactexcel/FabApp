@@ -7,12 +7,13 @@ export function* exhibitionListRequest(action) {
       const response = yield call(
         fireAjax,
         "GET",
-        'listexhbiton',
+        'listitem',
+        ''
       );
       if (response) {
-          yield put(actions.exhibitionListSuccess(response.data));
+          yield put(actions.exhibitionListSuccess());
       }
     } catch (e) {
-      yield put(actions.exhibitionListError(e.response.data));
+      yield put(actions.exhibitionListError());
     }
   }

@@ -16,7 +16,7 @@ const exhibitionListRequest = (state, action) =>{
      isLoading: { $set: true },
      isError: { $set: false },
      isSuccess: { $set: false },
-     errorMessage:"",
+     errorMessage:{ $set: "" },
  }))};
 
 const exhibitionListSuccess = (state, action) =>
@@ -24,8 +24,8 @@ const exhibitionListSuccess = (state, action) =>
      isLoading: { $set: false },
      isError: { $set: false },
      isSuccess: { $set: true },
-     errorMessage:"",
-     status: { $set: action.payload }
+     errorMessage:{ $set: "" },
+     exhibitions: { $set: action.payload }
  });
 
  const exhibitionListError = (state, action) =>
@@ -33,8 +33,8 @@ const exhibitionListSuccess = (state, action) =>
      isLoading: { $set: false },
      isError: { $set: true },
      isSuccess: { $set: false },
-     errorMessage:"Something went wrong, Please try again",
-     status: { $set: action.payload }
+     errorMessage:{ $set: "Something went wrong, Please try again" } ,
+     exhibitions: { $set: action.payload }
  });
 
 export default handleActions(

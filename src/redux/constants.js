@@ -1,5 +1,27 @@
 //contstants to get exhibition lists
-
 export const EXHIBITION_LIST_REQUEST = "EXHIBITION_LIST_REQUEST";
 export const EXHIBITION_LIST_SUCCESS = "EXHIBITION_LIST_SUCCESS";
 export const EXHIBITION_LIST_ERROR = "EXHIBITION_LIST_ERROR";
+
+//constants to get products list
+export const PRODUCT_LIST_REQUEST = "PRODUCT_LIST_REQUEST";
+export const PRODUCT_LIST_SUCCESS = "PRODUCT_LIST_SUCCESS";
+export const PRODUCT_LIST_ERROR = "PRODUCT_LIST_ERROR";
+
+//constants to register a user(exhibitor/fabricator) 
+export const USER_REGISTRATION_REQUEST = "USER_REGISTRATION_REQUEST";
+export const USER_REGISTRATION_SUCCESS = "USER_REGISTRATION_SUCCESS";
+export const USER_REGISTRATION_ERROR = "USER_REGISTRATION_ERROR";
+
+//constants to create a exhibition
+export const CREATE_EXHIBITION_REQUEST = "CREATE_EXHIBITION_REQUEST";
+export const CREATE_EXHIBITION_SUCCESS = "CREATE_EXHIBITION_SUCCESS";
+export const CREATE_EXHIBITION_ERROR = "CREATE_EXHIBITION_ERROR";
+
+//constants to get profile(exhibitor/fabricator)
+export const USER_PROFILE_REQUEST = "USER_PROFILE_REQUEST";
+export const USER_PROFILE_SUCCESS = "USER_PROFILE_SUCCESS";
+export const USER_PROFILE_ERROR = "USER_PROFILE_ERROR";
+
+
+

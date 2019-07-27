@@ -7,7 +7,7 @@ import { bindActionCreators } from "redux";
 import { connect } from 'react-redux';
 import * as actions from '../redux/actions';
 
- /* export default  */ class Exebition extends Component {
+ class Exebition extends Component {
     static navigationOptions = {
         header: null
       };
@@ -20,7 +20,7 @@ import * as actions from '../redux/actions';
       }
 
     componentDidMount() {
-      // this.props.exhibitionListRequest()
+      this.props.exhibitionListRequest()
       SplashScreen.hide();
     }
 
