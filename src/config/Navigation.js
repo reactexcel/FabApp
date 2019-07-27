@@ -1,4 +1,4 @@
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator,createAppContainer } from "react-navigation";
 import { Easing, Animated } from "react-native";
 import HomePage from "../screens/HomePage";
 import Exebition from "../screens/Exebition";
@@ -60,7 +60,9 @@ const transitionConfig = () => {
       },
     },
     {
-        initialScreen: "Exebition",
+      initialRouteName: "Exebition",
         transitionConfig
     })
-  export default Rootstack;
+
+    let Navigation = createAppContainer(Rootstack)
+  export default Navigation;

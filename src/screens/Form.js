@@ -133,6 +133,7 @@ export default class WorkerForm extends React.Component {
         <FabricatorForm
           goToFabricatorProfile={this.goToFabricatorProfile}
           onTextChange={this.onTextChange}
+          exhibitorDetail={exhibitorDetail}
         />
       }
       </>

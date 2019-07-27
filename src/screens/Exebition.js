@@ -7,13 +7,13 @@ import { bindActionCreators } from "redux";
 import { connect } from 'react-redux';
 import * as actions from '../redux/actions';
 
-  class Exebition extends Component {
+ /* export default  */ class Exebition extends Component {
     static navigationOptions = {
         header: null
       };
 
     toForm=()=>{
-    this.props.navigation.navigate("WorkerForm")
+        this.props.navigation.navigate("WorkerForm")
     }
     goBack=()=>{
         this.props.navigation.goBack()
@@ -52,4 +52,4 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => 
     bindActionCreators(actions, dispatch);
 
-export default connect(mapStateToProps,mapDispatchToProps)(Exebition);
+export default connect(mapStateToProps,mapDispatchToProps)(Exebition)
