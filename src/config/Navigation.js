@@ -5,6 +5,7 @@ import Exebition from "../screens/Exebition";
 import WorkerForm from "../screens/Form";
 import FabricatorProfile from "../screens/FabricatorProfile";
 import Exhibitor from "../screens/Exhibitor";
+import React from "react";
 
 const transitionConfig = () => {
     return {
@@ -46,7 +47,7 @@ const transitionConfig = () => {
     //     screen: HomePage
     //   },
       Exebition: {
-        screen: Exebition
+        screen:Exebition,
       },
       WorkerForm:{
           screen:WorkerForm
@@ -59,8 +60,7 @@ const transitionConfig = () => {
       },
     },
     {
-        initialScreen: "FabricatorProfile",
+        initialScreen: "Exebition",
         transitionConfig
     })
-
   export default Rootstack;

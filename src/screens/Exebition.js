@@ -3,7 +3,11 @@ import { Text, View,ScrollView } from 'react-native'
 import ExhibitionList from "../components/ExhibitionList";
 import Header from "../generic/Header";
 import SplashScreen from 'react-native-splash-screen'
-export default class Exebition extends Component {
+import { bindActionCreators } from "redux";
+import { connect } from 'react-redux';
+import * as actions from '../redux/actions';
+
+  class Exebition extends Component {
     static navigationOptions = {
         header: null
       };
@@ -16,6 +20,7 @@ export default class Exebition extends Component {
       }
 
     componentDidMount() {
+      // this.props.exhibitionListRequest()
       SplashScreen.hide();
     }
 
@@ -38,3 +43,13 @@ export default class Exebition extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+  return {
+      a:state
+  }
+}
+const mapDispatchToProps = dispatch => 
+    bindActionCreators(actions, dispatch);
+
+export default connect(mapStateToProps,mapDispatchToProps)(Exebition);

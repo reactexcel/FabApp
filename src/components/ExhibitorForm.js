@@ -40,35 +40,35 @@ export default class ExhibitorForm extends Component {
         this.props.onTextChange(value,name)
     }
 
-    onRadioButtonPress=(index)=>{
-        this.props.onRadioButtonPress(index)
+    onRadioButtonPress=(index,categoryIndex)=>{
+        this.props.onRadioButtonPress(index,categoryIndex)
     }
 
     _renderItem=({item,index})=>{
         const {isDropDown} =this.state;
-        const {exhibitorDetail,productItem} =this.props;
-        let cardText = index == 0 ? "Stall size" : index == 1 ? "Stall no" : index ==2 ? "Color theme" : index ==5 ?  "Carpet Color" : "Website Link"
-        let name = index == 0 ? "stallSize" : index == 1 ? "stallNo" : index ==2 ? "colorTheme" : index == 5 ? "carpetColor" : "websiteLink"
+        const {exhibitorDetail,productItem,extraDataFormProduct} =this.props;
+        let cardText = index == 0 ? "Stall size" : index == 1 ? "Stall no" : index ==2 ? "Color theme" : index ==6 ?  "Carpet Color" : "Website Link"
+        let name = index == 0 ? "stallSize" : index == 1 ? "stallNo" : index ==2 ? "colorTheme" : index == 6 ? "carpetColor" : "websiteLink"
         return(
         <View key={index} style={styles.contentCard}>
-            {(index ==0 || index ==1 || index ==2 || index ==5 || index ==6) &&
+            {(index ==0 || index ==1 || index ==2 || index ==6 || index ==7) &&
                     <View style={styles.inputView}>
                     <Text style={styles.stallText}>{cardText}</Text>
                     <Item >
                         <Input 
-                            value={index == 0 ? exhibitorDetail.stallSize : index == 1 ? exhibitorDetail.stallNo : index ==2 ? exhibitorDetail.colorTheme : index ==5 ?  exhibitorDetail.carpetColor : exhibitorDetail.websiteLink}
+                            value={index == 0 ? exhibitorDetail.stallSize : index == 1 ? exhibitorDetail.stallNo : index ==2 ? exhibitorDetail.colorTheme : index ==6 ?  exhibitorDetail.carpetColor : exhibitorDetail.websiteLink}
                             style={styles.inputSize}
                             placeholder={index ==6 ? "Optional" : 'Type here..'}      
-                            keyboardType={index !=2 ? "phone-pad" : "default"}
+                            keyboardType={index ==1 ? "phone-pad" : "default"}
                             placeholderTextColor="#E6E5E2"
                             onChangeText={(value)=>this.onChangeText(value,name)}
                         />
                     </Item>
                 </View>}
-               {(index ==3 || index ==4) &&
+               {(index ==3 || index ==4 || index ==5) &&
                 <View style={styles.furnitureWrapper}>
                     <View style={styles.furnitureTextView}>
-                         <Text style={styles.furnitureText}>{index ==3 ? "Branding" :  "Furniture"}</Text>
+                         <Text style={styles.furnitureText}>{index ==3 ? "Branding" : index == 5 ? "Products/Services" : "Furniture"}</Text>
                     </View>
                     <TouchableOpacity activeOpacity={.7} onPress={this.onDropDownPress}>
                         <View style={[styles.listIem,{marginTop:30}]}> 
@@ -78,10 +78,8 @@ export default class ExhibitorForm extends Component {
                                         color={"#000000"}
                                         selectedColor={"#5cb85c"}
                                         selected={isDropDown}
-                                        
-                                        
                                     />
-                                    <Text style={styles.radioButtonText}>{index ==3 ? "Select Multiple Branding" : "Select Multiple Furniture"}</Text>
+                                    <Text style={styles.radioButtonText}>{index ==3 ? "Select Multiple Branding" :  index == 5 ? "Select Multiple Products/Services" : "Select Multiple Furniture"}</Text>
                                 </View>
                             </View>
                             <View style={{}}>
@@ -98,13 +96,14 @@ export default class ExhibitorForm extends Component {
                      <Animated.View style={{postion:"absolute",flex:1,top:this.state.postion}} >
                         <FormProducts 
                             item={productItem}
-                            index={index}
+                            extraDataFormProduct={extraDataFormProduct}
+                            categoryIndex={index}
                             onRadioButtonPress={this.onRadioButtonPress}
                         />
                      </Animated.View>
                 </View>
              } 
-             {index == 7 &&
+             {index == 8 &&
                 <FabricatorForm 
                     onChangeText={this.onChangeText}
                     exhibitorDetail={exhibitorDetail}
@@ -117,7 +116,7 @@ export default class ExhibitorForm extends Component {
     }
 
     _getItemCount=(data)=>{
-        return 8
+        return 9
     }
 
     _getItemLayout=(data, index) => {
@@ -145,7 +144,7 @@ export default class ExhibitorForm extends Component {
                     scrollEnabled={false}
                 />
                 <View style={styles.horizontalLine}/>
-                <TouchableOpacity onPress={()=>this.props.scrollToIndexHandler(scrollToIndex+1,8,this.flatListRef)} activeOpacity={.7}>
+                <TouchableOpacity onPress={()=>this.props.scrollToIndexHandler(scrollToIndex+1,9,this.flatListRef)} activeOpacity={.7}>
                     <View style={styles.tapToContinueButtonView}>
                             <Text style={styles.continueText}>Continue</Text>
                             <Icon

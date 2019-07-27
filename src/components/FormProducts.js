@@ -4,51 +4,52 @@ import {Radio, ListItem,Left, Text,Input,Item, Right} from "native-base";
 
 export default class FormProducts extends Component {
 
+    _renderItem=({item,index})=>{
+        const {categoryIndex} = this.props;
+        return(
+            <View key={index} style={styles.item}>
+                <View style={styles.listIem}> 
+                    <View style={styles.radioButton}>
+                        <Radio 
+                            color={"#f0ad4e"}
+                            selectedColor={"#5cb85c"}
+                            selected={item.selected}
+                            onPress={()=>this.props.onRadioButtonPress(index,categoryIndex)}
+                        />
+                        <Text style={styles.radioButtonText}>{item.name}</Text>
+                    </View>
+                    <View>
+                        <Input 
+                            style={styles.inputSize}
+                            placeholder='Quantity...'
+                            keyboardType={"phone-pad"}
+                            placeholderTextColor="#E6E5E2"
+                            maxLength={5}
+                            onFocus={index > 6 ?  ()=>this.scrollView.scrollToEnd() : ()=> console.log()}
+                        />
+                    </View>
+                </View>
+                <View style={styles.horizontalLine}></View>
+            </View>
+        )
+    }
+
     render() {
-        const {item} = this.props;
-        
+        const {item,extraDataFormProduct} = this.props;
         return (
             <View style={styles.listWrapper}> 
                 <View>
                     <Text></Text>
                 </View>
-                {
-                    item.map((item,index)=>{
-                        return(
-                            <View key={index} style={styles.item}>
-                                <View style={styles.listIem}> 
-                                    <View style={styles.radioButton}>
-                                        <Radio 
-                                            color={"#f0ad4e"}
-                                            selectedColor={"#5cb85c"}
-                                            selected={item.selected}
-                                            onPress={()=>this.props.onRadioButtonPress(index)}
-                                        />
-                                        <Text style={styles.radioButtonText}>{item.name}</Text>
-                                    </View>
-                                    <View>
-                                        <Input 
-                                            style={styles.inputSize}
-                                            placeholder='Quantity...'
-                                            keyboardType={"phone-pad"}
-                                            placeholderTextColor="#E6E5E2"
-                                            maxLength={5}
-                                            onFocus={index > 6 ?  ()=>this.scrollView.scrollToEnd() : ()=> console.log()}
-                                        />
-                                    </View>
-                                </View>
-                                <View style={styles.horizontalLine}></View>
-                            </View>
-                        )})
-                }
-                {/* <FlatList
+                <FlatList
                     ref={(ref) => { this.scrollView = ref; }}
-                    data={formProduct}
+                    data={item}
+                    extraData={extraDataFormProduct}
                     renderItem={this._renderItem}
                     keyExtractor={(item,index)=>index.toString()}
                     horizontal={false}
                     showsVerticalScrollIndicator={false}
-                /> */}
+                />
             </View>
         )
     }

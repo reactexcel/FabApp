@@ -15,6 +15,7 @@ export default class WorkerForm extends React.Component {
     flatListRefState :'',
     errors:{},
     formProduct:item,
+    extraDataFormProduct:item,
     exhibitorDetail:{
                       stallSize:'2',
                       stallNo:'12',
@@ -77,17 +78,17 @@ export default class WorkerForm extends React.Component {
     this.setState({exhibitorDetail})
   }
 
-  onRadioButtonPress=(index)=>{
-        console.log(index,'indexindex');
-        let formProduct = this.state.formProduct;
-        formProduct[index].selected = !formProduct[index].selected
-        this.setState({formProduct})
+  onRadioButtonPress=(index,categoryIndex)=>{
+        let extraDataFormProduct =  Object.assign({}, this.state.extraDataFormProduct);
+        extraDataFormProduct[index].selected = !extraDataFormProduct[index].selected
+        this.setState({extraDataFormProduct})
+        if(categoryIndex == 3){
+          let brand = []
+        }
   }
  
   render() {
-    const {index,scrollToIndex,exhibitorDetail,formProduct} =this.state;
-    console.log(formProduct,'formProduct');
-    
+    const {index,scrollToIndex,exhibitorDetail,formProduct,extraDataFormProduct} =this.state;
     return (
         <>
         <Header
@@ -100,7 +101,7 @@ export default class WorkerForm extends React.Component {
           centerText={"Registration"}
          />
          {index ==0 && 
-          <View style={[styles.formCompletionBar,{width:`${scrollToIndex*14.2857}%`}]}></View>
+          <View style={[styles.formCompletionBar,{width:`${scrollToIndex*12.5}%`}]}></View>
         }
         <View style={styles.tabBar}>
             <TouchableOpacity
@@ -126,6 +127,7 @@ export default class WorkerForm extends React.Component {
           scrollToIndex={scrollToIndex}
           productItem={formProduct}
           onRadioButtonPress={this.onRadioButtonPress}
+          extraDataFormProduct={extraDataFormProduct}
         />
       }{index ==1 &&
         <FabricatorForm
