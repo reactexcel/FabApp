@@ -27,6 +27,7 @@ export default class FormProducts extends Component {
                             maxLength={5}
                             onFocus={index > 6 ?  ()=>this.scrollView.scrollToEnd() : ()=> console.log()}
                         />
+                        <Text style={styles.errorText}>*add quantity</Text>
                     </View>
                 </View>
                 <View style={styles.horizontalLine}></View>
@@ -90,5 +91,9 @@ const styles= StyleSheet.create({
        alignSelf:"flex-end",
        borderBottomColor:"#D7DBDD",
        marginTop:5
+    },
+    errorText:{
+        fontSize:12,
+        color:"red"
     }
 })

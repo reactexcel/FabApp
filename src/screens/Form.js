@@ -4,6 +4,7 @@ import Header from "../generic/Header";
 import ExhibitorForm from "../components/ExhibitorForm";
 import FabricatorForm from "../components/FabricatorForm";
 import { connect } from 'react-redux';
+import validate from "../helper/validation";
 
  class WorkerForm extends React.Component {
     static navigationOptions = {
@@ -24,37 +25,64 @@ import { connect } from 'react-redux';
     exhibitorFurniture:[],
     exhibitorProducts:[], 
     exhibitorDetail:{
-                      stallSize:'2',
-                      stallNo:'12',
-                      colorTheme:'red',
-                      carpetColor:'blue',
-                      websiteLink:'www.google.com',
-                      name:'johndoe',
-                      mobileNo:'9012345678',
-                      email:'johndoe@gamil.com',
-                      aboutYourSelf:'its me johndoe'
+                      stallSize:'',
+                      stallNo:'',
+                      colorTheme:'',
+                      carpetColor:'',
+                      websiteLink:'',
+                      name:'',
+                      mobileNo:'',
+                      email:'',
+                      aboutYourSelf:''
                     }
   };
 
   goBack=()=>{
-    this.props.navigation.goBack()
+    this.props.navigation.goBack();
+    this.setState({errors:{}})
   }
   
   goToFabricatorProfile=()=>{
     this.props.navigation.navigate("FabricatorProfile")
   }
 
-  scrollToIndexHandler = (index,length,flatListRef) => {
-    const {scrollToIndex,flatListRefState} = this.state;
-    if(!flatListRefState){
-      this.setState({flatListRefState:flatListRef})
+  scrollToIndexHandler = (mainIndex, index,length,flatListRef) => {
+     let errors = {}
+     const {exhibitorDetail} = this.state;
+     if(mainIndex == 0){
+       errors = validate(exhibitorDetail.stallSize,"stallSize")
+      this.setState({errors})
+     }
+     else if(mainIndex == 1){
+      errors = validate(exhibitorDetail.stallNo,"stallNo")
+     this.setState({errors})
     }
-    if(length>index){
-        flatListRef.scrollToIndex({animated: true, index:index});
+    else if(mainIndex == 2){
+      errors = validate(exhibitorDetail.colorTheme,"colorTheme")
+     this.setState({errors})
     }
-    if( length > index){
-        this.setState({scrollToIndex:scrollToIndex+1})
+    else if(mainIndex == 6){
+      errors = validate(exhibitorDetail.carpetColor,"carpetColor")
+     this.setState({errors})
+    }else if(mainIndex == 8){
+      errors = validate(exhibitorDetail,"fromValidation")
+      this.setState({errors})
     }
+    console.log(errors,'errorserrorserrorserrors');
+    
+
+     if(!Object.keys(errors).length){
+        const {scrollToIndex,flatListRefState} = this.state;
+        if(!flatListRefState){
+          this.setState({flatListRefState:flatListRef})
+        }
+        if(length>index){
+            flatListRef.scrollToIndex({animated: true, index:index});
+        }
+        if( length > index){
+            this.setState({scrollToIndex:scrollToIndex+1})
+        }
+     }
   } 
 
   componentDidMount() {
@@ -140,7 +168,8 @@ import { connect } from 'react-redux';
       furnitures,
       extraDataForFurnitures,
       brandings,
-      extraDataForBrandings
+      extraDataForBrandings,
+      errors
     } =this.state;
     return (
         <>
@@ -185,12 +214,14 @@ import { connect } from 'react-redux';
           extraDataForFurnitures={extraDataForFurnitures}
           brandings={brandings}
           extraDataForBrandings={extraDataForBrandings}
+          errors={errors}
         />
       }{index ==1 &&
         <FabricatorForm
           goToFabricatorProfile={this.goToFabricatorProfile}
           onTextChange={this.onTextChange}
           exhibitorDetail={exhibitorDetail}
+          errors={errors}
         />
       }
       </>

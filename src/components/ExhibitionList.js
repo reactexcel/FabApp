@@ -11,7 +11,7 @@ export default class ExhibitionList extends Component {
                     
                         <View style={styles.rowWrapper} key={index}>
                             <View style={styles.imageView}>
-                                <Image style={styles.img} source={require('../../assets/images/confabricatordirectory.jpg')}/>
+                                <Image style={styles.img} source={{uri:item.exhibition_image.replace("image/upload/","")}}/>
                             </View>
                             <View style={styles.exhibitionTextView}>
                                 <Text style={styles.exhibitionText}>{item.exhibition_name}</Text>
@@ -23,7 +23,7 @@ export default class ExhibitionList extends Component {
 
         )
     }
-    _keyExtractor=(item,index)=>{return item}
+
     render() {
         const {alleEhibitionList} = this.props;
         return (

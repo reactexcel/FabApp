@@ -14,7 +14,11 @@ export default class ErrorLoader extends Component {
                         <Text style={styles.errorText} >Oops! Network Error please try again.</Text>
                     </>
                 }
-               {handlerData.isLoading &&
+                {(handlerData.isSuccess && handlerData.exhibitions && !handlerData.exhibitions.length >0) && 
+                    <Text style={styles.errorText}>Oops! No exhibition available at this time.</Text>
+                }
+
+               { handlerData.isLoading &&
                  <ActivityIndicator size="large" color="#000000" />
                 }
             </View>

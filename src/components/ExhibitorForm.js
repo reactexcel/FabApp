@@ -46,7 +46,7 @@ export default class ExhibitorForm extends Component {
 
     _renderItem=({item,index})=>{
         const {isDropDown} =this.state;
-        const {exhibitorDetail,products,extraDataForProducts, furnitures, extraDataForFurnitures, brandings, extraDataForBrandings} =this.props;
+        const {exhibitorDetail,products,extraDataForProducts,errors, furnitures, extraDataForFurnitures, brandings, extraDataForBrandings} =this.props;
         let cardText = index == 0 ? "Stall size" : index == 1 ? "Stall no" : index ==2 ? "Color theme" : index ==6 ?  "Carpet Color" : "Website Link"
         let name = index == 0 ? "stallSize" : index == 1 ? "stallNo" : index ==2 ? "colorTheme" : index == 6 ? "carpetColor" : "websiteLink"
         return(
@@ -63,7 +63,11 @@ export default class ExhibitorForm extends Component {
                             placeholderTextColor="#E6E5E2"
                             onChangeText={(value)=>this.onChangeText(value,name)}
                         />
+                      
                     </Item>
+                    {errors.error &&<View style={styles.errorView}>
+                        <Text style={styles.errorText}>*{errors.error}</Text>
+                    </View>}
                 </View>}
                {(index ==3 || index ==4 || index ==5) &&
                 <View style={styles.furnitureWrapper}>
@@ -105,9 +109,10 @@ export default class ExhibitorForm extends Component {
              } 
              {index == 8 &&
                 <FabricatorForm 
-                    onChangeText={this.onChangeText}
+                    onTextChange={this.onChangeText}
                     exhibitorDetail={exhibitorDetail}
                     exhibitorForm={true}
+                    errors={errors}
                 />
              }
 
@@ -144,7 +149,7 @@ export default class ExhibitorForm extends Component {
                     scrollEnabled={false}
                 />
                 <View style={styles.horizontalLine}/>
-                <TouchableOpacity onPress={()=>this.props.scrollToIndexHandler(scrollToIndex+1,9,this.flatListRef)} activeOpacity={.7}>
+                <TouchableOpacity onPress={()=>this.props.scrollToIndexHandler(scrollToIndex,  scrollToIndex+1,9,this.flatListRef)} activeOpacity={.7}>
                     <View style={styles.tapToContinueButtonView}>
                             <Text style={styles.continueText}>Continue</Text>
                             <Icon
@@ -255,6 +260,15 @@ const styles = StyleSheet.create({
        alignSelf:"flex-end",
        borderBottomColor:"#D7DBDD",
        marginTop:5
+    },
+    errorView:{
+        flexDirection:'row',
+        justifyContent:"flex-start",
+        alignSelf:"flex-start",
+        marginTop:5
+    },
+    errorText:{
+        fontSize:15,
+        color:"red"
     }
-    
 })

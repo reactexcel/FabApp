@@ -14,7 +14,7 @@ export default class FabricatorForm extends Component {
         this.props.onChangeText(value, name);
     }
     render() {
-        const {exhibitorForm,exhibitorDetail} = this.props;
+        const {exhibitorForm,exhibitorDetail,errors} = this.props;
         return (
             <View style={styles.mainWrapper}>
                 <ScrollView>
@@ -33,6 +33,7 @@ export default class FabricatorForm extends Component {
                                     onChangeText={(value)=>this.onTextChange(value, "name")}
                                 />
                             </Item>
+                           {errors.name && <Text style={styles.errorText} >*{errors.name}</Text>}
                             <Item style={styles.fromItem} stackedLabel>
                                 <Label>Mobile No</Label>
                                 <Input 
@@ -45,6 +46,7 @@ export default class FabricatorForm extends Component {
                                     onChangeText={(value)=>this.onTextChange(value, "mobileNo")}
                                 />
                             </Item>
+                           {errors.mobileNo && <Text style={styles.errorText}>{errors.mobileNo}</Text>}
                             <Item style={styles.fromItem} stackedLabel>
                                 <Label>Email id</Label>
                                 <Input 
@@ -55,6 +57,7 @@ export default class FabricatorForm extends Component {
                                     onChangeText={(value)=>this.onTextChange(value, "email")}
                                 />
                             </Item>
+                            {errors.email &&<Text style={styles.errorText}>{errors.email}</Text>}
                             <Item style={[styles.fromItem,{borderColor:"transparent"}]} stackedLabel>
                                 <Label>About your self</Label>
                                 <Textarea 
@@ -66,6 +69,7 @@ export default class FabricatorForm extends Component {
                                     onChangeText={(value)=>this.onTextChange(value, "aboutYourSelf")}
                                 />
                             </Item>
+                            {errors.aboutYourSelf &&<Text style={styles.errorText}>{errors.aboutYourSelf}</Text>}
                         </View>
                        {!exhibitorForm && 
                          <View>
@@ -118,6 +122,7 @@ const styles = StyleSheet.create({
     inputSize:{
         borderColor:"#D7DBDD",
         borderRadius:4,
+        width:"100%"
     },
     inputTextAreaSize:{
         borderColor:"#D7DBDD",
@@ -153,5 +158,9 @@ const styles = StyleSheet.create({
     },
     fromItem:{
         marginTop:10
+    },
+    errorText:{
+        color:"red",
+        fontSize:13
     }
 })

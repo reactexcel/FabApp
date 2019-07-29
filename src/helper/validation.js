@@ -1,19 +1,46 @@
-validate = values => {  
+export default validate = (values,step) => { 
     const errors = {};
-    if (!values.from) {
-      errors.from = "Cannot be Empty";
+    if (!values && step === "stallSize" ) {
+      errors.error = "Enter your stall size that you want";
+    }else if((values == "0" || values == "00" || values == "000" || values == "0000" || values == "00000") &&  step === "stallSize"){
+      errors.error = "Enter a valid stall no";
     }
-  
-    if (!values.sender_mail) {
-      errors.sender_mail = "Cannot be Empty";
-    } else if (!isEmail(values.sender_mail) || !isLowercase(values.sender_mail)) {
-      errors.sender_mail = "Enter a valid email and must be in lowercase";
+
+    if (!values &&  step === "stallNo") {
+      errors.error = "Enter your stallno that you want";
+    }else if((values == "0" || values == "00" || values == "000" || values == "0000" || values == "00000") &&  step === "stallNo"){
+      errors.error = "Enter a valid stall no";
     }
-    if (!values.gender) errors.gender = "Select a gender";
-    if (!values.mobile_no) {
-      errors.mobile_no = "Cannot be Empty";
-    } else if (!isMobilePhone(values.mobile_no, "en-IN")) {
-      errors.mobile_no = "Enter valid phone number";
+    if (!values && step === "colorTheme") {
+      errors.error = "Set your stall color them";
     }
+    if (!values && step === "carpetColor") {
+      errors.error = "Set your stall's carpet color ";
+    }
+    if(step === "fromValidation"){
+    if (!values.name) {
+      errors.name = "Enter your name";
+    }
+    if (!values.mobileNo) {
+      errors.mobileNo = "Enter your mobile number";
+    }
+    else if(values.mobileNo.length < 10){
+      errors.mobileNo = "Invalid mobile number";
+    }
+
+    if (!values.email) {
+      errors.email = "Enter your email id ";
+    }
+    if (!values.aboutYourSelf) {
+      errors.aboutYourSelf = "Tell us something about you";
+    }else if(values.aboutYourSelf.length < 50){
+      errors.aboutYourSelf = "About you is too short to know you";
+    }
+  }
+    
+
+
+    
+
     return errors;
   };
