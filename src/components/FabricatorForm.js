@@ -11,7 +11,7 @@ export default class FabricatorForm extends Component {
     }
 
     onTextChange =(value, name)=>{
-        this.props.onChangeText(value, name);
+        this.props.onTextChange(value, name);
     }
     render() {
         const {exhibitorForm,exhibitorDetail,errors} = this.props;

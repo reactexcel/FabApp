@@ -1,11 +1,13 @@
 import { takeLatest, takeEvery ,all } from "redux-saga/effects";
 import * as constants from "./constants";
 import {exhibitionListRequest,productListRequest} from "./exhibitionList/action";
+import {userRegistrationRequest} from "./profile/action";
 
 
 export function* watchActions() {
   yield takeLatest(constants.EXHIBITION_LIST_REQUEST, exhibitionListRequest);
   yield takeLatest(constants.PRODUCT_LIST_REQUEST, productListRequest);
+  yield takeLatest(constants.USER_REGISTRATION_REQUEST, userRegistrationRequest);
 }
 
 export default function* rootSaga() {

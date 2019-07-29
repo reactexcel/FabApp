@@ -7,7 +7,7 @@ export default class ExhibitionList extends Component {
     _renderItem=({item,index})=>{
         return(
             <View key={index}>
-                <TouchableOpacity  activeOpacity={.5} underlayColor="red" onPress={()=>this.props.toForm()}>
+                <TouchableOpacity  activeOpacity={.5} underlayColor="red" onPress={()=>this.props.toForm(item.id)}>
                     
                         <View style={styles.rowWrapper} key={index}>
                             <View style={styles.imageView}>

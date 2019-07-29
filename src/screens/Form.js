@@ -5,6 +5,9 @@ import ExhibitorForm from "../components/ExhibitorForm";
 import FabricatorForm from "../components/FabricatorForm";
 import { connect } from 'react-redux';
 import validate from "../helper/validation";
+import { bindActionCreators } from "redux";
+import * as actions from '../redux/actions';
+import {setItem} from "../helper/storage";
 
  class WorkerForm extends React.Component {
     static navigationOptions = {
@@ -68,8 +71,6 @@ import validate from "../helper/validation";
       errors = validate(exhibitorDetail,"fromValidation")
       this.setState({errors})
     }
-    console.log(errors,'errorserrorserrorserrors');
-    
 
      if(!Object.keys(errors).length){
         const {scrollToIndex,flatListRefState} = this.state;
@@ -81,6 +82,17 @@ import validate from "../helper/validation";
         }
         if( length > index){
             this.setState({scrollToIndex:scrollToIndex+1})
+        }
+        if(scrollToIndex == 8 ){
+            const payload={
+              email :exhibitorDetail.email ,
+              password : "test",
+              role: "exhibitor",
+              name: exhibitorDetail.name,
+              bio: exhibitorDetail.aboutYourSelf,
+              phone: `+91${exhibitorDetail.mobileNo}`,
+            }
+            this.props.userRegistrationRequest(payload);
         }
      }
   } 
@@ -94,6 +106,28 @@ import validate from "../helper/validation";
       })
     }
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  componentDidUpdate(preProps){
+    const {user} =this.props
+    console.log(user,'useruseruseruseruser');
+    
+    const { exhibitorDetail, exhibitorBranding,exhibitorFurniture,exhibitorProducts} =this.state;
+    if(user.isSuccess !== preProps.user.isSuccess){
+      
+      setItem("userInfo", JSON.stringify({token:user.data.token}));
+      const payload = {
+        size : exhibitorDetail.stallSize,
+        stall_no:exhibitorDetail.stallNo ,
+        color_theme : exhibitorDetail.colorTheme,
+        carpet: exhibitorDetail.carpetColor,
+        products:exhibitorProducts ,
+        brandings: exhibitorBranding,
+        furnitures: exhibitorFurniture,
+        website_link: exhibitorDetail.websiteLink
+      }
+      this.props.createExhibitionRequest({data:payload,userToken:user.data.token,exhibitionToken:this.props.navigation.state.params.id})
+    }
   }
 
   componentWillUnmount() {
@@ -231,10 +265,15 @@ import validate from "../helper/validation";
 
 const mapStateToProps = (state) => {
   return {
-    productList:state.productNexhibition.product
+    productList:state.productNexhibition.product,
+    user:state.user.user
   }
 }
-export default connect(mapStateToProps)(WorkerForm)
+
+const mapDispatchToProps = dispatch => 
+    bindActionCreators(actions, dispatch);
+
+export default connect(mapStateToProps,mapDispatchToProps)(WorkerForm)
 
 const styles = StyleSheet.create({
   container: {

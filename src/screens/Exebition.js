@@ -14,8 +14,8 @@ import ErrorLoader from "../generic/ErrorLoader";
         header: null
       };
 
-    toForm=()=>{
-        this.props.navigation.navigate("WorkerForm")
+    toForm=(id)=>{
+        this.props.navigation.navigate("WorkerForm",{id})
     }
     goBack=()=>{
         this.props.navigation.goBack()
