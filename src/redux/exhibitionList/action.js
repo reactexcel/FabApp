@@ -7,13 +7,33 @@ export function* exhibitionListRequest(action) {
       const response = yield call(
         fireAjax,
         "GET",
-        'listitem',
-        ''
+        'listexhbiton',
       );
+
       if (response) {
-          yield put(actions.exhibitionListSuccess());
+          yield put(actions.exhibitionListSuccess(response.data));
       }
     } catch (e) {
+      // console.log(e.message,'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+      
       yield put(actions.exhibitionListError());
+    }
+  }
+
+  export function* productListRequest(action) {
+    try {
+      const response = yield call(
+        fireAjax,
+        "GET",
+        'listitem',
+      );
+
+      if (response) {
+          yield put(actions.productListSuccess(response.data));
+      }
+    } catch (e) {
+      // console.log(e.message,'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+      
+      yield put(actions.productListError());
     }
   }

@@ -3,9 +3,9 @@ import { View, TouchableOpacity, StyleSheet,Text, BackHandler, } from 'react-nat
 import Header from "../generic/Header";
 import ExhibitorForm from "../components/ExhibitorForm";
 import FabricatorForm from "../components/FabricatorForm";
-import item from "../constants/furniture.json"
+import { connect } from 'react-redux';
 
-export default class WorkerForm extends React.Component {
+ class WorkerForm extends React.Component {
     static navigationOptions = {
         header: null
       };
@@ -14,15 +14,19 @@ export default class WorkerForm extends React.Component {
     scrollToIndex:0,
     flatListRefState :'',
     errors:{},
-    formProduct:item,
-    extraDataFormProduct:item,
+    products:[],
+    extraDataForProducts:[],
+    furnitures:[],
+    extraDataForFurnitures:[],
+    brandings:[],
+    extraDataForBrandings:[],
+    exhibitorBranding:[],
+    exhibitorFurniture:[],
+    exhibitorProducts:[], 
     exhibitorDetail:{
                       stallSize:'2',
                       stallNo:'12',
                       colorTheme:'red',
-                      branding:[],
-                      furniture:[],
-                      products:[], 
                       carpetColor:'blue',
                       websiteLink:'www.google.com',
                       name:'johndoe',
@@ -54,6 +58,13 @@ export default class WorkerForm extends React.Component {
   } 
 
   componentDidMount() {
+    const {products} = this.props.productList;
+    if(products && products.products && products.products.length ){
+      this.setState({products:products.products,extraDataForProducts:products.products,
+                  furnitures:products.furnitures,extraDataForFurnitures:products.furnitures,
+                  brandings:products.brandings,extraDataForBrandings:products.brandings
+      })
+    }
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
 
@@ -78,17 +89,59 @@ export default class WorkerForm extends React.Component {
     this.setState({exhibitorDetail})
   }
 
-  onRadioButtonPress=(index,categoryIndex)=>{
-        let extraDataFormProduct =  Object.assign({}, this.state.extraDataFormProduct);
-        extraDataFormProduct[index].selected = !extraDataFormProduct[index].selected
-        this.setState({extraDataFormProduct})
+  onRadioButtonPress=(index,categoryIndex,item, selected)=>{
         if(categoryIndex == 3){
-          let brand = []
+            let  extraDataForBrandings =  Object.assign({}, this.state.extraDataForBrandings);
+            extraDataForBrandings[index].selected = !extraDataForBrandings[index].selected
+            this.setState({extraDataForBrandings})
+            if(selected){
+              let exhibitorBranding=this.state.exhibitorBranding
+              exhibitorBranding.push(item)
+              this.setState({exhibitorBranding})
+            }else{
+              let exhibitorBranding = this.state.exhibitorBranding.filter((list,i)=>item.id !==list.id)
+              this.setState({exhibitorBranding})
+            }
+        }
+        else if(categoryIndex == 4){
+          let  extraDataForFurnitures =  Object.assign({}, this.state.extraDataForFurnitures);
+          extraDataForFurnitures[index].selected = !extraDataForFurnitures[index].selected
+          this.setState({extraDataForFurnitures})
+          if(selected){
+            let exhibitorFurniture=this.state.exhibitorFurniture
+            exhibitorFurniture.push(item)
+            this.setState({exhibitorFurniture})
+          }else{
+            let exhibitorFurniture = this.state.exhibitorFurniture.filter((list,i)=>item.id !==list.id)
+            this.setState({exhibitorFurniture})
+          }
+        }
+        else if(categoryIndex == 5){
+            let  extraDataForProducts =  Object.assign({}, this.state.extraDataForProducts);
+            extraDataForProducts[index].selected = !extraDataForProducts[index].selected
+            this.setState({extraDataForProducts})
+            if(selected){
+              let exhibitorProducts=this.state.exhibitorProducts
+              exhibitorProducts.push(item)
+              this.setState({exhibitorProducts})
+            }else{
+              let exhibitorProducts = this.state.exhibitorProducts.filter((list,i)=>item.id !==list.id)
+              this.setState({exhibitorProducts})
+            }
         }
   }
  
   render() {
-    const {index,scrollToIndex,exhibitorDetail,formProduct,extraDataFormProduct} =this.state;
+    const {index,
+      scrollToIndex,
+      exhibitorDetail,
+      products,
+      extraDataForProducts,
+      furnitures,
+      extraDataForFurnitures,
+      brandings,
+      extraDataForBrandings
+    } =this.state;
     return (
         <>
         <Header
@@ -125,9 +178,13 @@ export default class WorkerForm extends React.Component {
           exhibitorDetail={exhibitorDetail}
           scrollToIndexHandler={this.scrollToIndexHandler}
           scrollToIndex={scrollToIndex}
-          productItem={formProduct}
           onRadioButtonPress={this.onRadioButtonPress}
-          extraDataFormProduct={extraDataFormProduct}
+          products={products}
+          extraDataForProducts={extraDataForProducts}
+          furnitures={furnitures}
+          extraDataForFurnitures={extraDataForFurnitures}
+          brandings={brandings}
+          extraDataForBrandings={extraDataForBrandings}
         />
       }{index ==1 &&
         <FabricatorForm
@@ -140,6 +197,13 @@ export default class WorkerForm extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    productList:state.productNexhibition.product
+  }
+}
+export default connect(mapStateToProps)(WorkerForm)
 
 const styles = StyleSheet.create({
   container: {

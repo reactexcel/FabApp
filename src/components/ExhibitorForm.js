@@ -40,13 +40,13 @@ export default class ExhibitorForm extends Component {
         this.props.onTextChange(value,name)
     }
 
-    onRadioButtonPress=(index,categoryIndex)=>{
-        this.props.onRadioButtonPress(index,categoryIndex)
+    onRadioButtonPress=(index,categoryIndex,item, selected)=>{
+        this.props.onRadioButtonPress(index,categoryIndex,item, selected)
     }
 
     _renderItem=({item,index})=>{
         const {isDropDown} =this.state;
-        const {exhibitorDetail,productItem,extraDataFormProduct} =this.props;
+        const {exhibitorDetail,products,extraDataForProducts, furnitures, extraDataForFurnitures, brandings, extraDataForBrandings} =this.props;
         let cardText = index == 0 ? "Stall size" : index == 1 ? "Stall no" : index ==2 ? "Color theme" : index ==6 ?  "Carpet Color" : "Website Link"
         let name = index == 0 ? "stallSize" : index == 1 ? "stallNo" : index ==2 ? "colorTheme" : index == 6 ? "carpetColor" : "websiteLink"
         return(
@@ -95,8 +95,8 @@ export default class ExhibitorForm extends Component {
                      <View style={styles.horizontalLinee}></View>
                      <Animated.View style={{postion:"absolute",flex:1,top:this.state.postion}} >
                         <FormProducts 
-                            item={productItem}
-                            extraDataFormProduct={extraDataFormProduct}
+                            item={index == 3 ? brandings : index == 5 ? products : furnitures }
+                            extraDataFormProduct={index == 3 ? extraDataForBrandings : index == 5 ? extraDataForProducts : extraDataForFurnitures}
                             categoryIndex={index}
                             onRadioButtonPress={this.onRadioButtonPress}
                         />

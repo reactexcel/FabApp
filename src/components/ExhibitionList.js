@@ -6,7 +6,7 @@ import Layout from "../helper/Layout";
 export default class ExhibitionList extends Component {
     _renderItem=({item,index})=>{
         return(
-            <View key={index.toString()}>
+            <View key={index}>
                 <TouchableOpacity  activeOpacity={.5} underlayColor="red" onPress={()=>this.props.toForm()}>
                     
                         <View style={styles.rowWrapper} key={index}>
@@ -14,7 +14,7 @@ export default class ExhibitionList extends Component {
                                 <Image style={styles.img} source={require('../../assets/images/confabricatordirectory.jpg')}/>
                             </View>
                             <View style={styles.exhibitionTextView}>
-                                <Text style={styles.exhibitionText}>{item.exhibitionName}</Text>
+                                <Text style={styles.exhibitionText}>{item.exhibition_name}</Text>
                             </View>
                         </View>
                         <View style={styles.horizontalLine}></View>
@@ -25,10 +25,11 @@ export default class ExhibitionList extends Component {
     }
     _keyExtractor=(item,index)=>{return item}
     render() {
+        const {alleEhibitionList} = this.props;
         return (
             <View style={styles.flatlistWrapper}>
                 <FlatList
-                data={exhibitionList && exhibitionList}
+                data={ alleEhibitionList.isSuccess && alleEhibitionList.exhibitions && alleEhibitionList.exhibitions}
                 renderItem={this._renderItem}
                 keyExtractor={(item,index)=>{index.toString()}}
                 showsVerticalScrollIndicator={false}
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
        justifyContent:'flex-start',
    },
    exhibitionTextView:{
-       marginLeft:20
+       marginLeft:20,
    },
    horizontalLine:{
        borderBottomWidth:1,

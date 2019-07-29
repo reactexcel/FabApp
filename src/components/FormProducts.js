@@ -14,9 +14,9 @@ export default class FormProducts extends Component {
                             color={"#f0ad4e"}
                             selectedColor={"#5cb85c"}
                             selected={item.selected}
-                            onPress={()=>this.props.onRadioButtonPress(index,categoryIndex)}
+                            onPress={()=>this.props.onRadioButtonPress(index,categoryIndex,item, !item.selected)}
                         />
-                        <Text style={styles.radioButtonText}>{item.name}</Text>
+                        <Text style={styles.radioButtonText}>{categoryIndex == 3 ? item.branding : categoryIndex == 5 ? item.product : item.furniture }</Text>
                     </View>
                     <View>
                         <Input 
