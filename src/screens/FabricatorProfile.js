@@ -8,8 +8,13 @@ import Layout from '../helper/Layout';
 import ImageZoom from 'react-native-image-pan-zoom';
 import {Icon,Input,Item,Label,Textarea} from "native-base"
 import SplashScreen from "react-native-splash-screen";
+import { bindActionCreators } from "redux";
+import * as actions from '../redux/actions';
+import { connect } from 'react-redux';
+import {setItem, getItem} from "../helper/storage";
+import ErrorLoader from "../generic/ErrorLoader";
 
-export default class FabricatorProfile extends Component {
+ class FabricatorProfile extends Component {
     static navigationOptions = {
         header: null
       };
@@ -19,14 +24,31 @@ export default class FabricatorProfile extends Component {
                     profileEdit:false,
                     Mobilefocus:false,
                     aboutYourSelfFocus:false,
-                    mobileNumber:"9012345678",
-                    websiteLink:"www.google.com",
-                    aboutYourSelf:"I am johndoe man i can do everything!  am johndoe man i can do everything!  am johndoe man i can do everything!  am johndoe man i can do everything!  am johndoe man i can do everything! am johndoe man i can do everything!"
+                    websiteFocus:false,
+                    mobileNumber:"",
+                    websiteLink:"",
+                    aboutYourSelf:""
                 }
       }
     
-    componentDidMount(){
+   async componentDidMount(){
+        const userToken = await getItem("userInfo")
+        console.log(userToken,'userTokenuserTokenuserTokenuserToken');
         SplashScreen.hide();
+        this.props.userProfileRequest({userToken:userToken.token})
+        // SplashScreen.hide();
+    }
+
+    componentDidUpdate(preProps){
+        const {userProfile} = this.props;
+        if(userProfile.isSuccess !== preProps.userProfile.isSuccess){
+            if(userProfile.data && userProfile.data.length){
+                const userInfo = userProfile.data[0] 
+                this.setState({name:userInfo.name,
+                            aboutYourSelf:userInfo.bio,
+                            mobileNumber:userInfo.phone.replace("+91","")})
+            }
+        }
     }
 
     goBack=()=>{
@@ -40,7 +62,7 @@ export default class FabricatorProfile extends Component {
     onProfileEdit=()=>{
         const {profileEdit} = this.state;
         if(!profileEdit){
-            this.refs.mobileNumber._root.focus()
+            this.refs.websiteLink._root.focus()
             this.setState({profileEdit:!this.state.profileEdit})
         }
         else{
@@ -50,16 +72,20 @@ export default class FabricatorProfile extends Component {
 
     onFieldSubmitting=(field)=>{
         if(field === "aboutYourSelf"){
-            this.setState({Mobilefocus:false,aboutYourSelfFocus:false})
+            this.setState({Mobilefocus:false,aboutYourSelfFocus:false,websiteFocus:false})
+            this.refs.aboutYourSelf._root.focus()
+        }
+        else if(field === "mobileno"){
+            this.setState({Mobilefocus:false,aboutYourSelfFocus:false,websiteFocus:false})
+            this.refs.mobileNumber._root.focus()
         }
         else{
-            this.setState({Mobilefocus:false,aboutYourSelfFocus:false})
-            this.refs.aboutYourSelf._root.focus()
+            this.setState({Mobilefocus:false,aboutYourSelfFocus:false,websiteFocus:false})
         }
     }
     render() {
-        const {exhitorProfile} =this.props;
-        const {zoomer,profileEdit,mobileNumber,websiteLink,aboutYourSelf,Mobilefocus,aboutYourSelfFocus}= this.state
+        const {exhitorProfile,userProfile} =this.props;
+        const {zoomer,profileEdit,mobileNumber,websiteLink,name,aboutYourSelf,Mobilefocus,aboutYourSelfFocus,websiteFocus}= this.state
         return (
             <View style={styles.container}>
                 {!exhitorProfile &&
@@ -75,6 +101,8 @@ export default class FabricatorProfile extends Component {
                     goBack={this.goBack}
                     onPressRight={this.onProfileEdit}
                 />}
+               {userProfile.isSuccess ?
+                
                 <LinearGradient style={{flex:1}} colors={["#ffffff","#ffffff"]}>
                    {zoomer &&
                      <View style={styles.imageZoomerOverlay}>
@@ -101,7 +129,7 @@ export default class FabricatorProfile extends Component {
                                     <Image resizeMode="cover" style={styles.img} source={require("../../assets/images/avatar.png")} />
                                 </View>
                                 <View>
-                                    <Text style={styles.userNameText}>John doe</Text>
+                                    <Text style={styles.userNameText}>{name}</Text>
                                     <View style={styles.starRatingView}>
                                         <Text style={styles.ratingText} >Rating:</Text>
                                         <StarRating
@@ -121,20 +149,20 @@ export default class FabricatorProfile extends Component {
                                 <Item style={{borderColor:"transparent"}} stackedLabel>
                                     <Label style={styles.title}>Website Link</Label>
                                     <Input 
-                                        ref="mobileNumber"
+                                        ref="websiteLink"
                                         style={[styles.item,{padding:0,height:20,}]}
                                         placeholder={'Your mobile no...'}      
                                         placeholderTextColor="#E6E5E2"
                                         // maxLength={10}
                                         value={websiteLink}
                                         editable={profileEdit}
-                                        onFocus={()=>{this.setState({Mobilefocus:true,aboutYourSelfFocus:false})}}
-                                        onSubmitEditing={(e)=>this.onFieldSubmitting("")}
-                                        onBlur={(e)=>this.onFieldSubmitting("aboutYourSelf")}
+                                        onFocus={()=>{this.setState({websiteFocus:true, Mobilefocus:false,aboutYourSelfFocus:false})}}
+                                        onSubmitEditing={(e)=>this.onFieldSubmitting("mobileno")}
+                                        onBlur={(e)=>this.onFieldSubmitting("")}
                                     />
                                 </Item>
                             </View>
-                            <View style={[styles.horizontalLine,{borderBottomColor:Mobilefocus ? "#000000" : "#D7DBDD",borderBottomWidth:Mobilefocus ? 2 : 1}]}/>
+                            <View style={[styles.horizontalLine,{borderBottomColor:websiteFocus ? "#000000" : "#D7DBDD",borderBottomWidth:websiteFocus ? 2 : 1}]}/>
                             {/* <Text style={styles.error}>*required field</Text> */}
                             
                             <View style={styles.itemWrapper}>
@@ -149,9 +177,9 @@ export default class FabricatorProfile extends Component {
                                         maxLength={10}
                                         value={mobileNumber}
                                         editable={profileEdit}
-                                        onFocus={()=>{this.setState({Mobilefocus:true,aboutYourSelfFocus:false})}}
-                                        onSubmitEditing={(e)=>this.onFieldSubmitting("")}
-                                        onBlur={(e)=>this.onFieldSubmitting("aboutYourSelf")}
+                                        onFocus={()=>{this.setState({websiteFocus:false,Mobilefocus:true,aboutYourSelfFocus:false})}}
+                                        onSubmitEditing={(e)=>this.onFieldSubmitting("aboutYourSelf")}
+                                        onBlur={(e)=>this.onFieldSubmitting("")}
                                     />
                                 </Item>
                             </View>
@@ -172,8 +200,8 @@ export default class FabricatorProfile extends Component {
                                             placeholder={'About yourself...'}      
                                             placeholderTextColor="#E6E5E2"
                                             disabled={!profileEdit}
-                                            onFocus={()=>{this.setState({Mobilefocus:false,aboutYourSelfFocus:true})}}
-                                            onBlur={(e)=>this.onFieldSubmitting("aboutYourSelf")}
+                                            onFocus={()=>{this.setState({websiteFocus:false, Mobilefocus:false,aboutYourSelfFocus:true})}}
+                                            onBlur={(e)=>this.onFieldSubmitting("")}
                                         /> 
                                     }
                             </Item>
@@ -192,18 +220,38 @@ export default class FabricatorProfile extends Component {
                                         style={styles.plusIcon}
                                     />
                                 </View>
-                                <Portfolio 
-                                    onPortfolioImagePress ={this.onPortfolioImagePress}
-                                 />
+                                {userProfile.data.length && userProfile.data[2].Portfolio.length ?
+                                    <Portfolio 
+                                        onPortfolioImagePress ={this.onPortfolioImagePress}
+                                        horizontal={true}
+                                        portfolioData={userProfile.data[2].Portfolio}
+                                    /> :
+                                    <View style={styles.noPortfolioView}>
+                                        <Text style={styles.noPortfolioText} >
+                                           There is no portfolio content to show at the time, add now.
+                                        </Text>
+                                    </View>
+                                 }
                             </View>
                             </>}
                         </View>
                     </ScrollView>
-                </LinearGradient>
+                </LinearGradient> : <ErrorLoader handlerData={userProfile} /> }
             </View>
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        userProfile:state.user.userProfile,
+    }
+  }
+  
+  const mapDispatchToProps = dispatch => 
+      bindActionCreators(actions, dispatch);
+  
+  export default connect(mapStateToProps,mapDispatchToProps)(FabricatorProfile)
 
 const styles = StyleSheet.create({
     container: {
@@ -301,5 +349,14 @@ const styles = StyleSheet.create({
     error:{
         color:"red",
         marginLeft:20
+    },
+    noPortfolioView:{
+        paddingHorizontal:20,
+        marginTop:20
+    },
+    noPortfolioText:{
+        fontSize:15,
+        textAlign: 'center',
+       
     }
 })

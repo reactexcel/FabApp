@@ -46,12 +46,12 @@ const transitionConfig = () => {
     // HomePage: {
     //     screen: HomePage
     //   },
-      Exebition: {
-        screen:Exebition,
-      },
-      WorkerForm:{
-          screen:WorkerForm
-      },
+      // Exebition: {
+      //   screen:Exebition,
+      // },
+      // WorkerForm:{
+      //     screen:WorkerForm
+      // },
       FabricatorProfile:{
         screen:FabricatorProfile
       },
@@ -60,7 +60,7 @@ const transitionConfig = () => {
       },
     },
     {
-      initialRouteName: "Exebition",
+      initialRouteName: "FabricatorProfile",
         transitionConfig
     })
 

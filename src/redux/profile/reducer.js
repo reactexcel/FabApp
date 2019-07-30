@@ -15,7 +15,13 @@ const initialState = {
     isError: false,
     isSuccess: false,
     data:[]
-   }
+   },
+   userProfile:{
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      data:''
+     }
 };
 
 const userRegistrationRequest = (state, action) =>{
@@ -84,6 +90,39 @@ const createExhibitionSuccess = (state, action) =>
     }
  });
 
+ const userProfileRequest = (state, action) =>{
+   return(
+update(state, {
+   userProfile:{
+    isLoading: { $set: true },
+    isError: { $set: false },
+    isSuccess: { $set: false },
+    errorMessage:{ $set: "" },
+   }
+}))};
+
+const userProfileSuccess = (state, action) =>
+update(state, {
+   userProfile:{
+    isLoading: { $set: false },
+    isError: { $set: false },
+    isSuccess: { $set: true },
+    errorMessage:{ $set: "" },
+    data: { $set: action.payload }
+   }
+});
+
+const userProfileError = (state, action) =>
+update(state, {
+   userProfile:{
+    isLoading: { $set: false },
+    isError: { $set: true },
+    isSuccess: { $set: false },
+    errorMessage:{ $set: "Something went wrong, Please try again" } ,
+    data: { $set: action.payload }
+   }
+});
+
  
 export default handleActions(
  {
@@ -93,7 +132,12 @@ export default handleActions(
 
    [constants.CREATE_EXHIBITION_REQUEST]: createExhibitionRequest,
    [constants.CREATE_EXHIBITION_SUCCESS]: createExhibitionSuccess,
-   [constants.CREATE_EXHIBITION_ERROR]: createExhibitionError
+   [constants.CREATE_EXHIBITION_ERROR]: createExhibitionError,
+
+
+   [constants.USER_PROFILE_REQUEST]: userProfileRequest,
+   [constants.USER_PROFILE_SUCCESS]: userProfileSuccess,
+   [constants.USER_PROFILE_ERROR]: userProfileError
  },
  initialState
 );
