@@ -16,8 +16,6 @@ export function* userRegistrationRequest(action) {
           yield put(actions.userRegistrationSuccess(response.data));
       }
     } catch (e) {
-      // console.log(e.message,'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
-      
       yield put(actions.userRegistrationError());
     }
   }
@@ -26,7 +24,8 @@ export function* userRegistrationRequest(action) {
       console.log(action);
       
     const header = {
-        "Authorization":action.payload.userToken
+        "Authorization":`Token ${action.payload.userToken}`,
+        "Content-Type": "application/json"
       };
     try {
       const response = yield call(
@@ -34,7 +33,7 @@ export function* userRegistrationRequest(action) {
         "POST",
         `exhibitor_request/${action.payload.exhibitionToken}`,
         header,
-        action.payload.data
+        action.payload.data 
       );
 
       if (response) {

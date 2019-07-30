@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import validate from "../helper/validation";
 import { bindActionCreators } from "redux";
 import * as actions from '../redux/actions';
-import {setItem} from "../helper/storage";
+import {setItem, getItem} from "../helper/storage";
 
  class WorkerForm extends React.Component {
     static navigationOptions = {
@@ -37,7 +37,9 @@ import {setItem} from "../helper/storage";
                       mobileNo:'',
                       email:'',
                       aboutYourSelf:''
-                    }
+                    },
+    userToken:""
+
   };
 
   goBack=()=>{
@@ -51,7 +53,7 @@ import {setItem} from "../helper/storage";
 
   scrollToIndexHandler = (mainIndex, index,length,flatListRef) => {
      let errors = {}
-     const {exhibitorDetail} = this.state;
+     const {exhibitorDetail,exhibitorBranding,exhibitorFurniture,exhibitorProducts,userToken} = this.state;
      if(mainIndex == 0){
        errors = validate(exhibitorDetail.stallSize,"stallSize")
       this.setState({errors})
@@ -93,11 +95,26 @@ import {setItem} from "../helper/storage";
               phone: `+91${exhibitorDetail.mobileNo}`,
             }
             this.props.userRegistrationRequest(payload);
+            // const payload = {
+            //   size : exhibitorDetail.stallSize,
+            //   stall_no:exhibitorDetail.stallNo ,
+            //   color_theme : exhibitorDetail.colorTheme,
+            //   carpet: exhibitorDetail.carpetColor,
+            //   products: [{product:"bulb"},{product:"light"}],
+            //   brandings: [{branding:"TV"},{branding:"LED"}],
+            //   furnitures: [{furniture:"sofa"},{furniture:"bed"}],
+            //   website_link: `https://${exhibitorDetail.websiteLink}`
+            // }
+            // this.props.createExhibitionRequest({data:payload,userToken:userToken.token,exhibitionToken:this.props.navigation.state.params.id})
         }
      }
   } 
 
-  componentDidMount() {
+ async componentDidMount() {
+    const userToken = await getItem("userInfo")
+    console.log(userToken,'userToken');
+    this.setState({userToken})
+    
     const {products} = this.props.productList;
     if(products && products.products && products.products.length ){
       this.setState({products:products.products,extraDataForProducts:products.products,
@@ -121,10 +138,10 @@ import {setItem} from "../helper/storage";
         stall_no:exhibitorDetail.stallNo ,
         color_theme : exhibitorDetail.colorTheme,
         carpet: exhibitorDetail.carpetColor,
-        products:exhibitorProducts ,
-        brandings: exhibitorBranding,
-        furnitures: exhibitorFurniture,
-        website_link: exhibitorDetail.websiteLink
+        products: [{product:"bulb"},{product:"light"}],
+        brandings: [{branding:"TV"},{branding:"LED"}],
+        furnitures: [{furniture:"sofa"},{furniture:"bed"}],
+        website_link: `https://${exhibitorDetail.websiteLink}`
       }
       this.props.createExhibitionRequest({data:payload,userToken:user.data.token,exhibitionToken:this.props.navigation.state.params.id})
     }

@@ -22,7 +22,7 @@ import ErrorLoader from "../generic/ErrorLoader";
       }
 
     componentDidMount() {
-      // SplashScreen.hide();
+      SplashScreen.hide();
       this.props.exhibitionListRequest()
       this.props.productListRequest()
     }
@@ -33,10 +33,10 @@ import ErrorLoader from "../generic/ErrorLoader";
         alleEhibitionList.isError !== preProps.alleEhibitionList.isError
         ){
         if(alleEhibitionList.exhibitions && alleEhibitionList.exhibitions.length){
-          SplashScreen.hide();
+          // SplashScreen.hide();
         }
         else{
-          SplashScreen.hide();
+          // SplashScreen.hide();
         }
       }
     }
