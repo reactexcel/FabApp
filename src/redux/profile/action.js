@@ -39,15 +39,15 @@ export function* userRegistrationRequest(action) {
           yield put(actions.createExhibitionSuccess(response.data));
       }
     } catch (e) {
-      if(e.response){
-       yield put(actions.createExhibitionError(e.response));
-      }
-      else if(e.message){
-        yield put(actions.createExhibitionError("Network error"));
-    }else{
-      yield put(actions.createExhibitionError());
+          if(e.response){
+          yield put(actions.createExhibitionError(e.response));
+          }
+          else if(e.message){
+            yield put(actions.createExhibitionError("Network error"));
+        }else{
+          yield put(actions.createExhibitionError());
+        }
     }
-  }
 }
 
 //action to get user(exhibitor/fabricator)'s profile
