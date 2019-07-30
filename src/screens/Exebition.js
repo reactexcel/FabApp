@@ -64,7 +64,10 @@ import NoData from "../generic/nodata";
                     <ExhibitionList alleEhibitionList={alleEhibitionList}  toForm={this.toForm}/>
                   </ScrollView>
                 :
-                <NoData message ={"Sorry! No exhibition avaliable at the time."} />
+                <>
+                {alleEhibitionList.isSuccess && <NoData message ={"Sorry! No exhibition avaliable at the time."} />
+                }
+                </>
                 } 
             </>
         )

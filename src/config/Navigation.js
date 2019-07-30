@@ -52,15 +52,15 @@ const transitionConfig = () => {
       // WorkerForm:{
       //     screen:WorkerForm
       // },
-      FabricatorProfile:{
-        screen:FabricatorProfile
-      },
+      // FabricatorProfile:{
+      //   screen:FabricatorProfile
+      // },
       Exhibitor:{
         screen:Exhibitor
       },
     },
     {
-      initialRouteName: "FabricatorProfile",
+      initialRouteName: "Exhibitor",
         transitionConfig
     })
 

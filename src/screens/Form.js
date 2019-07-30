@@ -132,7 +132,7 @@ import ErrorLoader from "../generic/ErrorLoader";
   }
 
   componentDidUpdate(preProps){
-    const {user} =this.props
+    const {user,createExhibition} =this.props
     console.log(user,'useruseruseruseruser');
     
     const { exhibitorDetail,index, exhibitorBranding,exhibitorFurniture,exhibitorProducts} =this.state;
@@ -150,6 +150,14 @@ import ErrorLoader from "../generic/ErrorLoader";
             website_link: `https://${exhibitorDetail.websiteLink}`
           }
          this.props.createExhibitionRequest({data:payload,userToken:user.data.token,exhibitionToken:this.props.navigation.state.params.id})
+      }
+      else{
+        this.props.navigation.navigate("FabricatorProfile")
+      }
+    }
+    if(createExhibition.isSuccess !== preProps.createExhibition.isSuccess ){
+      if(index == 0){
+        this.props.navigation.navigate("Exhibitor")
       }
     }
   }

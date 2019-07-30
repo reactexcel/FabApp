@@ -5,9 +5,13 @@ import SplashScreen from "react-native-splash-screen";
 import FabricatorProfile from "./FabricatorProfile";
 import ExhibitorQuotes from "../components/ExhibitorQuotes";
 import { TabView,TabBar, SceneMap } from 'react-native-tab-view';
+import {setItem, getItem} from "../helper/storage";
+import { bindActionCreators } from "redux";
+import * as actions from '../redux/actions';
+import { connect } from 'react-redux';
 
 
-export default class Exhibitor extends React.Component {
+ class Exhibitor extends React.Component {
     static navigationOptions = {
         header: null
       };
@@ -24,8 +28,10 @@ export default class Exhibitor extends React.Component {
     this.props.navigation.goBack()
   }
   
-  componentDidMount() {
-    SplashScreen.hide();
+ async componentDidMount() {
+    const userToken = await getItem("userInfo")
+        SplashScreen.hide();
+        this.props.userProfileRequest({userToken:userToken.token})
   }
   onProfileEdit=()=>{
     const {profileEdit} = this.state;
@@ -41,6 +47,7 @@ export default class Exhibitor extends React.Component {
  
   render() {
     const {index,profileEdit} =this.state;
+    const {userProfile} = this.props
     return (
         <>
         <Header
@@ -68,7 +75,7 @@ export default class Exhibitor extends React.Component {
           }
           renderScene={SceneMap({
             profile:()=> <FabricatorProfile exhitorProfile={true}/>,
-            quotes:()=> <ExhibitorQuotes />,
+            quotes:()=> <ExhibitorQuotes portfolioData={userProfile.data.length && userProfile.data.length >0  && userProfile.data[1].exhbhition_request} />,
           })}
           onIndexChange={index => this.setState({ index })}
           initialLayout={{ width: Dimensions.get('window').width }}
@@ -79,6 +86,17 @@ export default class Exhibitor extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+      userProfile:state.user.userProfile,
+  }
+}
+
+const mapDispatchToProps = dispatch => 
+    bindActionCreators(actions, dispatch);
+
+export default connect(mapStateToProps,mapDispatchToProps)(Exhibitor)
 
 const styles = StyleSheet.create({
   container: {

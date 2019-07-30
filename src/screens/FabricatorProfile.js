@@ -32,9 +32,9 @@ import ErrorLoader from "../generic/ErrorLoader";
       }
     
    async componentDidMount(){
-        const userToken = await getItem("userInfo")
-        SplashScreen.hide();
-        this.props.userProfileRequest({userToken:userToken.token})
+        // const userToken = await getItem("userInfo")
+        // SplashScreen.hide();
+        // this.props.userProfileRequest({userToken:userToken.token})
     }
 
     componentDidUpdate(preProps){
@@ -90,7 +90,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                 {!exhitorProfile &&
                  <Header
                     isLeft={true}
-                    leftIcon={"arrowleft"}
+                    // leftIcon={"arrowleft"}
                     isCenter={true}
                     leftIconCategory={ "AntDesign"}
                     isRight={true}
@@ -208,7 +208,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                             
                             <View style={[styles.horizontalLine,{borderBottomColor:aboutYourSelfFocus ? "#000000" : "#D7DBDD",borderBottomWidth:aboutYourSelfFocus ? 2 : 1}]}/>
                             {/* <Text style={styles.error}>*required field</Text> */}
-                            {(!exhitorProfile && userProfile.data.length && userProfile.data[0].role === "fabricator") ?
+                            {(!exhitorProfile && userProfile.data.length && userProfile.data[0].role === "fabricator") &&
                             <>
                             <View style={styles.portfolioWrapper}>
                                 <View style={styles.plusIconView}>
@@ -219,7 +219,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                                         style={styles.plusIcon}
                                     />
                                 </View>
-                                {(userProfile.data.length && userProfile.data[2].Portfolio.length ) ?
+                                {(userProfile.data.length > 1 && userProfile.data[2].Portfolio.length ) ?
                                     <Portfolio 
                                         onPortfolioImagePress ={this.onPortfolioImagePress}
                                         horizontal={true}
@@ -232,29 +232,30 @@ import ErrorLoader from "../generic/ErrorLoader";
                                     </View>
                                  }
                             </View>
-                            </> : 
-                                <View style={styles.portfolioWrapper}>
-                                    <View style={styles.plusIconView}>
-                                        <Text  style={styles.portfoliotitle}>All exhibition</Text>
-                                        <Icon
-                                            type={"AntDesign"}
-                                            name={"plus"}
-                                            style={styles.plusIcon}
-                                        />
-                                    </View>
-                                    {(userProfile.data.length >1 && userProfile.data[1].exhbhition_request.length ) ?
-                                    <Portfolio 
-                                        onPortfolioImagePress ={this.onPortfolioImagePress}
-                                        horizontal={false}
-                                        portfolioData={userProfile.data[1].exhbhition_request}
-                                    /> :
-                                    <View style={styles.noPortfolioView}>
-                                        <Text style={styles.noPortfolioText} >
-                                           You have not created any exhibition yet.
-                                        </Text>
-                                    </View>
-                                 }
-                                </View>
+                            </> 
+                                // <View style={styles.portfolioWrapper}>
+                                //     <View style={styles.plusIconView}>
+                                //         <Text  style={styles.portfoliotitle}>All quotes</Text>
+                                //         <Text  style={styles.portfoliotitle}>Add quote</Text>
+                                //         {/* <Icon
+                                //             // type={"AntDesign"}
+                                //             // name={"plus"}
+                                //             style={styles.plusIcon}
+                                //         /> */}
+                                //     </View>
+                                //     {(userProfile.data.length >1 && userProfile.data[1].exhbhition_request.length ) ?
+                                //     <Portfolio 
+                                //         onPortfolioImagePress ={this.onPortfolioImagePress}
+                                //         horizontal={false}
+                                //         portfolioData={userProfile.data[1].exhbhition_request}
+                                //     /> :
+                                //     <View style={styles.noPortfolioView}>
+                                //         <Text style={styles.noPortfolioText} >
+                                //            You have not created any quote yet.
+                                //         </Text>
+                                //     </View>
+                                //  }
+                                // </View>
                             }
                         </View>
                     </ScrollView>
@@ -315,6 +316,7 @@ const styles = StyleSheet.create({
     item:{
         fontSize:17,
         color:"#4D4D4C",
+        width:"100%"
     },
     itemWrapper:{
         marginTop:10,

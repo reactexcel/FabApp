@@ -4,9 +4,10 @@ import Portfolio from "./Portfolio";
 
 export default class ExhibitorQuotes extends Component {
     render() {
+        const {portfolioData} = this.props;
         return (
             <View style={{backgroundColor:"#ffffff",flex:1}}>
-                <Portfolio horizontal={false}/>
+                <Portfolio portfolioData={portfolioData} horizontal={false}/>
             </View>
         )
     }
