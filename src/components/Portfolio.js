@@ -17,53 +17,54 @@ export default class Portfolio extends Component {
         )
     }
 
-    _exhibitorQuotes=()=>{
+    _exhibitorQuotes=({item,index})=>{
+        let list  = item[index]
         return(
             <View style={styles.cardWrapper}>
                 <View style={styles.infoList}>
                     <View style={styles.item}>
                         <Text style={styles.title}>Size no: </Text>
-                        <Text style={styles.product}>12</Text>
+                        <Text style={styles.product}>{list.size}</Text>
                     </View>
                     <View style={styles.item}>
-                        <Text style={styles.title}>Branding: </Text>
-                        <Text style={styles.product}>Samsung </Text>
+                        <Text style={styles.title}>Brandings: </Text>
+                        <Text style={styles.product}>{list.brandings.map((brand,i)=>{return `${brand.branding}(${brand.quantity}), ` })}</Text>
                     </View>
                 </View>
                 <View style={styles.infoList}>
                     <View style={styles.item}>
                         <Text style={styles.title}>Stall no: </Text>
-                        <Text style={styles.product}>12</Text>
+                        <Text style={styles.product}>{list.stall_no}</Text>
                     </View>
                     <View style={styles.item}>
-                        <Text style={styles.title}>Furniture: </Text>
-                        <Text style={styles.product}>Sofa, Bed, Chair </Text>
+                        <Text style={styles.title}>Furnitures: </Text>
+                        <Text style={styles.product}>{list.furnitures.map((brand,i)=>{return `${brand.furniture}(${brand.quantity}), ` })}</Text>
                     </View>
                 </View>
                 <View style={styles.infoList}>
                     <View style={styles.item}>
                         <Text style={styles.title}>Color theme: </Text>
-                        <Text style={styles.product}>red</Text>
+                        <Text style={styles.product}>{list.color_theme}</Text>
                     </View>
                     <View style={styles.item}>
                         <Text style={styles.title}>Carpet: </Text>
-                        <Text style={styles.product}>green, red </Text>
+                        <Text style={styles.product}>{list.carpet}</Text>
                     </View>
                 </View>
                 <View style={styles.infoList}>
                     <View style={styles.item}>
                         <Text style={styles.title}>Product/Services: </Text>
-                        <Text style={styles.product}>lorem ipsum</Text>
+                        <Text style={styles.product}>{list.products.map((brand,i)=>{return `${brand.product}(${brand.quantity}), ` })}</Text>
                     </View>
-                    <View style={styles.item}>
+                    {/* <View style={styles.item}>
                         <Text style={styles.title}>Contact No: </Text>
                         <Text style={styles.product}>9012345678</Text>
-                    </View>
+                    </View> */}
                 </View>
                 <View style={styles.contactView}>
                     <View style={styles.contactno}>
                         <Text style={styles.title}>Website link: </Text>
-                        <Text style={styles.product}>www.google.com</Text>
+                        <Text style={styles.product}>{list.website_link}</Text>
                     </View>
                 </View>
             </View>
@@ -71,7 +72,7 @@ export default class Portfolio extends Component {
     }
 
     _getItemCount=(data)=>{
-        return 4
+        return data.length
     }
 
     _getItemLayout=(data, index) => {
@@ -83,12 +84,12 @@ export default class Portfolio extends Component {
     }
 
     render() {
-        const {horizontal} = this.props;
+        const {horizontal,portfolioData} = this.props;
         return (
             <View style={styles.portfolioWrapper}>
                 <VirtualizedList
                    style={{paddingVertical:12}}
-                    data={portfolio}
+                    data={portfolioData}
                     renderItem={!horizontal ? this._exhibitorQuotes : this._renderItem}
                     keyExtractor={(item,index)=>index.toString()}
                     initialNumToRender={20}

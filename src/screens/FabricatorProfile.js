@@ -33,10 +33,8 @@ import ErrorLoader from "../generic/ErrorLoader";
     
    async componentDidMount(){
         const userToken = await getItem("userInfo")
-        console.log(userToken,'userTokenuserTokenuserTokenuserToken');
         SplashScreen.hide();
         this.props.userProfileRequest({userToken:userToken.token})
-        // SplashScreen.hide();
     }
 
     componentDidUpdate(preProps){
@@ -46,7 +44,8 @@ import ErrorLoader from "../generic/ErrorLoader";
                 const userInfo = userProfile.data[0] 
                 this.setState({name:userInfo.name,
                             aboutYourSelf:userInfo.bio,
-                            mobileNumber:userInfo.phone.replace("+91","")})
+                            mobileNumber:userInfo.phone.replace("+91",""),
+                        websiteLink:userInfo.website_link})
             }
         }
     }
@@ -209,7 +208,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                             
                             <View style={[styles.horizontalLine,{borderBottomColor:aboutYourSelfFocus ? "#000000" : "#D7DBDD",borderBottomWidth:aboutYourSelfFocus ? 2 : 1}]}/>
                             {/* <Text style={styles.error}>*required field</Text> */}
-                            {!exhitorProfile &&
+                            {(!exhitorProfile && userProfile.data.length && userProfile.data[0].role === "fabricator") ?
                             <>
                             <View style={styles.portfolioWrapper}>
                                 <View style={styles.plusIconView}>
@@ -220,7 +219,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                                         style={styles.plusIcon}
                                     />
                                 </View>
-                                {userProfile.data.length && userProfile.data[2].Portfolio.length ?
+                                {(userProfile.data.length && userProfile.data[2].Portfolio.length ) ?
                                     <Portfolio 
                                         onPortfolioImagePress ={this.onPortfolioImagePress}
                                         horizontal={true}
@@ -233,7 +232,30 @@ import ErrorLoader from "../generic/ErrorLoader";
                                     </View>
                                  }
                             </View>
-                            </>}
+                            </> : 
+                                <View style={styles.portfolioWrapper}>
+                                    <View style={styles.plusIconView}>
+                                        <Text  style={styles.portfoliotitle}>All exhibition</Text>
+                                        <Icon
+                                            type={"AntDesign"}
+                                            name={"plus"}
+                                            style={styles.plusIcon}
+                                        />
+                                    </View>
+                                    {(userProfile.data.length >1 && userProfile.data[1].exhbhition_request.length ) ?
+                                    <Portfolio 
+                                        onPortfolioImagePress ={this.onPortfolioImagePress}
+                                        horizontal={false}
+                                        portfolioData={userProfile.data[1].exhbhition_request}
+                                    /> :
+                                    <View style={styles.noPortfolioView}>
+                                        <Text style={styles.noPortfolioText} >
+                                           You have not created any exhibition yet.
+                                        </Text>
+                                    </View>
+                                 }
+                                </View>
+                            }
                         </View>
                     </ScrollView>
                 </LinearGradient> : <ErrorLoader handlerData={userProfile} /> }

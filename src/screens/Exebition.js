@@ -7,6 +7,7 @@ import { bindActionCreators } from "redux";
 import { connect } from 'react-redux';
 import * as actions from '../redux/actions';
 import ErrorLoader from "../generic/ErrorLoader";
+import NoData from "../generic/nodata";
 
 
  class Exebition extends Component {
@@ -58,11 +59,13 @@ import ErrorLoader from "../generic/ErrorLoader";
                   <ErrorLoader handlerData={alleEhibitionList} />
                 }
                 
-                {alleEhibitionList.isSuccess &&
+                {(alleEhibitionList.isSuccess && alleEhibitionList.exhibitions &&  alleEhibitionList.exhibitions.length) ?
                   <ScrollView>
                     <ExhibitionList alleEhibitionList={alleEhibitionList}  toForm={this.toForm}/>
                   </ScrollView>
-                }
+                :
+                <NoData message ={"Sorry! No exhibition avaliable at the time."} />
+                } 
             </>
         )
     }
