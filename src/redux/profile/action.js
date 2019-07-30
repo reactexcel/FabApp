@@ -11,7 +11,6 @@ export function* userRegistrationRequest(action) {
         '',
         action.payload
       );
-
       if (response) {
           yield put(actions.userRegistrationSuccess(response.data));
       }
@@ -40,8 +39,15 @@ export function* userRegistrationRequest(action) {
           yield put(actions.createExhibitionSuccess(response.data));
       }
     } catch (e) {
-      // console.log(e.message,'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+      console.log(e,'eeeeeeeeeeeeeeeeeeeeeeeeee');
       
+      if(e.response){
+       yield put(actions.createExhibitionError(e.response));
+      }
+      else if(e.message){
+        yield put(actions.createExhibitionError("Network error"));
+    }else{
       yield put(actions.createExhibitionError());
     }
   }
+}

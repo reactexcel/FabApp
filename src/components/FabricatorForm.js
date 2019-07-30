@@ -18,7 +18,7 @@ export default class FabricatorForm extends Component {
         return (
             <View style={styles.mainWrapper}>
                 <ScrollView>
-                    <View style={styles.contentWrapper}>
+                    <View style={[styles.contentWrapper,]}>
                         <View style={styles.formWrapper}>
                             <View style={styles.headerTextView}>
                                 <Text style={styles.headerText}>Tell us about you</Text>

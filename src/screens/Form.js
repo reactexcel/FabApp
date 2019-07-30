@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, StyleSheet,Text, BackHandler, } from 'react-native';
+import { View, TouchableOpacity, StyleSheet,Text, BackHandler, StatusBar,ActivityIndicator} from 'react-native';
 import Header from "../generic/Header";
 import ExhibitorForm from "../components/ExhibitorForm";
 import FabricatorForm from "../components/FabricatorForm";
@@ -8,6 +8,8 @@ import validate from "../helper/validation";
 import { bindActionCreators } from "redux";
 import * as actions from '../redux/actions';
 import {setItem, getItem} from "../helper/storage";
+import Layout from '../helper/Layout';
+import ErrorLoader from "../generic/ErrorLoader";
 
  class WorkerForm extends React.Component {
     static navigationOptions = {
@@ -227,6 +229,7 @@ import {setItem, getItem} from "../helper/storage";
       extraDataForBrandings,
       errors
     } =this.state;
+    const { user,createExhibition} =this.props;
     return (
         <>
         <Header
@@ -241,6 +244,9 @@ import {setItem, getItem} from "../helper/storage";
          {index ==0 && 
           <View style={[styles.formCompletionBar,{width:`${scrollToIndex*12.5}%`}]}></View>
         }
+        {(user.isLoading || createExhibition.isLoading) && <View style={{flexDirection:'column',justifyContent:"center",alignItems:"center",width:Layout.window.width,height:Layout.window.height-60-StatusBar.currentHeight,bottom:0,backgroundColor:"rgba(0,0,0,.4)",position:"absolute",zIndex:100000}}>
+               <ActivityIndicator size="large" color="#ffffff" />
+        </View>}
         <View style={styles.tabBar}>
             <TouchableOpacity
               activeOpacity={.7}
@@ -288,7 +294,8 @@ import {setItem, getItem} from "../helper/storage";
 const mapStateToProps = (state) => {
   return {
     productList:state.productNexhibition.product,
-    user:state.user.user
+    user:state.user.user,
+    createExhibition:state.user.createExhibition
   }
 }
 
