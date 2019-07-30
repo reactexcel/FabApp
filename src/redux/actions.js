@@ -25,3 +25,13 @@ export const createExhibitionError = createAction(constants.CREATE_EXHIBITION_ER
 export const userProfileRequest= createAction(constants.USER_PROFILE_REQUEST);
 export const userProfileSuccess = createAction(constants.USER_PROFILE_SUCCESS);
 export const userProfileError = createAction(constants.USER_PROFILE_ERROR);
+
+//constants to update profile(exhibitor/fabricator)
+export const updateProfileRequest= createAction(constants.UPDATE_PROFILE_REQUEST);
+export const updateProfileSuccess = createAction(constants.UPDATE_PROFILE_SUCCESS);
+export const updateProfileError = createAction(constants.UPDATE_PROFILE_ERROR);
+
+//constants to upload portfolio(fabricator)
+export const uploadPortfolioequest= createAction(constants.UPLOAD_PORTFOLIO_REQUEST);
+export const uploadPortfolioSuccess = createAction(constants.UPLOAD_PORTFOLIO_SUCCESS);
+export const uploadPortfolioError = createAction(constants.UPLOAD_PORTFOLIO_ERROR);

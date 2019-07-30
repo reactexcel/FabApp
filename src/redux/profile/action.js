@@ -2,6 +2,7 @@ import * as actions from '../actions';
 import fireAjax from '../../services/index';
 import { call, put } from "redux-saga/effects";
 
+//action to create profile of user(fabricator/exhibitor)
 export function* userRegistrationRequest(action) {
     try {
       const response = yield call(
@@ -19,9 +20,8 @@ export function* userRegistrationRequest(action) {
     }
   }
 
+  //action to create a quote proforming by exhibitor
   export function* createExhibitionRequest(action) {
-      console.log(action);
-      
     const header = {
         "Authorization":`Token ${action.payload.userToken}`,
         "Content-Type": "application/json"
@@ -39,8 +39,6 @@ export function* userRegistrationRequest(action) {
           yield put(actions.createExhibitionSuccess(response.data));
       }
     } catch (e) {
-      console.log(e,'eeeeeeeeeeeeeeeeeeeeeeeeee');
-      
       if(e.response){
        yield put(actions.createExhibitionError(e.response));
       }
@@ -52,10 +50,8 @@ export function* userRegistrationRequest(action) {
   }
 }
 
-
+//action to get user(exhibitor/fabricator)'s profile
 export function* userProfileRequest(action) {
-  console.log(action);
-  
 const header = {
     "Authorization":`Token ${action.payload.userToken}`
   };
@@ -72,13 +68,42 @@ try {
       yield put(actions.userProfileSuccess(response.data));
   }
 } catch (e) {
-  if(e.response){
-   yield put(actions.userProfileError(e.response));
+    if(e.response){
+    yield put(actions.userProfileError(e.response));
+    }
+    else if(e.message){
+      yield put(actions.userProfileError("Network error"));
+    }else{
+      yield put(actions.userProfileError());
+    }
   }
-  else if(e.message){
-    yield put(actions.userProfileError("Network error"));
-}else{
-  yield put(actions.userProfileError());
 }
-}
+
+//action to get user(exhibitor/fabricator)'s profile
+export function* userProfileRequest(action) {
+const header = {
+    "Authorization":`Token ${action.payload.userToken}`
+  };
+try {
+  const response = yield call(
+    fireAjax,
+    "GET",
+    'profile',
+    header,
+    ''
+  );
+
+  if (response) {
+      yield put(actions.userProfileSuccess(response.data));
+  }
+} catch (e) {
+    if(e.response){
+    yield put(actions.userProfileError(e.response));
+    }
+    else if(e.message){
+      yield put(actions.userProfileError("Network error"));
+    }else{
+      yield put(actions.userProfileError());
+    }
+  }
 }
