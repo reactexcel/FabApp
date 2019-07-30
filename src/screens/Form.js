@@ -86,29 +86,33 @@ import {setItem, getItem} from "../helper/storage";
             this.setState({scrollToIndex:scrollToIndex+1})
         }
         if(scrollToIndex == 8 ){
-            const payload={
-              email :exhibitorDetail.email ,
-              password : "test",
-              role: "exhibitor",
-              name: exhibitorDetail.name,
-              bio: exhibitorDetail.aboutYourSelf,
-              phone: `+91${exhibitorDetail.mobileNo}`,
-            }
-            this.props.userRegistrationRequest(payload);
-            // const payload = {
-            //   size : exhibitorDetail.stallSize,
-            //   stall_no:exhibitorDetail.stallNo ,
-            //   color_theme : exhibitorDetail.colorTheme,
-            //   carpet: exhibitorDetail.carpetColor,
-            //   products: [{product:"bulb"},{product:"light"}],
-            //   brandings: [{branding:"TV"},{branding:"LED"}],
-            //   furnitures: [{furniture:"sofa"},{furniture:"bed"}],
-            //   website_link: `https://${exhibitorDetail.websiteLink}`
-            // }
-            // this.props.createExhibitionRequest({data:payload,userToken:userToken.token,exhibitionToken:this.props.navigation.state.params.id})
+          this.onSubmit();
         }
      }
   } 
+
+  onSubmit=()=>{
+    const{exhibitorDetail, index} =this.state;
+   
+    const payload={
+      email :exhibitorDetail.email ,
+      password : "test",
+      role:index ==0 ? "exhibitor" : "fabricator",
+      name: exhibitorDetail.name,
+      bio: exhibitorDetail.aboutYourSelf,
+      phone: `+91${exhibitorDetail.mobileNo}`,
+    }
+    if(index == 1){
+      let errors = validate(exhibitorDetail,"fromValidation")
+      this.setState({errors})
+      if(!Object.keys(errors).length){
+        this.props.userRegistrationRequest(payload);
+     }
+    }else{
+      this.props.userRegistrationRequest(payload);
+    }
+    
+  }
 
  async componentDidMount() {
     const userToken = await getItem("userInfo")
@@ -129,21 +133,22 @@ import {setItem, getItem} from "../helper/storage";
     const {user} =this.props
     console.log(user,'useruseruseruseruser');
     
-    const { exhibitorDetail, exhibitorBranding,exhibitorFurniture,exhibitorProducts} =this.state;
-    if(user.isSuccess !== preProps.user.isSuccess){
-      
+    const { exhibitorDetail,index, exhibitorBranding,exhibitorFurniture,exhibitorProducts} =this.state;
+    if(user.isSuccess !== preProps.user.isSuccess ){
       setItem("userInfo", JSON.stringify({token:user.data.token}));
-      const payload = {
-        size : exhibitorDetail.stallSize,
-        stall_no:exhibitorDetail.stallNo ,
-        color_theme : exhibitorDetail.colorTheme,
-        carpet: exhibitorDetail.carpetColor,
-        products: [{product:"bulb"},{product:"light"}],
-        brandings: [{branding:"TV"},{branding:"LED"}],
-        furnitures: [{furniture:"sofa"},{furniture:"bed"}],
-        website_link: `https://${exhibitorDetail.websiteLink}`
+      if( index ==0){
+          const payload = {
+            size : exhibitorDetail.stallSize,
+            stall_no:exhibitorDetail.stallNo ,
+            color_theme : exhibitorDetail.colorTheme,
+            carpet: exhibitorDetail.carpetColor,
+            products: [{product:"bulb"},{product:"light"}],
+            brandings: [{branding:"TV"},{branding:"LED"}],
+            furnitures: [{furniture:"sofa"},{furniture:"bed"}],
+            website_link: `https://${exhibitorDetail.websiteLink}`
+          }
+         this.props.createExhibitionRequest({data:payload,userToken:user.data.token,exhibitionToken:this.props.navigation.state.params.id})
       }
-      this.props.createExhibitionRequest({data:payload,userToken:user.data.token,exhibitionToken:this.props.navigation.state.params.id})
     }
   }
 
@@ -269,7 +274,7 @@ import {setItem, getItem} from "../helper/storage";
         />
       }{index ==1 &&
         <FabricatorForm
-          goToFabricatorProfile={this.goToFabricatorProfile}
+          onSubmit={this.onSubmit}
           onTextChange={this.onTextChange}
           exhibitorDetail={exhibitorDetail}
           errors={errors}
