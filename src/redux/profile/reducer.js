@@ -21,6 +21,12 @@ const initialState = {
       isError: false,
       isSuccess: false,
       data:''
+     },
+     updateProfile:{
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      status:''
      }
 };
 
@@ -123,6 +129,38 @@ update(state, {
    }
 });
 
+const updateProfileRequest = (state, action) =>{
+   return(
+update(state, {
+   updateProfile:{
+    isLoading: { $set: true },
+    isError: { $set: false },
+    isSuccess: { $set: false },
+    errorMessage:{ $set: "" },
+   }
+}))};
+
+const updateProfileSuccess = (state, action) =>
+update(state, {
+   updateProfile:{
+    isLoading: { $set: false },
+    isError: { $set: false },
+    isSuccess: { $set: true },
+    errorMessage:{ $set: "" },
+    data: { $set: action.payload }
+   }
+});
+
+const updateProfileError = (state, action) =>
+update(state, {
+   updateProfile:{
+    isLoading: { $set: false },
+    isError: { $set: true },
+    isSuccess: { $set: false },
+    errorMessage:{ $set: "Something went wrong, Please try again" } ,
+    data: { $set: action.payload }
+   }
+});
  
 export default handleActions(
  {
@@ -137,7 +175,11 @@ export default handleActions(
 
    [constants.USER_PROFILE_REQUEST]: userProfileRequest,
    [constants.USER_PROFILE_SUCCESS]: userProfileSuccess,
-   [constants.USER_PROFILE_ERROR]: userProfileError
+   [constants.USER_PROFILE_ERROR]: userProfileError,
+
+   [constants.UPDATE_PROFILE_REQUEST]: updateProfileRequest,
+   [constants.UPDATE_PROFILE_SUCCESS]: updateProfileSuccess,
+   [constants.UPDATE_PROFILE_ERROR]: updateProfileError
  },
  initialState
 );

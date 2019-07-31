@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import * as actions from '../redux/actions';
 import ErrorLoader from "../generic/ErrorLoader";
 import NoData from "../generic/nodata";
+import {setItem, getItem,removeItem} from "../helper/storage";
 
 
  class Exebition extends Component {
@@ -22,10 +23,17 @@ import NoData from "../generic/nodata";
         this.props.navigation.goBack()
       }
 
-    componentDidMount() {
-      SplashScreen.hide();
-      this.props.exhibitionListRequest()
-      this.props.productListRequest()
+  async  componentDidMount() {
+      const userToken = await getItem("userInfo")
+      if(userToken){
+        SplashScreen.hide();
+        this.props.navigation.replace("FabricatorProfile",{navigatedFromForm:true})
+      }
+      else{
+        SplashScreen.hide();
+        this.props.exhibitionListRequest()
+        this.props.productListRequest()
+      }
     }
 
     componentDidUpdate(preProps){

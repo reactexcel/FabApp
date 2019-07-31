@@ -11,7 +11,7 @@ import SplashScreen from "react-native-splash-screen";
 import { bindActionCreators } from "redux";
 import * as actions from '../redux/actions';
 import { connect } from 'react-redux';
-import {setItem, getItem} from "../helper/storage";
+import {setItem, getItem,removeItem} from "../helper/storage";
 import ErrorLoader from "../generic/ErrorLoader";
 
  class FabricatorProfile extends Component {
@@ -27,7 +27,8 @@ import ErrorLoader from "../generic/ErrorLoader";
                     websiteFocus:false,
                     mobileNumber:"",
                     websiteLink:"",
-                    aboutYourSelf:""
+                    aboutYourSelf:"",
+                    userToken:undefined
                 }
       }
     
@@ -35,23 +36,26 @@ import ErrorLoader from "../generic/ErrorLoader";
     const path =  this.props.navigation && this.props.navigation.state && this.props.navigation.state.params
         if(path && path.navigatedFromForm){
             const userToken = await getItem("userInfo")
+            this.setState({userToken})
             this.props.userProfileRequest({userToken:userToken.token})
         }
     }
 
     componentDidUpdate(preProps){
-        console.log("gggggggggggggggggggggggggggggggggg");
-        
-        const {userProfile} = this.props;
+        const {userProfile,updateProfile} = this.props;
+        const {userToken} = this.state;
         if(userProfile.isSuccess !== preProps.userProfile.isSuccess){
-            console.log("checkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-            
             if(userProfile.data && userProfile.data.length){
                 const userInfo = userProfile.data[0] 
                 this.setState({name:userInfo.name,
                             aboutYourSelf:userInfo.bio,
                             mobileNumber:userInfo.phone.replace("+91",""),
                         websiteLink:userInfo.website_link})
+            }
+        }
+        if(updateProfile.isSuccess !== preProps.updateProfile.isSuccess){
+            if(updateProfile.data){
+                  this.props.userProfileRequest({userToken:userToken.token})
             }
         }
     }
@@ -66,12 +70,18 @@ import ErrorLoader from "../generic/ErrorLoader";
 
     onProfileEdit=()=>{
         const {profileEdit} = this.state;
+        const {userProfile} = this.props;
+        const userInfo = userProfile.data[0] 
         if(!profileEdit){
             this.refs.websiteLink._root.focus()
-            this.setState({profileEdit:!this.state.profileEdit})
+            this.setState({profileEdit:!this.state.profileEdit,})
         }
         else{
-            this.setState({profileEdit:!this.state.profileEdit,Mobilefocus:false,aboutYourSelfFocus:false})
+            this.setState({profileEdit:!this.state.profileEdit,Mobilefocus:false,aboutYourSelfFocus:false,
+                name:userInfo.name,
+                aboutYourSelf:userInfo.bio,
+                mobileNumber:userInfo.phone.replace("+91",""),
+                websiteLink:userInfo.website_link,profileEdit:!this.state.profileEdit})
         }
     }
 
@@ -89,9 +99,19 @@ import ErrorLoader from "../generic/ErrorLoader";
         }
     }
 
-    logout=()=>{
-        AsyncStorage.removeItem("userInfo")
-        this.props.navigation.navigate("Exhibition")
+    logout=async()=>{
+       await removeItem("userInfo")
+        this.props.navigation.navigate("Exebition")
+    }
+
+    updateProfile=()=>{
+        const {mobileNumber, aboutYourSelf,userToken} = this.state;
+        const userInfo = this.props.userProfile.data[0] 
+        this.props.updateProfileRequest(
+                                    {userToken:userToken.token,
+                                    id:userInfo.id,
+                                    data:{bio:aboutYourSelf,phone: `+91${mobileNumber}`,  }}
+                                    )
     }
 
 
@@ -252,12 +272,15 @@ import ErrorLoader from "../generic/ErrorLoader";
                             </View>
                             </> 
                             }
-                            <Text onPress={this.logout}>Logout</Text>
+                            <TouchableOpacity onPress={this.logout}>
+                            <Text >Logout</Text>
+
+                            </TouchableOpacity>
                         </View>
                     </ScrollView>  : <ErrorLoader handlerData={userProfile} />}
                 </LinearGradient>
                 {(profileEdit && userInfo && (userInfo.name !== name || userInfo.website_link !== websiteLink || userInfo.phone.replace("+91","") !== mobileNumber) ) &&
-                <TouchableOpacity onPress={()=>this.props.onSubmit()} activeOpacity={.7}>
+                <TouchableOpacity onPress={this.updateProfile} activeOpacity={.7}>
                         <View style={styles.tapToContinueButtonView}>
                             <Text style={styles.continueText}>Update</Text>
                         </View>
@@ -270,6 +293,7 @@ import ErrorLoader from "../generic/ErrorLoader";
 const mapStateToProps = (state) => {
     return {
         userProfile:state.user.userProfile,
+        updateProfile:state.user.updateProfile,
     }
   }
   

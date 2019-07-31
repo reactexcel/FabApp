@@ -18,3 +18,13 @@ export const getItem = async dataName => {
     catch(error){
     }
 }
+
+export const removeItem = async dataName => {
+    try{
+         await AsyncStorage.removeItem(dataName);
+         return true
+    }
+    catch(error){
+        return false
+    }
+}
