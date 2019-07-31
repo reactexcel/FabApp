@@ -102,7 +102,7 @@ import validate from "../helper/validation";
         }
         else{
             this.props.clearUpdateRequest()
-            this.setState({profileEdit:!this.state.profileEdit,Mobilefocus:false,aboutYourSelfFocus:false,
+            this.setState({errors:{}, profileEdit:!this.state.profileEdit,Mobilefocus:false,aboutYourSelfFocus:false,
                 name:userInfo.name,
                 aboutYourSelf:userInfo.bio,
                 mobileNumber:userInfo.phone.replace("+91",""),
