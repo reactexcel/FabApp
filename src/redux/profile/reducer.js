@@ -20,13 +20,15 @@ const initialState = {
       isLoading: false,
       isError: false,
       isSuccess: false,
-      data:''
+      data:'',
+      isUpdateLoading:false
      },
      updateProfile:{
       isLoading: false,
       isError: false,
       isSuccess: false,
-      status:''
+      status:'',
+      data:''
      }
 };
 
@@ -137,6 +139,7 @@ update(state, {
     isError: { $set: false },
     isSuccess: { $set: false },
     errorMessage:{ $set: "" },
+    data:{ $set: "" },
    }
 }))};
 
@@ -161,6 +164,26 @@ update(state, {
     data: { $set: action.payload }
    }
 });
+
+const userProfileAfterUpdateRequest = (state, action) =>{
+   return(
+update(state, {
+   userProfile:{
+    isUpdateLoading: { $set: true },
+   }
+}))};
+
+const userProfileAfterUpdateSuccess = (state, action) =>
+update(state, {
+   userProfile:{
+    isLoading: { $set: false },
+    isError: { $set: false },
+    isSuccess: { $set: true },
+    errorMessage:{ $set: "" },
+    isUpdateLoading:{ $set: false },
+    data: { $set: action.payload }
+   }
+});
  
 export default handleActions(
  {
@@ -179,7 +202,11 @@ export default handleActions(
 
    [constants.UPDATE_PROFILE_REQUEST]: updateProfileRequest,
    [constants.UPDATE_PROFILE_SUCCESS]: updateProfileSuccess,
-   [constants.UPDATE_PROFILE_ERROR]: updateProfileError
+   [constants.UPDATE_PROFILE_ERROR]: updateProfileError,
+
+   [constants.USER_PROFILE_AFTER_UPDATE_REQUEST]: userProfileAfterUpdateRequest,
+   [constants.USER_PROFILE_AFTER_UPDATE_SUCCESS]: userProfileAfterUpdateSuccess,
+   
  },
  initialState
 );

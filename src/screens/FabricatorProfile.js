@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, ScrollView,TouchableOpacity,TextInput, AsyncStorage } from 'react-native'
+import { Text, View, StyleSheet,ToastAndroid, Platform,Alert, Image,StatusBar, ScrollView,TouchableOpacity,TextInput, ActivityIndicator } from 'react-native'
 import Header from "../generic/Header";
 import LinearGradient from "react-native-linear-gradient";
 import StarRating from 'react-native-star-rating';
@@ -50,13 +50,36 @@ import ErrorLoader from "../generic/ErrorLoader";
                 this.setState({name:userInfo.name,
                             aboutYourSelf:userInfo.bio,
                             mobileNumber:userInfo.phone.replace("+91",""),
-                        websiteLink:userInfo.website_link})
+                        websiteLink:userInfo.website_link,
+                        })
             }
         }
         if(updateProfile.isSuccess !== preProps.updateProfile.isSuccess){
-            if(updateProfile.data){
-                  this.props.userProfileRequest({userToken:userToken.token})
-            }
+            this.setState({profileEdit:false,Mobilefocus:false,aboutYourSelfFocus:false,websiteFocus:false})
+            this.props.userProfileAfterUpdateRequest({userToken:userToken.token})
+            if(Platform.OS == 'android') {
+                ToastAndroid.showWithGravityAndOffset(
+                  'Your profile is successfully updated.',
+                  ToastAndroid.LONG,
+                  ToastAndroid.BOTTOM,
+                  25,
+                  50,
+                );
+              } else if( Platform.OS == 'ios'){
+                Alert.alert(
+                  'Alert',
+                  'Your profile is successfully updated.',
+                  [
+                    {
+                      text: 'Cancel',
+                      onPress: () => console.log('Cancel Pressed'),
+                      style: 'cancel',
+                    },
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                  ],
+                  {cancelable: false},
+                );
+              }
         }
     }
 
@@ -105,21 +128,23 @@ import ErrorLoader from "../generic/ErrorLoader";
     }
 
     updateProfile=()=>{
-        const {mobileNumber, aboutYourSelf,userToken} = this.state;
+        const {mobileNumber, aboutYourSelf,userToken, websiteLink} = this.state;
         const userInfo = this.props.userProfile.data[0] 
         this.props.updateProfileRequest(
                                     {userToken:userToken.token,
                                     id:userInfo.id,
-                                    data:{bio:aboutYourSelf,phone: `+91${mobileNumber}`,  }}
+                                    data:{bio:aboutYourSelf,phone:`+91${mobileNumber}`, website_link:`https://${websiteLink}`}}
                                     )
     }
 
 
     render() {
         console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-        const {exhitorProfile,userProfile} =this.props;
+        const {exhitorProfile,userProfile,updateProfile} =this.props;
         const {zoomer,profileEdit,mobileNumber,websiteLink,name,aboutYourSelf,Mobilefocus,aboutYourSelfFocus,websiteFocus}= this.state
-       const userInfo = userProfile.data && userProfile.data.length && userProfile.data[0]     
+       const userInfo = userProfile.data && userProfile.data.length && userProfile.data[0]  
+       const websiteError =  updateProfile.data &&  updateProfile.data.website_link && updateProfile.data.website_link[0]
+       const phoneError =  updateProfile.data &&  updateProfile.data.phone && updateProfile.data.phone[0]
         return (
             <View style={styles.container}>
                 {!exhitorProfile &&
@@ -135,9 +160,12 @@ import ErrorLoader from "../generic/ErrorLoader";
                     goBack={this.goBack}
                     onPressRight={this.onProfileEdit}
                 />}
-               
+                {(updateProfile.isLoading || userProfile.isUpdateLoading) && <View style={{flexDirection:'column',justifyContent:"center",alignItems:"center",width:Layout.window.width,height:Layout.window.height-60-StatusBar.currentHeight,bottom:0,backgroundColor:"rgba(0,0,0,.4)",position:"absolute",zIndex:100000}}>
+                         <ActivityIndicator size="large" color="#ffffff" />
+                </View>}
                 
                 <LinearGradient style={{flex:1}} colors={["#ffffff","#ffffff"]}>
+                
                    {zoomer &&
                      <View style={styles.imageZoomerOverlay}>
                         <View style={{position:'absolute',right:15,zIndex:10000,top:15}}>
@@ -198,7 +226,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                                 </Item>
                             </View>
                             <View style={[styles.horizontalLine,{borderBottomColor:websiteFocus ? "#000000" : "#D7DBDD",borderBottomWidth:websiteFocus ? 2 : 1}]}/>
-                            {/* <Text style={styles.error}>*required field</Text> */}
+                            {profileEdit &&<Text style={styles.error}>{websiteError} {/* *required field */}</Text>}
                             
                             <View style={styles.itemWrapper}>
                                 <Item style={{borderColor:"transparent"}} stackedLabel>
@@ -220,7 +248,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                                 </Item>
                             </View>
                             <View style={[styles.horizontalLine,{borderBottomColor:Mobilefocus ? "#000000" : "#D7DBDD",borderBottomWidth:Mobilefocus ? 2 : 1}]}/>
-                            {/* <Text style={styles.error}>*required field</Text> */}
+                            {profileEdit && <Text style={styles.error}> {phoneError}{/* *required field */}</Text>}
                            
                             
                             <View style={styles.itemWrapper}>
@@ -245,7 +273,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                             </View>
                             
                             <View style={[styles.horizontalLine,{borderBottomColor:aboutYourSelfFocus ? "#000000" : "#D7DBDD",borderBottomWidth:aboutYourSelfFocus ? 2 : 1}]}/>
-                            {/* <Text style={styles.error}>*required field</Text> */}
+                            {profileEdit &&<Text style={styles.error}>*required field</Text>}
                             {(!exhitorProfile && userProfile.data.length && userProfile.data[0].role === "fabricator") &&
                             <>
                             <View style={styles.portfolioWrapper}>

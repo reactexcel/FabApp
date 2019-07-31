@@ -78,6 +78,27 @@ try {
     }
   }
 }
+//action to get user(exhibitor/fabricator)'s profile after update
+export function* userProfileAfterUpdateRequest(action) {
+  const header = {
+      "Authorization":`Token ${action.payload.userToken}`
+    };
+  try {
+    const response = yield call(
+      fireAjax,
+      "GET",
+      'profile',
+      header,
+      ''
+    );
+  
+    if (response) {
+        yield put(actions.userProfileAfterUpdateSuccess(response.data));
+    }
+  } catch (e) {
+      
+    }
+  }
 
 //action to update (exhibitor/fabricator)'s profile
 export function* updateProfileRequest(action) {
@@ -98,7 +119,7 @@ try {
   }
 } catch (e) {
     if(e.response){
-    yield put(actions.updateProfileError(e.response));
+    yield put(actions.updateProfileError(e.response.data));
     }
     else if(e.message){
       yield put(actions.updateProfileError("Network error"));

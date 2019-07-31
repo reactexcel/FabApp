@@ -31,6 +31,10 @@ export const updateProfileRequest= createAction(constants.UPDATE_PROFILE_REQUEST
 export const updateProfileSuccess = createAction(constants.UPDATE_PROFILE_SUCCESS);
 export const updateProfileError = createAction(constants.UPDATE_PROFILE_ERROR);
 
+//constants to get  profile(exhibitor/fabricator) after update
+export const userProfileAfterUpdateRequest= createAction(constants.USER_PROFILE_AFTER_UPDATE_REQUEST);
+export const userProfileAfterUpdateSuccess = createAction(constants.USER_PROFILE_AFTER_UPDATE_SUCCESS);
+
 //constants to upload portfolio(fabricator)
 export const uploadPortfolioequest= createAction(constants.UPLOAD_PORTFOLIO_REQUEST);
 export const uploadPortfolioSuccess = createAction(constants.UPLOAD_PORTFOLIO_SUCCESS);
