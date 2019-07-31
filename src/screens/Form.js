@@ -137,7 +137,7 @@ import ErrorLoader from "../generic/ErrorLoader";
     
     const { exhibitorDetail,index, exhibitorBranding,exhibitorFurniture,exhibitorProducts} =this.state;
     if(user.isSuccess !== preProps.user.isSuccess ){
-      setItem("userInfo", JSON.stringify({token:user.data.token}));
+      setItem("userInfo", JSON.stringify({token:user.data.token,role:index ==0 ? "exhibitor" : "fabricator"}));
       if( index ==0){
           const payload = {
             size : exhibitorDetail.stallSize,

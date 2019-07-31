@@ -25,9 +25,13 @@ import {setItem, getItem,removeItem} from "../helper/storage";
 
   async  componentDidMount() {
       const userToken = await getItem("userInfo")
-      if(userToken){
+      if(userToken && userToken.role ==="fabricator"){
         SplashScreen.hide();
         this.props.navigation.replace("FabricatorProfile",{navigatedFromForm:true})
+      }
+      else if(userToken && userToken.role ==="exhibitor"){
+        // SplashScreen.hide();
+        this.props.navigation.replace("Exhibitor")
       }
       else{
         SplashScreen.hide();
