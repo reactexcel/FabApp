@@ -152,7 +152,7 @@ import ErrorLoader from "../generic/ErrorLoader";
          this.props.createExhibitionRequest({data:payload,userToken:user.data.token,exhibitionToken:this.props.navigation.state.params.id})
       }
       else{
-        this.props.navigation.navigate("FabricatorProfile")
+        this.props.navigation.navigate("FabricatorProfile",{navigatedFromForm:true})
       }
     }
     if(createExhibition.isSuccess !== preProps.createExhibition.isSuccess ){

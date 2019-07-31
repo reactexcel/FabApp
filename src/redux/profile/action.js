@@ -79,31 +79,31 @@ try {
   }
 }
 
-//action to get user(exhibitor/fabricator)'s profile
-export function* userProfileRequest(action) {
-const header = {
-    "Authorization":`Token ${action.payload.userToken}`
-  };
-try {
-  const response = yield call(
-    fireAjax,
-    "GET",
-    'profile',
-    header,
-    ''
-  );
+// //action to get user(exhibitor/fabricator)'s profile
+// export function* userProfileRequest(action) {
+// const header = {
+//     "Authorization":`Token ${action.payload.userToken}`
+//   };
+// try {
+//   const response = yield call(
+//     fireAjax,
+//     "GET",
+//     'profile',
+//     header,
+//     ''
+//   );
 
-  if (response) {
-      yield put(actions.userProfileSuccess(response.data));
-  }
-} catch (e) {
-    if(e.response){
-    yield put(actions.userProfileError(e.response));
-    }
-    else if(e.message){
-      yield put(actions.userProfileError("Network error"));
-    }else{
-      yield put(actions.userProfileError());
-    }
-  }
-}
+//   if (response) {
+//       yield put(actions.userProfileSuccess(response.data));
+//   }
+// } catch (e) {
+//     if(e.response){
+//     yield put(actions.userProfileError(e.response));
+//     }
+//     else if(e.message){
+//       yield put(actions.userProfileError("Network error"));
+//     }else{
+//       yield put(actions.userProfileError());
+//     }
+//   }
+// }

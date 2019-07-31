@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, ScrollView,TouchableOpacity,TextInput } from 'react-native'
+import { Text, View, StyleSheet, Image, ScrollView,TouchableOpacity,TextInput, AsyncStorage } from 'react-native'
 import Header from "../generic/Header";
 import LinearGradient from "react-native-linear-gradient";
 import StarRating from 'react-native-star-rating';
@@ -32,9 +32,11 @@ import ErrorLoader from "../generic/ErrorLoader";
       }
     
    async componentDidMount(){
-        // const userToken = await getItem("userInfo")
-        // SplashScreen.hide();
-        // this.props.userProfileRequest({userToken:userToken.token})
+    const path =  this.props.navigation && this.props.navigation.state && this.props.navigation.state.params
+        if(path && path.navigatedFromForm){
+            const userToken = await getItem("userInfo")
+            this.props.userProfileRequest({userToken:userToken.token})
+        }
     }
 
     componentDidUpdate(preProps){
@@ -82,6 +84,11 @@ import ErrorLoader from "../generic/ErrorLoader";
             this.setState({Mobilefocus:false,aboutYourSelfFocus:false,websiteFocus:false})
         }
     }
+
+    logout=()=>{
+        AsyncStorage.removeItem("userInfo")
+        this.props.navigation.navigate("Exhibition")
+    }
     render() {
         const {exhitorProfile,userProfile} =this.props;
         const {zoomer,profileEdit,mobileNumber,websiteLink,name,aboutYourSelf,Mobilefocus,aboutYourSelfFocus,websiteFocus}= this.state
@@ -100,7 +107,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                     goBack={this.goBack}
                     onPressRight={this.onProfileEdit}
                 />}
-               {userProfile.isSuccess ?
+               
                 
                 <LinearGradient style={{flex:1}} colors={["#ffffff","#ffffff"]}>
                    {zoomer &&
@@ -122,7 +129,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                                 <Image resizeMode="cover" style={{width:Layout.window.width, height:Layout.window.width}} source={require("../../assets/images/avatar.png")}/>
                         </ImageZoom>
                     </View>}
-                    <ScrollView >
+                    {userProfile.isSuccess ?  <ScrollView >
                             <View style={styles.profilePicView}>
                                 <View style={styles.avatarView}>
                                     <Image resizeMode="cover" style={styles.img} source={require("../../assets/images/avatar.png")} />
@@ -233,33 +240,11 @@ import ErrorLoader from "../generic/ErrorLoader";
                                  }
                             </View>
                             </> 
-                                // <View style={styles.portfolioWrapper}>
-                                //     <View style={styles.plusIconView}>
-                                //         <Text  style={styles.portfoliotitle}>All quotes</Text>
-                                //         <Text  style={styles.portfoliotitle}>Add quote</Text>
-                                //         {/* <Icon
-                                //             // type={"AntDesign"}
-                                //             // name={"plus"}
-                                //             style={styles.plusIcon}
-                                //         /> */}
-                                //     </View>
-                                //     {(userProfile.data.length >1 && userProfile.data[1].exhbhition_request.length ) ?
-                                //     <Portfolio 
-                                //         onPortfolioImagePress ={this.onPortfolioImagePress}
-                                //         horizontal={false}
-                                //         portfolioData={userProfile.data[1].exhbhition_request}
-                                //     /> :
-                                //     <View style={styles.noPortfolioView}>
-                                //         <Text style={styles.noPortfolioText} >
-                                //            You have not created any quote yet.
-                                //         </Text>
-                                //     </View>
-                                //  }
-                                // </View>
                             }
+                            <Text onPress={this.logout}>Logout</Text>
                         </View>
-                    </ScrollView>
-                </LinearGradient> : <ErrorLoader handlerData={userProfile} /> }
+                    </ScrollView>  : <ErrorLoader handlerData={userProfile} />}
+                </LinearGradient>
             </View>
         )
     }

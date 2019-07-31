@@ -57,7 +57,7 @@ import { connect } from 'react-redux';
           leftIconCategory={ "AntDesign"}
           isRight={true}
           rightIconCategoty={"MaterialCommunityIcons"}
-          rightIcon={profileEdit ? "pencil-off" : index == 0 ? "pencil"  : ""}
+          rightIcon={profileEdit ? "pencil-off" : index == 0 ? "pencil"  : "plus"}
           centerText={""}
           goBack={this.goBack}
           onPressRight={this.onProfileEdit}
