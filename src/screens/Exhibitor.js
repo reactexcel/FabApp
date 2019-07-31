@@ -5,7 +5,7 @@ import SplashScreen from "react-native-splash-screen";
 import FabricatorProfile from "./FabricatorProfile";
 import ExhibitorQuotes from "../components/ExhibitorQuotes";
 import { TabView,TabBar, SceneMap } from 'react-native-tab-view';
-import {setItem, getItem} from "../helper/storage";
+import {setItem,removeItem, getItem} from "../helper/storage";
 import { bindActionCreators } from "redux";
 import * as actions from '../redux/actions';
 import { connect } from 'react-redux';
@@ -34,15 +34,24 @@ import { connect } from 'react-redux';
         this.props.userProfileRequest({userToken:userToken.token})
   }
   onProfileEdit=()=>{
-    const {profileEdit} = this.state;
-    if(!profileEdit){
-        // this.refs.mobileNumber._root.focus()
-        this.setState({profileEdit:!this.state.profileEdit})
+    const {index} =this.state;
+    if(index == 1){
+      this.props.navigation.navigate("Exebition",{addQuote:true})
     }
-    else{
-        this.setState({profileEdit:!this.state.profileEdit,Mobilefocus:false,aboutYourSelfFocus:false})
-    }
+    // const {profileEdit} = this.state;
+    // if(!profileEdit){
+    //     // this.refs.mobileNumber._root.focus()
+    //     this.setState({profileEdit:!this.state.profileEdit})
+    // }
+    // else{
+    //     this.setState({profileEdit:!this.state.profileEdit,Mobilefocus:false,aboutYourSelfFocus:false})
+    // }
 }
+
+  logout=async()=>{
+    await removeItem("userInfo")
+    this.props.navigation.navigate("Exebition")
+  }
 
  
   render() {
@@ -74,8 +83,8 @@ import { connect } from 'react-redux';
             />
           }
           renderScene={SceneMap({
-            profile:()=> <FabricatorProfile exhitorProfile={true}/>,
-            quotes:()=> <ExhibitorQuotes portfolioData={userProfile.data.length && userProfile.data.length >0  && userProfile.data[1].exhbhition_request} />,
+            profile:()=> <FabricatorProfile logoutFunction ={true} logout={this.logout} exhitorProfile={true}/>,
+            quotes:()=> <ExhibitorQuotes userProfile={userProfile} portfolioData={userProfile.data.length && userProfile.data.length >0  && userProfile.data[1].exhbhition_request} />,
           })}
           onIndexChange={index => this.setState({ index })}
           initialLayout={{ width: Dimensions.get('window').width }}

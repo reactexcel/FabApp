@@ -89,7 +89,7 @@ export default class Portfolio extends Component {
             <View style={styles.portfolioWrapper}>
                 <VirtualizedList
                    style={{paddingVertical:12}}
-                    data={portfolioData}
+                    data={portfolioData ? portfolioData : []}
                     renderItem={!horizontal ? this._exhibitorQuotes : this._renderItem}
                     keyExtractor={(item,index)=>index.toString()}
                     initialNumToRender={20}

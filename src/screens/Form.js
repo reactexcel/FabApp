@@ -103,6 +103,7 @@ import ErrorLoader from "../generic/ErrorLoader";
       name: exhibitorDetail.name,
       bio: exhibitorDetail.aboutYourSelf,
       phone: `+91${exhibitorDetail.mobileNo}`,
+      website_link: `https://${exhibitorDetail.websiteLink}`
     }
     if(index == 1){
       let errors = validate(exhibitorDetail,"fromValidation")

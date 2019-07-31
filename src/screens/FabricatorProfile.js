@@ -29,7 +29,9 @@ import validate from "../helper/validation";
                     websiteLink:"",
                     aboutYourSelf:"",
                     userToken:undefined,
-                    errors:{}
+                    errors:{},
+                    navigatedFromForm:false
+
                 }
       }
     
@@ -37,7 +39,9 @@ import validate from "../helper/validation";
     const path =  this.props.navigation && this.props.navigation.state && this.props.navigation.state.params
         if(path && path.navigatedFromForm){
             const userToken = await getItem("userInfo")
-            this.setState({userToken})
+            console.log(userToken,'userToken');
+            
+            this.setState({userToken,navigatedFromForm:true})
             this.props.userProfileRequest({userToken:userToken.token})
         }
     }
@@ -84,6 +88,27 @@ import validate from "../helper/validation";
         }
     }
 
+    static getDerivedStateFromProps(props,state){
+        const {userProfile,updateProfile} = props;
+        if(!state.navigatedFromForm){
+            if(userProfile.isSuccess && userProfile.data && userProfile.data.length && userProfile.data[0] ){
+                const userInfo =userProfile.data && userProfile.data.length && userProfile.data[0] 
+                return {
+                    name:userInfo.name,
+                    aboutYourSelf:userInfo.bio,
+                    mobileNumber:userInfo.phone.replace("+91",""),
+                    websiteLink:userInfo.website_link
+                }
+            }
+            else{
+                return null
+            }
+        }
+        else{
+            return null
+        }
+    }
+
     goBack=()=>{
          this.props.navigation.goBack()
     }
@@ -125,8 +150,12 @@ import validate from "../helper/validation";
     }
 
     logout=async()=>{
-       await removeItem("userInfo")
-        this.props.navigation.navigate("Exebition")
+        if(this.props.logoutFunction){
+           this.props.logout()
+        }else{
+            await removeItem("userInfo")
+            this.props.navigation.navigate("Exebition")
+        }
     }
 
     updateProfile=()=>{

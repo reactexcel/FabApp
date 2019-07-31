@@ -24,12 +24,15 @@ import {setItem, getItem,removeItem} from "../helper/storage";
       }
 
   async  componentDidMount() {
+    const addQuote = this.props.navigation.state.params && this.props.navigation.state.params.addQuote
       const userToken = await getItem("userInfo")
-      if(userToken && userToken.role ==="fabricator"){
+      console.log(this.props,userToken,addQuote,'propsssssssss');
+
+      if(!addQuote && userToken && userToken.role ==="fabricator"){
         SplashScreen.hide();
         this.props.navigation.replace("FabricatorProfile",{navigatedFromForm:true})
       }
-      else if(userToken && userToken.role ==="exhibitor"){
+      else if(!addQuote && userToken && userToken.role ==="exhibitor"){
         // SplashScreen.hide();
         this.props.navigation.replace("Exhibitor")
       }
@@ -56,13 +59,14 @@ import {setItem, getItem,removeItem} from "../helper/storage";
 
     render() {
       const {alleEhibitionList} = this.props;
+      const addQuote = this.props.navigation.state.params && this.props.navigation.state.params.addQuote
         return (
             <>
                 <Header 
                     isLeft={true}
                     isCenter={true}
                     centerText={"All Exhibititions"}
-                    // leftIcon={"arrowleft"}
+                    leftIcon={addQuote ? "arrowleft" : null}
                     leftIconCategory={"AntDesign"}
                     isNotRightThenWidth={"75%"}
                     goBack={this.goBack}
