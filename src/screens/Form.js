@@ -89,6 +89,7 @@ import ErrorLoader from "../generic/ErrorLoader";
             this.setState({scrollToIndex:scrollToIndex+1})
         }
         if(scrollToIndex == 8 ){
+          this.props.clearUserProfileRequest()
           this.onSubmit();
         }
         if(addQuote && scrollToIndex == 7 ){

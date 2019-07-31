@@ -137,3 +137,12 @@ export function* clearUpdateReducerRequest(action) {
 
     }
   }
+
+  //action to clear the update reducer
+export function* clearUserProfileReducerRequest(action) {
+  try {
+        yield put(actions.clearUserProfileSuccess());
+  } catch (e) {
+
+    }
+  }
