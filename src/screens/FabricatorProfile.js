@@ -40,8 +40,12 @@ import ErrorLoader from "../generic/ErrorLoader";
     }
 
     componentDidUpdate(preProps){
+        console.log("gggggggggggggggggggggggggggggggggg");
+        
         const {userProfile} = this.props;
         if(userProfile.isSuccess !== preProps.userProfile.isSuccess){
+            console.log("checkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+            
             if(userProfile.data && userProfile.data.length){
                 const userInfo = userProfile.data[0] 
                 this.setState({name:userInfo.name,
@@ -89,9 +93,13 @@ import ErrorLoader from "../generic/ErrorLoader";
         AsyncStorage.removeItem("userInfo")
         this.props.navigation.navigate("Exhibition")
     }
+
+
     render() {
+        console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
         const {exhitorProfile,userProfile} =this.props;
         const {zoomer,profileEdit,mobileNumber,websiteLink,name,aboutYourSelf,Mobilefocus,aboutYourSelfFocus,websiteFocus}= this.state
+       const userInfo = userProfile.data && userProfile.data.length && userProfile.data[0]     
         return (
             <View style={styles.container}>
                 {!exhitorProfile &&
@@ -102,7 +110,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                     leftIconCategory={ "AntDesign"}
                     isRight={true}
                     rightIconCategoty={"MaterialCommunityIcons"}
-                    rightIcon={profileEdit ? "pencil-off" : "pencil"}
+                    rightIcon={profileEdit  ? "pencil-off" :  "pencil"}
                     centerText={"Profile"}
                     goBack={this.goBack}
                     onPressRight={this.onProfileEdit}
@@ -165,6 +173,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                                         onFocus={()=>{this.setState({websiteFocus:true, Mobilefocus:false,aboutYourSelfFocus:false})}}
                                         onSubmitEditing={(e)=>this.onFieldSubmitting("mobileno")}
                                         onBlur={(e)=>this.onFieldSubmitting("")}
+                                        onChangeText={(websiteLink)=>this.setState({websiteLink})}
                                     />
                                 </Item>
                             </View>
@@ -186,6 +195,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                                         onFocus={()=>{this.setState({websiteFocus:false,Mobilefocus:true,aboutYourSelfFocus:false})}}
                                         onSubmitEditing={(e)=>this.onFieldSubmitting("aboutYourSelf")}
                                         onBlur={(e)=>this.onFieldSubmitting("")}
+                                        onChangeText={(mobileNumber)=>this.setState({mobileNumber})}
                                     />
                                 </Item>
                             </View>
@@ -208,6 +218,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                                             disabled={!profileEdit}
                                             onFocus={()=>{this.setState({websiteFocus:false, Mobilefocus:false,aboutYourSelfFocus:true})}}
                                             onBlur={(e)=>this.onFieldSubmitting("")}
+                                            onChangeText={(aboutYourSelf)=>this.setState({aboutYourSelf})}
                                         /> 
                                     }
                             </Item>
@@ -245,6 +256,12 @@ import ErrorLoader from "../generic/ErrorLoader";
                         </View>
                     </ScrollView>  : <ErrorLoader handlerData={userProfile} />}
                 </LinearGradient>
+                {(profileEdit && userInfo && (userInfo.name !== name || userInfo.website_link !== websiteLink || userInfo.phone.replace("+91","") !== mobileNumber) ) &&
+                <TouchableOpacity onPress={()=>this.props.onSubmit()} activeOpacity={.7}>
+                        <View style={styles.tapToContinueButtonView}>
+                            <Text style={styles.continueText}>Update</Text>
+                        </View>
+                 </TouchableOpacity>}
             </View>
         )
     }
@@ -366,6 +383,24 @@ const styles = StyleSheet.create({
     noPortfolioText:{
         fontSize:15,
         textAlign: 'center',
-       
+    },
+    tapToContinueButtonView:{
+        marginTop:5,
+        marginHorizontal:10,
+        backgroundColor:"#000000",
+        padding:15,
+        flexDirection:'row',
+        justifyContent:"center",
+        borderRadius:4,
+        alignItems:'center'
+    },
+    continueText:{
+        color:"#ffffff",
+        fontSize:16,
+        fontWeight:"800",
+        marginRight:10
+    },
+    iconColor:{
+        color:"#ffffff"
     }
 })

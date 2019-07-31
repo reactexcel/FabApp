@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
     index: 0,
     profileEdit:false,
     routes: [
-      { key: 'profile', title: 'Profile',labelStyle:{color:'red'} },
+      { key: 'profile', title: 'Profile'},
       { key: 'quotes', title: 'Quotes' },
     ],
   };
