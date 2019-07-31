@@ -54,6 +54,7 @@ import ErrorLoader from "../generic/ErrorLoader";
   }
 
   scrollToIndexHandler = (mainIndex, index,length,flatListRef) => {
+    const addQuote = this.props.navigation.state.params && this.props.navigation.state.params.addQuote
      let errors = {}
      const {exhibitorDetail,exhibitorBranding,exhibitorFurniture,exhibitorProducts,userToken} = this.state;
      if(mainIndex == 0){
@@ -81,21 +82,23 @@ import ErrorLoader from "../generic/ErrorLoader";
         if(!flatListRefState){
           this.setState({flatListRefState:flatListRef})
         }
-        if(length>index){
+        if(addQuote? length-1>index : length>index){
             flatListRef.scrollToIndex({animated: true, index:index});
         }
-        if( length > index){
+        if(addQuote? length-1>index : length > index){
             this.setState({scrollToIndex:scrollToIndex+1})
         }
         if(scrollToIndex == 8 ){
           this.onSubmit();
+        }
+        if(addQuote && scrollToIndex == 7 ){
+          this.addQuote(userToken.token);
         }
      }
   } 
 
   onSubmit=()=>{
     const{exhibitorDetail, index} =this.state;
-   
     const payload={
       email :exhibitorDetail.email ,
       password : "test",
@@ -114,14 +117,11 @@ import ErrorLoader from "../generic/ErrorLoader";
     }else{
       this.props.userRegistrationRequest(payload);
     }
-    
   }
 
  async componentDidMount() {
     const userToken = await getItem("userInfo")
-    console.log(userToken,'userToken');
     this.setState({userToken})
-    
     const {products} = this.props.productList;
     if(products && products.products && products.products.length ){
       this.setState({products:products.products,extraDataForProducts:products.products,
@@ -134,23 +134,11 @@ import ErrorLoader from "../generic/ErrorLoader";
 
   componentDidUpdate(preProps){
     const {user,createExhibition} =this.props
-    console.log(user,'useruseruseruseruser');
-    
     const { exhibitorDetail,index, exhibitorBranding,exhibitorFurniture,exhibitorProducts} =this.state;
     if(user.isSuccess !== preProps.user.isSuccess ){
       setItem("userInfo", JSON.stringify({token:user.data.token,role:index ==0 ? "exhibitor" : "fabricator"}));
       if( index ==0){
-          const payload = {
-            size : exhibitorDetail.stallSize,
-            stall_no:exhibitorDetail.stallNo ,
-            color_theme : exhibitorDetail.colorTheme,
-            carpet: exhibitorDetail.carpetColor,
-            products: [{product:"bulb"},{product:"light"}],
-            brandings: [{branding:"TV"},{branding:"LED"}],
-            furnitures: [{furniture:"sofa"},{furniture:"bed"}],
-            website_link: `https://${exhibitorDetail.websiteLink}`
-          }
-         this.props.createExhibitionRequest({data:payload,userToken:user.data.token,exhibitionToken:this.props.navigation.state.params.id})
+        this.addQuote(user.data.token);
       }
       else{
         this.props.navigation.navigate("FabricatorProfile",{navigatedFromForm:true})
@@ -161,6 +149,21 @@ import ErrorLoader from "../generic/ErrorLoader";
         this.props.navigation.navigate("Exhibitor")
       }
     }
+  }
+
+  addQuote=(token)=>{
+    const { exhibitorDetail,index, exhibitorBranding,exhibitorFurniture,exhibitorProducts} =this.state;
+    const payload = {
+      size : exhibitorDetail.stallSize,
+      stall_no:exhibitorDetail.stallNo ,
+      color_theme : exhibitorDetail.colorTheme,
+      carpet: exhibitorDetail.carpetColor,
+      products: [{product:"bulb"},{product:"light"}],
+      brandings: [{branding:"TV"},{branding:"LED"}],
+      furnitures: [{furniture:"sofa"},{furniture:"bed"}],
+      website_link: `https://${exhibitorDetail.websiteLink}`
+    }
+   this.props.createExhibitionRequest({data:payload,userToken:token,exhibitionToken:this.props.navigation.state.params.id})
   }
 
   componentWillUnmount() {

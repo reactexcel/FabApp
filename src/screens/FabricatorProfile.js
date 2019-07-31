@@ -89,7 +89,7 @@ import validate from "../helper/validation";
     }
 
     static getDerivedStateFromProps(props,state){
-        const {userProfile,updateProfile} = props;
+        const {userProfile} = props;
         if(!state.navigatedFromForm){
             if(userProfile.isSuccess && userProfile.data && userProfile.data.length && userProfile.data[0] ){
                 const userInfo =userProfile.data && userProfile.data.length && userProfile.data[0] 

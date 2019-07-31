@@ -17,6 +17,10 @@ import {setItem, getItem,removeItem} from "../helper/storage";
       };
 
     toForm=(id)=>{
+      const addQuote = this.props.navigation.state.params && this.props.navigation.state.params.addQuote
+      if(addQuote){
+        this.props.navigation.navigate("WorkerForm",{id,addQuote:true})
+      }
         this.props.navigation.navigate("WorkerForm",{id})
     }
     goBack=()=>{
@@ -26,8 +30,6 @@ import {setItem, getItem,removeItem} from "../helper/storage";
   async  componentDidMount() {
     const addQuote = this.props.navigation.state.params && this.props.navigation.state.params.addQuote
       const userToken = await getItem("userInfo")
-      console.log(this.props,userToken,addQuote,'propsssssssss');
-
       if(!addQuote && userToken && userToken.role ==="fabricator"){
         SplashScreen.hide();
         this.props.navigation.replace("FabricatorProfile",{navigatedFromForm:true})
@@ -65,10 +67,10 @@ import {setItem, getItem,removeItem} from "../helper/storage";
                 <Header 
                     isLeft={true}
                     isCenter={true}
-                    centerText={"All Exhibititions"}
+                    centerText={addQuote ? "Add Quote" : "All Exhibititions"}
                     leftIcon={addQuote ? "arrowleft" : null}
                     leftIconCategory={"AntDesign"}
-                    isNotRightThenWidth={"75%"}
+                    isNotRightThenWidth={addQuote ? "70%" : "75"}
                     goBack={this.goBack}
                  />
                 {(alleEhibitionList.isLoading || alleEhibitionList.isError) &&
