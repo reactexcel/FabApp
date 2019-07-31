@@ -35,6 +35,10 @@ export const updateProfileError = createAction(constants.UPDATE_PROFILE_ERROR);
 export const userProfileAfterUpdateRequest= createAction(constants.USER_PROFILE_AFTER_UPDATE_REQUEST);
 export const userProfileAfterUpdateSuccess = createAction(constants.USER_PROFILE_AFTER_UPDATE_SUCCESS);
 
+//constants to clear  update reducer
+export const clearUpdateRequest= createAction(constants.CLEAR_UPDATE_REQUEST);
+export const clearUpdateSuccess = createAction(constants.CLEAR_UPDATE_SUCCESS);
+
 //constants to upload portfolio(fabricator)
 export const uploadPortfolioequest= createAction(constants.UPLOAD_PORTFOLIO_REQUEST);
 export const uploadPortfolioSuccess = createAction(constants.UPLOAD_PORTFOLIO_SUCCESS);

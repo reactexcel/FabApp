@@ -128,3 +128,12 @@ try {
     }
   }
 }
+
+//action to clear the update reducer
+export function* clearUpdateReducerRequest(action) {
+  try {
+        yield put(actions.clearUpdateSuccess());
+  } catch (e) {
+
+    }
+  }

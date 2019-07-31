@@ -184,6 +184,18 @@ update(state, {
     data: { $set: action.payload }
    }
 });
+
+const clearUpdateReducerRequest = (state, action) =>{
+   return(
+update(state, {
+   updateProfile:{
+    isLoading: { $set: false },
+    isError: { $set: false },
+    isSuccess: { $set: false },
+    errorMessage:{ $set: "" },
+    data:{ $set: "" },
+   }
+}))};
  
 export default handleActions(
  {
@@ -206,6 +218,8 @@ export default handleActions(
 
    [constants.USER_PROFILE_AFTER_UPDATE_REQUEST]: userProfileAfterUpdateRequest,
    [constants.USER_PROFILE_AFTER_UPDATE_SUCCESS]: userProfileAfterUpdateSuccess,
+
+   [constants.CLEAR_UPDATE_SUCCESS]: clearUpdateReducerRequest,
    
  },
  initialState

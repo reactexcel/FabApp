@@ -7,12 +7,12 @@ import Portfolio from "../components/Portfolio";
 import Layout from '../helper/Layout';
 import ImageZoom from 'react-native-image-pan-zoom';
 import {Icon,Input,Item,Label,Textarea} from "native-base"
-import SplashScreen from "react-native-splash-screen";
 import { bindActionCreators } from "redux";
 import * as actions from '../redux/actions';
 import { connect } from 'react-redux';
 import {setItem, getItem,removeItem} from "../helper/storage";
 import ErrorLoader from "../generic/ErrorLoader";
+import validate from "../helper/validation";
 
  class FabricatorProfile extends Component {
     static navigationOptions = {
@@ -28,7 +28,8 @@ import ErrorLoader from "../generic/ErrorLoader";
                     mobileNumber:"",
                     websiteLink:"",
                     aboutYourSelf:"",
-                    userToken:undefined
+                    userToken:undefined,
+                    errors:{}
                 }
       }
     
@@ -100,6 +101,7 @@ import ErrorLoader from "../generic/ErrorLoader";
             this.setState({profileEdit:!this.state.profileEdit,})
         }
         else{
+            this.props.clearUpdateRequest()
             this.setState({profileEdit:!this.state.profileEdit,Mobilefocus:false,aboutYourSelfFocus:false,
                 name:userInfo.name,
                 aboutYourSelf:userInfo.bio,
@@ -130,18 +132,21 @@ import ErrorLoader from "../generic/ErrorLoader";
     updateProfile=()=>{
         const {mobileNumber, aboutYourSelf,userToken, websiteLink} = this.state;
         const userInfo = this.props.userProfile.data[0] 
+       const errors = validate({aboutYourSelf:aboutYourSelf,mobileNumber:mobileNumber,websiteLink:websiteLink},'duringUpdate')
+       this.setState({errors})
+       if(!Object.keys(errors).length){
         this.props.updateProfileRequest(
-                                    {userToken:userToken.token,
-                                    id:userInfo.id,
-                                    data:{bio:aboutYourSelf,phone:`+91${mobileNumber}`, website_link:`https://${websiteLink}`}}
-                                    )
+                                        {userToken:userToken.token,
+                                        id:userInfo.id,
+                                        data:{bio:aboutYourSelf,phone:`+91${mobileNumber}`, website_link:`https://${websiteLink}`}}
+                                        )
+       }
     }
 
 
     render() {
-        console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
         const {exhitorProfile,userProfile,updateProfile} =this.props;
-        const {zoomer,profileEdit,mobileNumber,websiteLink,name,aboutYourSelf,Mobilefocus,aboutYourSelfFocus,websiteFocus}= this.state
+        const {zoomer,profileEdit,mobileNumber,websiteLink,name,aboutYourSelf,errors,Mobilefocus,aboutYourSelfFocus,websiteFocus}= this.state
        const userInfo = userProfile.data && userProfile.data.length && userProfile.data[0]  
        const websiteError =  updateProfile.data &&  updateProfile.data.website_link && updateProfile.data.website_link[0]
        const phoneError =  updateProfile.data &&  updateProfile.data.phone && updateProfile.data.phone[0]
@@ -226,7 +231,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                                 </Item>
                             </View>
                             <View style={[styles.horizontalLine,{borderBottomColor:websiteFocus ? "#000000" : "#D7DBDD",borderBottomWidth:websiteFocus ? 2 : 1}]}/>
-                            {profileEdit &&<Text style={styles.error}>{websiteError} {/* *required field */}</Text>}
+                            {profileEdit &&<Text style={styles.error}>{websiteError} {errors.websiteLink}</Text>}
                             
                             <View style={styles.itemWrapper}>
                                 <Item style={{borderColor:"transparent"}} stackedLabel>
@@ -248,7 +253,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                                 </Item>
                             </View>
                             <View style={[styles.horizontalLine,{borderBottomColor:Mobilefocus ? "#000000" : "#D7DBDD",borderBottomWidth:Mobilefocus ? 2 : 1}]}/>
-                            {profileEdit && <Text style={styles.error}> {phoneError}{/* *required field */}</Text>}
+                            {profileEdit && <Text style={styles.error}> {phoneError}{errors.mobileNumber}</Text>}
                            
                             
                             <View style={styles.itemWrapper}>
@@ -273,7 +278,7 @@ import ErrorLoader from "../generic/ErrorLoader";
                             </View>
                             
                             <View style={[styles.horizontalLine,{borderBottomColor:aboutYourSelfFocus ? "#000000" : "#D7DBDD",borderBottomWidth:aboutYourSelfFocus ? 2 : 1}]}/>
-                            {profileEdit &&<Text style={styles.error}>*required field</Text>}
+                            {profileEdit &&<Text style={styles.error}>{errors.aboutYourSelf}</Text>}
                             {(!exhitorProfile && userProfile.data.length && userProfile.data[0].role === "fabricator") &&
                             <>
                             <View style={styles.portfolioWrapper}>

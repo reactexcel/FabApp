@@ -37,6 +37,25 @@ export default validate = (values,step) => {
       errors.aboutYourSelf = "About you is too short to know you";
     }
   }
+
+  if( step === "duringUpdate"){
+    if (!values.aboutYourSelf) {
+      errors.aboutYourSelf = "Tell us something about you";
+    }else if(values.aboutYourSelf.length < 50){
+      errors.aboutYourSelf = "About you is too short to know you";
+    }
+
+    if (!values.mobileNumber) {
+      errors.mobileNumber = "Enter your mobile number";
+    }
+    else if(values.mobileNumber.length < 10){
+      errors.mobileNumber = "Invalid mobile number";
+    }
+
+    if (!values.websiteLink) {
+      errors.websiteLink = "Enter your website link";
+    }
+  }
     
 
 
