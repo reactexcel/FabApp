@@ -36,7 +36,8 @@ import  DocumentPickerUtil from "react-native-document-picker"
                     errors:{},
                     navigatedFromForm:false,
                     facricatorPortFolio:[],
-                    zoomUri:''
+                    zoomUri:'',
+                    base64Data:[]
 
                 }
       }
@@ -51,7 +52,7 @@ import  DocumentPickerUtil from "react-native-document-picker"
     }
 
     componentDidUpdate(preProps){
-        const {userProfile,updateProfile} = this.props;
+        const {userProfile,updateProfile,uploadPotfolio} = this.props;
         const {userToken} = this.state;
         if(userProfile.isSuccess !== preProps.userProfile.isSuccess){
             if(userProfile.data && userProfile.data.length){
@@ -90,6 +91,12 @@ import  DocumentPickerUtil from "react-native-document-picker"
                 );
               }
         }
+        if(uploadPotfolio.isSuccess !== preProps.uploadPotfolio.isSuccess){
+            if(uploadPotfolio.isSuccess && uploadPotfolio.data){
+                this.props.userProfileRequest({userToken:userToken.token})
+            }
+        }
+
     }
 
     static getDerivedStateFromProps(props,state){
@@ -188,6 +195,7 @@ import  DocumentPickerUtil from "react-native-document-picker"
     addPortfolio=async()=>{
         //response is an object mapping type to permission
         let facricatorPortFolio =[]
+        let base64Data =[]
         try {
             const res = await DocumentPicker.pickMultiple({
               type: [DocumentPicker.types.images],
@@ -196,9 +204,14 @@ import  DocumentPickerUtil from "react-native-document-picker"
                 // let selectedImages={}
                 res.map((img,i)=>{
                     facricatorPortFolio.push({image:img.uri})
+                    RNFetchBlob.fs.readFile(img.uri, "base64").then(
+                        data => {
+                            console.log(data,'base644444444444444')
+                            base64Data.push({image:data})
+                        })
                 })
             }
-            this.setState({facricatorPortFolio})
+            this.setState({facricatorPortFolio,base64Data})
           } catch (err) {
             if (DocumentPicker.isCancel(err)) {
                 console.log('errorrrrrrrrrrrr');
@@ -275,14 +288,22 @@ import  DocumentPickerUtil from "react-native-document-picker"
     //       );
         // }
     }
+    uploadPortfolio=()=>{
+        const {facricatorPortFolio,base64Data,userToken} = this.state;
+        if(facricatorPortFolio.length){
+            this.props.uploadPortfolioequest({userToken:userToken.token,data:{images:base64Data}})
+        }
+    }
 
 
     render() {
-        const {exhitorProfile,userProfile,updateProfile} =this.props;
+        const {exhitorProfile,userProfile,updateProfile,uploadPotfolio} =this.props;
         const {zoomUri, facricatorPortFolio,zoomer,profileEdit,mobileNumber,websiteLink,name,aboutYourSelf,errors,Mobilefocus,aboutYourSelfFocus,websiteFocus}= this.state
        const userInfo = userProfile.data && userProfile.data.length && userProfile.data[0]  
        const websiteError =  updateProfile.data &&  updateProfile.data.website_link && updateProfile.data.website_link[0]
-       const phoneError =  updateProfile.data &&  updateProfile.data.phone && updateProfile.data.phone[0]       
+       const phoneError =  updateProfile.data &&  updateProfile.data.phone && updateProfile.data.phone[0]   
+           console.log(this.state.base64Data,'base64Data');
+           
         return (
             <View style={styles.container}>
                 {!exhitorProfile &&
@@ -298,7 +319,7 @@ import  DocumentPickerUtil from "react-native-document-picker"
                     goBack={this.goBack}
                     onPressRight={this.onProfileEdit}
                 />}
-                {(updateProfile.isLoading || userProfile.isUpdateLoading) && <View style={{flexDirection:'column',justifyContent:"center",alignItems:"center",width:Layout.window.width,height:Layout.window.height-60-StatusBar.currentHeight,bottom:0,backgroundColor:"rgba(0,0,0,.4)",position:"absolute",zIndex:100000}}>
+                {(uploadPotfolio.isLoading || updateProfile.isLoading || userProfile.isUpdateLoading) && <View style={{flexDirection:'column',justifyContent:"center",alignItems:"center",width:Layout.window.width,height:Layout.window.height-60-StatusBar.currentHeight,bottom:0,backgroundColor:"rgba(0,0,0,.4)",position:"absolute",zIndex:100000}}>
                          <ActivityIndicator size="large" color="#ffffff" />
                 </View>}
                 
@@ -424,7 +445,9 @@ import  DocumentPickerUtil from "react-native-document-picker"
                                             name={"plus"}
                                             style={styles.plusIcon}
                                         />
-                                    <Text style={styles.portfoliotitle}>Upload </Text>
+                                        <TouchableOpacity onPress={this.uploadPortfolio}>
+                                            <Text  style={styles.portfoliotitle}>Upload </Text>
+                                        </TouchableOpacity>
                                     </View>
                                     
                                 </View>
@@ -432,7 +455,8 @@ import  DocumentPickerUtil from "react-native-document-picker"
                                     <Portfolio 
                                         onPortfolioImagePress ={this.onPortfolioImagePress}
                                         horizontal={true}
-                                        portfolioData={userProfile.data.length > 1 && userProfile.data[2].Portfolio.length || facricatorPortFolio }
+                                        portfolioData={userProfile.data.length > 1 && userProfile.data[2].Portfolio.length && userProfile.data[2].Portfolio || facricatorPortFolio }
+                                       isApiData ={userProfile.data.length > 1 && userProfile.data[2].Portfolio.length ? true : false }
                                     /> :
                                     <View style={styles.noPortfolioView}>
                                         <Text style={styles.noPortfolioText} >
@@ -465,6 +489,7 @@ const mapStateToProps = (state) => {
     return {
         userProfile:state.user.userProfile,
         updateProfile:state.user.updateProfile,
+        uploadPotfolio:state.user.uploadPotfolio
     }
   }
   

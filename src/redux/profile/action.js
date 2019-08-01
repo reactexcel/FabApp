@@ -154,7 +154,7 @@ export function* clearUserProfileReducerRequest(action) {
     try {
       const response = yield call(
         fireAjax,
-        "PUT",
+        "POST",
         'portfolio',
         header,
         action.payload.data

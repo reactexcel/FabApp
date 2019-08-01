@@ -7,11 +7,12 @@ export default class Portfolio extends Component {
 
     _renderItem=({item, index})=>{
         let list = item[index]
+        const {isApiData} =this.props;
         return(
             <View>
                 <View style={[styles.portfolioView,{marginLeft:index ==0 ? 10 : 0, marginRight:index == portfolio.length-1 ? 40 : 10 }]}>
-                    <TouchableOpacity activeOpacity={.7} onPress={()=>this.onPortfolioImagePress(list.image)}>
-                         <Image resizeMode="cover" style={styles.img} source={{uri:list.image}}/>
+                    <TouchableOpacity activeOpacity={.7} onPress={()=>this.onPortfolioImagePress(isApiData ? list.image.replace("image/upload/","") : list.image)}>
+                         <Image resizeMode="cover" style={styles.img} source={{uri:isApiData ? list.image.replace("image/upload/","") : list.image}}/>
                     </TouchableOpacity>
                 </View>
             </View>

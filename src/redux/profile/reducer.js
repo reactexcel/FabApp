@@ -220,7 +220,7 @@ update(state, {
 const uploadPotfolioRequest = (state, action) =>{
    return(
 update(state, {
-   updateProfile:{
+   uploadPotfolio:{
     isLoading: { $set: true },
     isError: { $set: false },
     isSuccess: { $set: false },
@@ -231,7 +231,7 @@ update(state, {
 
 const uploadPotfolioSuccess = (state, action) =>
 update(state, {
-   updateProfile:{
+   uploadPotfolio:{
     isLoading: { $set: false },
     isError: { $set: false },
     isSuccess: { $set: true },
@@ -242,7 +242,7 @@ update(state, {
 
 const uploadPotfolioError = (state, action) =>
 update(state, {
-   updateProfile:{
+   uploadPotfolio:{
     isLoading: { $set: false },
     isError: { $set: true },
     isSuccess: { $set: false },
