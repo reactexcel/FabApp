@@ -70,7 +70,7 @@ import {setItem, getItem,removeItem} from "../helper/storage";
                     centerText={addQuote ? "Add Quote" : "All Exhibititions"}
                     leftIcon={addQuote ? "arrowleft" : null}
                     leftIconCategory={"AntDesign"}
-                    isNotRightThenWidth={addQuote ? "70%" : "75"}
+                    isNotRightThenWidth={addQuote ? "70%" : "75%"}
                     goBack={this.goBack}
                  />
                 {(alleEhibitionList.isLoading || alleEhibitionList.isError) &&

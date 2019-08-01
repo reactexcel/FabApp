@@ -89,10 +89,10 @@ import ErrorLoader from "../generic/ErrorLoader";
             this.setState({scrollToIndex:scrollToIndex+1})
         }
         if(scrollToIndex == 8 ){
-          this.props.clearUserProfileRequest()
           this.onSubmit();
         }
         if(addQuote && scrollToIndex == 7 ){
+          // this.props.clearUserProfileRequest()
           this.addQuote(userToken.token);
         }
      }
@@ -113,7 +113,7 @@ import ErrorLoader from "../generic/ErrorLoader";
       let errors = validate(exhibitorDetail,"fromValidation")
       this.setState({errors})
       if(!Object.keys(errors).length){
-        this.props.userRegistrationRequest(payload);
+        this.props.userRegistrationRequest(payload); 
      }
     }else{
       this.props.userRegistrationRequest(payload);
@@ -135,7 +135,8 @@ import ErrorLoader from "../generic/ErrorLoader";
 
   componentDidUpdate(preProps){
     const {user,createExhibition} =this.props
-    const { exhibitorDetail,index, exhibitorBranding,exhibitorFurniture,exhibitorProducts} =this.state;
+    const addQuote = this.props.navigation.state.params && this.props.navigation.state.params.addQuote
+    const { exhibitorDetail,index,userToken, exhibitorBranding,exhibitorFurniture,exhibitorProducts} =this.state;
     if(user.isSuccess !== preProps.user.isSuccess ){
       setItem("userInfo", JSON.stringify({token:user.data.token,role:index ==0 ? "exhibitor" : "fabricator"}));
       if( index ==0){
@@ -146,9 +147,15 @@ import ErrorLoader from "../generic/ErrorLoader";
       }
     }
     if(createExhibition.isSuccess !== preProps.createExhibition.isSuccess ){
+      if(addQuote){
+        this.props.userProfileRequest({userToken:userToken.token})
+      }
       if(index == 0){
         this.props.navigation.navigate("Exhibitor")
       }
+    }
+    if(createExhibition.userProfile !== preProps.createExhibition.userProfile ){
+      this.props.navigation.navigate("Exhibitor")
     }
   }
 
@@ -242,7 +249,7 @@ import ErrorLoader from "../generic/ErrorLoader";
       extraDataForBrandings,
       errors
     } =this.state;
-    const { user,createExhibition} =this.props;
+    const { user,createExhibition,userProfile} =this.props;
     return (
         <>
         <Header
@@ -257,7 +264,7 @@ import ErrorLoader from "../generic/ErrorLoader";
          {index ==0 && 
           <View style={[styles.formCompletionBar,{width:`${scrollToIndex*12.5}%`}]}></View>
         }
-        {(user.isLoading || createExhibition.isLoading) && <View style={{flexDirection:'column',justifyContent:"center",alignItems:"center",width:Layout.window.width,height:Layout.window.height-60-StatusBar.currentHeight,bottom:0,backgroundColor:"rgba(0,0,0,.4)",position:"absolute",zIndex:100000}}>
+        {(userProfile.isLoading || user.isLoading || createExhibition.isLoading) && <View style={{flexDirection:'column',justifyContent:"center",alignItems:"center",width:Layout.window.width,height:Layout.window.height-60-StatusBar.currentHeight,bottom:0,backgroundColor:"rgba(0,0,0,.4)",position:"absolute",zIndex:100000}}>
                <ActivityIndicator size="large" color="#ffffff" />
         </View>}
         <View style={styles.tabBar}>
@@ -308,7 +315,8 @@ const mapStateToProps = (state) => {
   return {
     productList:state.productNexhibition.product,
     user:state.user.user,
-    createExhibition:state.user.createExhibition
+    createExhibition:state.user.createExhibition,
+    userProfile:state.user.userProfile
   }
 }
 

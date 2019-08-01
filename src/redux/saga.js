@@ -13,7 +13,7 @@ export function* watchActions() {
   yield takeLatest(constants.UPDATE_PROFILE_REQUEST, updateProfileRequest);
   yield takeLatest(constants.USER_PROFILE_AFTER_UPDATE_REQUEST, userProfileAfterUpdateRequest);
   yield takeLatest(constants.CLEAR_UPDATE_REQUEST, clearUpdateReducerRequest);
-  // yield takeLatest(constants.CLEAR_USERPROFILE_REQUEST, clearUserProfileReducerRequest);
+  yield takeLatest(constants.CLEAR_USERPROFILE_REQUEST, clearUserProfileReducerRequest);
 }
 
 export default function* rootSaga() {

@@ -61,7 +61,7 @@ import { connect } from 'react-redux';
         <>
         <Header
           isLeft={true}
-          leftIcon={"arrowleft"}
+          // leftIcon={"arrowleft"}
           isCenter={true}
           leftIconCategory={ "AntDesign"}
           isRight={true}
