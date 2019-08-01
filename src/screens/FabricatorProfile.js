@@ -13,6 +13,10 @@ import { connect } from 'react-redux';
 import {setItem, getItem,removeItem} from "../helper/storage";
 import ErrorLoader from "../generic/ErrorLoader";
 import validate from "../helper/validation";
+import Permissions from "react-native-permissions";
+import  DocumentPicker from "react-native-document-picker";
+import  DocumentPickerUtil from "react-native-document-picker"
+  import RNFetchBlob from "rn-fetch-blob";
 
  class FabricatorProfile extends Component {
     static navigationOptions = {
@@ -30,7 +34,9 @@ import validate from "../helper/validation";
                     aboutYourSelf:"",
                     userToken:undefined,
                     errors:{},
-                    navigatedFromForm:false
+                    navigatedFromForm:false,
+                    facricatorPortFolio:[],
+                    zoomUri:''
 
                 }
       }
@@ -39,8 +45,6 @@ import validate from "../helper/validation";
     const path =  this.props.navigation && this.props.navigation.state && this.props.navigation.state.params
         if(path && path.navigatedFromForm){
             const userToken = await getItem("userInfo")
-            console.log(userToken,'userToken');
-            
             this.setState({userToken,navigatedFromForm:true})
             this.props.userProfileRequest({userToken:userToken.token})
         }
@@ -113,8 +117,10 @@ import validate from "../helper/validation";
          this.props.navigation.goBack()
     }
 
-    onPortfolioImagePress=()=>{
-        this.setState({zoomer:!this.state.zoomer})
+    onPortfolioImagePress=(zoomUri)=>{
+        console.log(zoomUri,'onPortfolioImagePressonPortfolioImagePressonPortfolioImagePress');
+        
+        this.setState({zoomer:!this.state.zoomer,zoomUri})
     }
 
     onProfileEdit=()=>{
@@ -172,13 +178,111 @@ import validate from "../helper/validation";
        }
     }
 
+    askStoragePermission = async () =>{
+        await Permissions.request('storage').then(response => {
+          console.log(response,'per storage')
+          return true;
+        })
+      }
+
+    addPortfolio=async()=>{
+        //response is an object mapping type to permission
+        let facricatorPortFolio =[]
+        try {
+            const res = await DocumentPicker.pickMultiple({
+              type: [DocumentPicker.types.images],
+            });
+            if(res && res.length){
+                // let selectedImages={}
+                res.map((img,i)=>{
+                    facricatorPortFolio.push({image:img.uri})
+                })
+            }
+            this.setState({facricatorPortFolio})
+          } catch (err) {
+            if (DocumentPicker.isCancel(err)) {
+                console.log('errorrrrrrrrrrrr');
+                
+              // User cancelled the picker, exit any dialogs or menus and move on
+            } else {
+              throw err;
+            }
+          }
+    //  if(Platform.OS !== "ios"){
+    //     await Permissions.checkMultiple(['location']).then(response => {
+    //       console.log(response,'check')
+    //       if(response.storage != 'authorized'){
+    //         this.askStoragePermission();
+    //       } else {
+    //         return true;
+    //       }
+    //     })}
+    //     // this.props.change({ resume_file: [] });
+    //     let resumeData = this.state.resumeData;
+    //     this.setState({ converting: true });
+    //     if (Platform.OS !== "ios") {
+    //       //Android Only
+    //     await  DocumentPicker.pick(
+    //         {
+    //           filetype: [DocumentPickerUtil.images()]
+    //         },
+    //         (error, res) => {
+    //           console.log(res);
+              
+    //           SplashScreen.hide();
+    //           this.scroll.scrollToEnd()
+    //           this.setState({whenAddedResume:true})
+    //           if (res) {
+    //             let check =
+    //               this.state.resumeData.length >= 1
+    //                 ? this.state.currentType == res.type
+    //                 : true;
+    //             if (check) {
+    //               let type = res.type.split("/");
+    //               RNFetchBlob.fs.readFile(res.uri, "base64").then(
+    //                 data => {
+    //                   resumeData.push({
+    //                     fileName: res.fileName,
+    //                     dataBase64: data,
+    //                     filetype: type[1]
+    //                   });
+    //                 //   let base64 = require('base-64');
+    //                 //   let decodedData = base64.decode(data);
+    //                 //   let bytes = decodedData.length;
+    //                 //   let fileSizeInMB=(bytes / 1000000)
+    //                 //   if(fileSizeInMB > 2 ){
+    //                 //     alert("File size can't be larger than 2MB");
+    //                 //   }
+    //                   this.setState({
+    //                     converting: false,
+    //                     resumeData,
+    //                     currentType: res.type
+    //                   });
+    //                 },
+    //                 error => {
+    //                   // console.log(error,'asdas')
+    //                   this.setState({ converting: false });
+    //                 }
+    //               );
+    //             } else {
+    //               this.setState({ converting: false, resumeError: null });
+    //               alert("Please select same format for files");
+    //             }
+    //           } else {
+    //             this.setState({ converting: false, resumeError: null });
+    //           }
+    //         }
+    //       );
+        // }
+    }
+
 
     render() {
         const {exhitorProfile,userProfile,updateProfile} =this.props;
-        const {zoomer,profileEdit,mobileNumber,websiteLink,name,aboutYourSelf,errors,Mobilefocus,aboutYourSelfFocus,websiteFocus}= this.state
+        const {zoomUri, facricatorPortFolio,zoomer,profileEdit,mobileNumber,websiteLink,name,aboutYourSelf,errors,Mobilefocus,aboutYourSelfFocus,websiteFocus}= this.state
        const userInfo = userProfile.data && userProfile.data.length && userProfile.data[0]  
        const websiteError =  updateProfile.data &&  updateProfile.data.website_link && updateProfile.data.website_link[0]
-       const phoneError =  updateProfile.data &&  updateProfile.data.phone && updateProfile.data.phone[0]
+       const phoneError =  updateProfile.data &&  updateProfile.data.phone && updateProfile.data.phone[0]       
         return (
             <View style={styles.container}>
                 {!exhitorProfile &&
@@ -216,7 +320,7 @@ import validate from "../helper/validation";
                             cropHeight={Layout.window.height}
                             imageWidth={Layout.window.width}
                             imageHeight={Layout.window.width}>
-                                <Image resizeMode="cover" style={{width:Layout.window.width, height:Layout.window.width}} source={require("../../assets/images/avatar.png")}/>
+                                <Image resizeMode="cover" style={{width:Layout.window.width, height:Layout.window.width}} source={{uri:zoomUri}}/>
                         </ImageZoom>
                     </View>}
                     {userProfile.isSuccess ?  <ScrollView >
@@ -313,17 +417,22 @@ import validate from "../helper/validation";
                             <View style={styles.portfolioWrapper}>
                                 <View style={styles.plusIconView}>
                                     <Text  style={styles.portfoliotitle}>Portfolio</Text>
-                                    <Icon
-                                        type={"AntDesign"}
-                                        name={"plus"}
-                                        style={styles.plusIcon}
-                                    />
+                                    <View style={{flexDirection:"row"}}>
+                                        <Icon
+                                            onPress={this.addPortfolio}
+                                            type={"AntDesign"}
+                                            name={"plus"}
+                                            style={styles.plusIcon}
+                                        />
+                                    <Text style={styles.portfoliotitle}>Upload </Text>
+                                    </View>
+                                    
                                 </View>
-                                {(userProfile.data.length > 1 && userProfile.data[2].Portfolio.length ) ?
+                                {(userProfile.data.length > 1 && userProfile.data[2].Portfolio.length || facricatorPortFolio.length >0 ) ?
                                     <Portfolio 
                                         onPortfolioImagePress ={this.onPortfolioImagePress}
                                         horizontal={true}
-                                        portfolioData={userProfile.data[2].Portfolio}
+                                        portfolioData={userProfile.data.length > 1 && userProfile.data[2].Portfolio.length || facricatorPortFolio }
                                     /> :
                                     <View style={styles.noPortfolioView}>
                                         <Text style={styles.noPortfolioText} >

@@ -6,11 +6,12 @@ const portfolio =[{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A'
 export default class Portfolio extends Component {
 
     _renderItem=({item, index})=>{
+        let list = item[index]
         return(
             <View>
                 <View style={[styles.portfolioView,{marginLeft:index ==0 ? 10 : 0, marginRight:index == portfolio.length-1 ? 40 : 10 }]}>
-                    <TouchableOpacity activeOpacity={.7} onPress={this.onPortfolioImagePress}>
-                         <Image resizeMode="cover" style={styles.img} source={require("../../assets/images/avatar.png")}/>
+                    <TouchableOpacity activeOpacity={.7} onPress={()=>this.onPortfolioImagePress(list.image)}>
+                         <Image resizeMode="cover" style={styles.img} source={{uri:list.image}}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -79,8 +80,8 @@ export default class Portfolio extends Component {
         return data
     }
 
-    onPortfolioImagePress=()=>{
-        this.props.onPortfolioImagePress()
+    onPortfolioImagePress=(uri)=>{
+        this.props.onPortfolioImagePress(uri)
     }
 
     render() {

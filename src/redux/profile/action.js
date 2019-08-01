@@ -146,3 +146,31 @@ export function* clearUserProfileReducerRequest(action) {
 
     }
   }
+
+  export function* uploadPotfolioRequest(action) {
+    const header = {
+        "Authorization":`Token ${action.payload.userToken}`
+      };
+    try {
+      const response = yield call(
+        fireAjax,
+        "PUT",
+        'portfolio',
+        header,
+        action.payload.data
+      );
+    
+      if (response) {
+          yield put(actions.uploadPortfolioSuccess(response.data));
+      }
+    } catch (e) {
+        if(e.response){
+        yield put(actions.uploadPortfolioError(e.response.data));
+        }
+        else if(e.message){
+          yield put(actions.uploadPortfolioError("Network error"));
+        }else{
+          yield put(actions.uploadPortfolioError());
+        }
+      }
+    }
