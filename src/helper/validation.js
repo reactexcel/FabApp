@@ -17,25 +17,31 @@ export default validate = (values,step) => {
     if (!values && step === "carpetColor") {
       errors.error = "Set your stall's carpet color ";
     }
-    if(step === "fromValidation"){
-    if (!values.name) {
-      errors.name = "Enter your name";
-    }
-    if (!values.mobileNo) {
-      errors.mobileNo = "Enter your mobile number";
-    }
-    else if(values.mobileNo.length < 10){
-      errors.mobileNo = "Invalid mobile number";
+    if (!values && step === "websiteLink") {
+      errors.error = "Enter your website link";
+    }else if(!values.includes("www") && step === "websiteLink"){
+      errors.error = "Invalid website link, it must like eg: www.example.com";
     }
 
-    if (!values.email) {
-      errors.email = "Enter your email id ";
-    }
-    if (!values.aboutYourSelf) {
-      errors.aboutYourSelf = "Tell us something about you";
-    }else if(values.aboutYourSelf.length < 50){
-      errors.aboutYourSelf = "About you is too short to know you";
-    }
+    if(step === "fromValidation"){
+      if (!values.name) {
+        errors.name = "Enter your name";
+      }
+      if (!values.mobileNo) {
+        errors.mobileNo = "Enter your mobile number";
+      }
+      else if(values.mobileNo.length < 10){
+        errors.mobileNo = "Invalid mobile number";
+      }
+
+      if (!values.email) {
+        errors.email = "Enter your email id ";
+      }
+      if (!values.aboutYourSelf) {
+        errors.aboutYourSelf = "Tell us something about you";
+      }else if(values.aboutYourSelf.length < 50){
+        errors.aboutYourSelf = "About you is too short to know you";
+      }
   }
 
   if( step === "duringUpdate"){

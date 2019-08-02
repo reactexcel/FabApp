@@ -72,7 +72,11 @@ import ErrorLoader from "../generic/ErrorLoader";
     else if(mainIndex == 6){
       errors = validate(exhibitorDetail.carpetColor,"carpetColor")
      this.setState({errors})
-    }else if(mainIndex == 8){
+    }else if(mainIndex == 7){
+      errors = validate(exhibitorDetail.websiteLink,"websiteLink")
+     this.setState({errors})
+    }
+    else if(mainIndex == 8){
       errors = validate(exhibitorDetail,"fromValidation")
       this.setState({errors})
     }
