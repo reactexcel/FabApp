@@ -101,7 +101,7 @@ import  DocumentPickerUtil from "react-native-document-picker"
             }
         }
         if(deletePotfolio.isSuccess !== preProps.deletePotfolio.isSuccess){
-            if(deletePotfolio.isSuccess ){
+            if(deletePotfolio.data && deletePotfolio.Success ){
                 this.setState({action:"Upload"})
                 this.props.userProfileRequest({userToken:userToken.token})
             }
@@ -134,8 +134,6 @@ import  DocumentPickerUtil from "react-native-document-picker"
     }
 
     onPortfolioImagePress=(zoomUri)=>{
-        console.log(zoomUri,'onPortfolioImagePressonPortfolioImagePressonPortfolioImagePress');
-        
         this.setState({zoomer:!this.state.zoomer,zoomUri})
     }
 
@@ -202,31 +200,34 @@ import  DocumentPickerUtil from "react-native-document-picker"
       }
 
     addPortfolio=async()=>{
-        let fabExtraData = this.state.fabExtraData
-        let base64Data =[]
-        try {
-            const res = await DocumentPicker.pickMultiple({
-              type: [DocumentPicker.types.images],
-            });
-            if(res && res.length){
-                res.map((img,i)=>{
-                    fabExtraData.push({newId:i+1, image:img.uri})
-                    RNFetchBlob.fs.readFile(img.uri, "base64").then(
-                        data => {
-                            base64Data.push({newId:i+1, image:data})
-                        })
-                })
+        let fabExtraData = this.state.fabExtraData;
+        let base64Data = this.state.base64Data;
+        if(Platform.OS !== "ios"){
+            try {
+                const res = await DocumentPicker.pickMultiple({
+                type: [DocumentPicker.types.images],
+                });
+                if(res && res.length){
+                    res.map((img,i)=>{
+                    let index = fabExtraData[fabExtraData.length-1].newId ? fabExtraData[fabExtraData.length-1].newId+1 : i+1
+                        fabExtraData.push({newId: index, image:img.uri})
+                        RNFetchBlob.fs.readFile(img.uri, "base64").then(
+                            data => {
+                                base64Data.push({newId:i ==0 ? base64Data.length+i+1 : base64Data.length+1, image:data})
+                            })
+                    })
+                }
+                this.setState({fabExtraData,base64Data})
+            } catch (err) {
+                if (DocumentPicker.isCancel(err)) {
+                    console.log('errorrrrrrrrrrrr');
+                    
+                // User cancelled the picker, exit any dialogs or menus and move on
+                } else {
+                throw err;
+                }
             }
-            this.setState({fabExtraData,base64Data})
-          } catch (err) {
-            if (DocumentPicker.isCancel(err)) {
-                console.log('errorrrrrrrrrrrr');
-                
-              // User cancelled the picker, exit any dialogs or menus and move on
-            } else {
-              throw err;
-            }
-          }
+        }
     //  if(Platform.OS !== "ios"){
     //     await Permissions.checkMultiple(['location']).then(response => {
     //       console.log(response,'check')
@@ -304,13 +305,14 @@ import  DocumentPickerUtil from "react-native-document-picker"
     removeOrDelete=(newId,actionType,index)=>{
         if(actionType === "normal"){
             let fabExtraData= this.state.fabExtraData.filter((item,i)=>item.newId !== newId)
-            this.setState({fabExtraData})
+            let base64Data = this.state.base64Data.filter((item,i)=>item.newId !==newId)
+            this.setState({fabExtraData,base64Data})
         }else{
             let  fabExtraData =  this.state.fabExtraData;
                 if(!fabExtraData[index].newId){
                     if(fabExtraData[index].selected ){
                         delete fabExtraData[index].selected
-                        this.setState({fabExtraData,imgId:"",action:"Update"})
+                        this.setState({fabExtraData,imgId:"",action:"Upload"})
                     }else{
                         fabExtraData[index].selected = true
                         this.setState({fabExtraData,imgId:fabExtraData[index].id,action:"Delete"})
@@ -327,11 +329,11 @@ import  DocumentPickerUtil from "react-native-document-picker"
 
     render() {
         const {exhitorProfile,userProfile,updateProfile,uploadPotfolio,deletePotfolio} =this.props;
-        const {action, fabExtraData,zoomUri, facricatorPortFolio,zoomer,profileEdit,mobileNumber,websiteLink,name,aboutYourSelf,errors,Mobilefocus,aboutYourSelfFocus,websiteFocus}= this.state
+        const {base64Data, action, fabExtraData,zoomUri, facricatorPortFolio,zoomer,profileEdit,mobileNumber,websiteLink,name,aboutYourSelf,errors,Mobilefocus,aboutYourSelfFocus,websiteFocus}= this.state
        const userInfo = userProfile.data && userProfile.data.length && userProfile.data[0]  
        const websiteError =  updateProfile.data &&  updateProfile.data.website_link && updateProfile.data.website_link[0]
        const phoneError =  updateProfile.data &&  updateProfile.data.phone && updateProfile.data.phone[0]   
-           console.log(this.state.fabExtraData,'base64Data');
+           console.log(this.state.base64Data,fabExtraData,'base64Data');
            
         return (
             <View style={styles.container}>
@@ -474,9 +476,11 @@ import  DocumentPickerUtil from "react-native-document-picker"
                                             name={"plus"}
                                             style={styles.plusIcon}
                                         />
-                                        <TouchableOpacity onPress={action ==="Delete" ? this.deletePotfolio : this.uploadPortfolio}>
-                                            <Text  style={styles.portfoliotitle}>{action}</Text>
-                                        </TouchableOpacity>
+                                       {(action ==="Delete" || base64Data.length>0) &&
+                                            <TouchableOpacity onPress={action ==="Delete" ? this.deletePotfolio : this.uploadPortfolio}>
+                                                <Text  style={styles.portfoliotitle}>{action}</Text>
+                                            </TouchableOpacity>
+                                         }
                                     </View>
                                     
                                 </View>
