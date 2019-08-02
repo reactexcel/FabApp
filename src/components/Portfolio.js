@@ -81,6 +81,16 @@ export default class Portfolio extends Component {
             </View>
         )
     }
+    chatRender=({item, index})=>{
+        let list  = item[index]
+        return(
+            <View style={styles.messgeParent} >
+                <View style={[styles.messageContainer,{width:`${list.message.length*2}%`, alignSelf:list.role ==="fabricator" ? "flex-end" : "flex-start", justifyContent:list.role ==="fabricator" ? "flex-end" : "flex-start"}]}>
+                    <Text style={styles.messageText}>{list.message}</Text>
+                </View>
+            </View>
+        )
+    }
 
     _getItemCount=(data)=>{
         return data.length
@@ -95,13 +105,13 @@ export default class Portfolio extends Component {
     }
 
     render() {
-        const {horizontal,portfolioData,fabExtraData} = this.props;
+        const {horizontal,portfolioData,fabExtraData,from} = this.props;
         return (
             <View style={styles.portfolioWrapper}>
                 <VirtualizedList
                    style={{paddingVertical:12}}
                     data={portfolioData ? portfolioData : []}
-                    renderItem={!horizontal ? this._exhibitorQuotes : this._renderItem}
+                    renderItem={from ==="quote" ? this._exhibitorQuotes : from ==="potfolio" ? this._renderItem : this.chatRender }
                     keyExtractor={(item,index)=>index.toString()}
                     initialNumToRender={20}
                     getItem={this._getItemLayout}
@@ -186,5 +196,20 @@ const styles= StyleSheet.create({
         position:'absolute',
         right:-10,
         top:-10,
+    },
+    messageContainer:{
+        flexDirection:"row",
+        backgroundColor:"rgba(0,0,0,.9)",
+        marginBottom:15,
+        padding:10,
+        borderRadius:5,
+        minWidth:30,
+        maxWidth:"75%"
+    },
+    messgeParent:{
+        paddingHorizontal:10
+    },
+    messageText:{
+        color:"#ffffff"
     }
 })

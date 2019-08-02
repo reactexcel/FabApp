@@ -5,7 +5,8 @@ import Exebition from "../screens/Exebition";
 import WorkerForm from "../screens/Form";
 import FabricatorProfile from "../screens/FabricatorProfile";
 import Exhibitor from "../screens/Exhibitor";
-import React from "react";
+import ChatRoom from "../screens/ChatRoom";
+
 
 const transitionConfig = () => {
     return {
@@ -43,9 +44,9 @@ const transitionConfig = () => {
   };
 
   const Rootstack = createStackNavigator({
-    // HomePage: {
-    //     screen: HomePage
-    //   },
+      ChatRoom: {
+        screen: ChatRoom
+      },
       Exebition: {
         screen:Exebition,
       },
@@ -60,7 +61,7 @@ const transitionConfig = () => {
       },
     },
     {
-      initialRouteName: "Exebition",
+      initialRouteName: "ChatRoom",
         transitionConfig
     })
 
