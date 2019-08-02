@@ -11,6 +11,16 @@ export default validate = (values,step) => {
     }else if((values == "0" || values == "00" || values == "000" || values == "0000" || values == "00000") &&  step === "stallNo"){
       errors.error = "Enter a valid stall no";
     }
+    if (!values.length>0 && step === "products") {
+      errors.error = "*choose products";
+    }
+    if (!values.length>0 && step === "furnitures") {
+      errors.error = "*choose furnitures";
+    }
+    if (!values.length>0 && step === "brandings") {
+      errors.error = "*choose brandings";
+    }
+
     if (!values && step === "colorTheme") {
       errors.error = "Set your stall color them";
     }

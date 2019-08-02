@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TouchableOpacity, StyleSheet,Text, BackHandler, StatusBar,ActivityIndicator} from 'react-native';
+import { View, TouchableOpacity, StyleSheet,Text, BackHandler, StatusBar,ActivityIndicator,Platform,ToastAndroid} from 'react-native';
 import Header from "../generic/Header";
 import ExhibitorForm from "../components/ExhibitorForm";
 import FabricatorForm from "../components/FabricatorForm";
@@ -10,6 +10,7 @@ import * as actions from '../redux/actions';
 import {setItem, getItem} from "../helper/storage";
 import Layout from '../helper/Layout';
 import ErrorLoader from "../generic/ErrorLoader";
+import alert from "../helper/alert";
 
  class WorkerForm extends React.Component {
     static navigationOptions = {
@@ -69,6 +70,20 @@ import ErrorLoader from "../generic/ErrorLoader";
       errors = validate(exhibitorDetail.colorTheme,"colorTheme")
      this.setState({errors})
     }
+    // else if(mainIndex == 3){
+    //   errors = validate(exhibitorBranding,"brandings")
+    //  this.setState({errors})
+    //  alert(errors.error)
+    // }
+    // else if(mainIndex == 4){
+    //   errors = validate(exhibitorFurniture,"furnitures")
+    //  this.setState({errors})
+    //  alert(errors.error)
+    // }
+    // else if(mainIndex == 5 ){
+    //   errors = validate(exhibitorProducts, "products")
+    //   alert(errors.error)
+    // }
     else if(mainIndex == 6){
       errors = validate(exhibitorDetail.carpetColor,"carpetColor")
      this.setState({errors})
@@ -194,6 +209,8 @@ import ErrorLoader from "../generic/ErrorLoader";
   }
 
   onTextChange=(value,name)=>{
+    console.log(value,name,'value,name');
+    
     let exhibitorDetail = {...this.state.exhibitorDetail}
     exhibitorDetail[name] =value
     this.setState({exhibitorDetail})
@@ -303,12 +320,13 @@ import ErrorLoader from "../generic/ErrorLoader";
           errors={errors}
         />
       }{index ==1 &&
-        <FabricatorForm
-          onSubmit={this.onSubmit}
-          onTextChange={this.onTextChange}
-          exhibitorDetail={exhibitorDetail}
-          errors={errors}
-        />
+        <></>
+        // <FabricatorForm
+        //   onSubmit={this.onSubmit}
+        //   onTextChange={this.onTextChange}
+        //   exhibitorDetail={exhibitorDetail}
+        //   errors={errors}
+        // />
       }
       </>
     );
