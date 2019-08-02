@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, VirtualizedList, StyleSheet, Image, TouchableOpacity } from 'react-native'
-
+import {Icon} from "native-base";
 const portfolio =[{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"},{A:'A',B:"B"}]
 
 export default class Portfolio extends Component {
@@ -11,8 +11,17 @@ export default class Portfolio extends Component {
         return(
             <View>
                 <View style={[styles.portfolioView,{marginLeft:index ==0 ? 10 : 0, marginRight:index == portfolio.length-1 ? 40 : 10 }]}>
-                    <TouchableOpacity activeOpacity={.7} onPress={()=>this.onPortfolioImagePress(isApiData ? list.image.replace("image/upload/","") : list.image)}>
-                         <Image resizeMode="cover" style={styles.img} source={{uri:isApiData ? list.image.replace("image/upload/","") : list.image}}/>
+                    <TouchableOpacity onLongPress={()=>this.props.removeOrDelete(list.id,"longPress",index)} activeOpacity={.7} onPress={()=>this.onPortfolioImagePress(isApiData ? list.image.replace("image/upload/","") : list.image)}>
+                            {list.selected && <View style={styles.deletingOverlay}/>}
+                           {list.newId && <View style={styles.removePortFolio}>
+                                <Icon
+                                    onPress={()=>this.props.removeOrDelete(list.newId,"normal",index)}
+                                    type={"AntDesign"}
+                                    name={"closecircleo"}
+                                    // style={styles.plusIcon}
+                                />
+                            </View>}
+                             <Image resizeMode="cover" style={styles.img} source={{uri:isApiData ? list.image.replace("image/upload/","") : list.image}}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -86,7 +95,7 @@ export default class Portfolio extends Component {
     }
 
     render() {
-        const {horizontal,portfolioData} = this.props;
+        const {horizontal,portfolioData,fabExtraData} = this.props;
         return (
             <View style={styles.portfolioWrapper}>
                 <VirtualizedList
@@ -103,6 +112,7 @@ export default class Portfolio extends Component {
                     onEndReached={()=>{console.log("onEndReached")}}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
+                    extraData={fabExtraData}
                 />
             </View>
         )
@@ -113,6 +123,7 @@ const styles= StyleSheet.create({
     portfolioView:{
         width:160,
         height:160,
+        paddingTop:10
     },
     img:{
         width:"100%",
@@ -158,5 +169,22 @@ const styles= StyleSheet.create({
     product:{
         fontSize:15,
         color:"rgba(0,0,0,.7)"
+    },
+    deletingOverlay:{
+        width:"100%",
+        height:"100%",
+        alignSelf:"center",
+        backgroundColor:"rgba(255,255,255,.5)",
+        borderRadius:7,
+        borderWidth:2,
+        zIndex:100,
+        position:'absolute',
+        borderColor:"#263D4B"
+    },
+    removePortFolio:{
+        zIndex:1000,
+        position:'absolute',
+        right:-10,
+        top:-10,
     }
 })

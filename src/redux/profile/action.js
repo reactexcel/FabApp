@@ -174,3 +174,31 @@ export function* clearUserProfileReducerRequest(action) {
         }
       }
     }
+
+    export function* deletePotfolioRequest(action) {
+      const header = {
+          "Authorization":`Token ${action.payload.userToken}`
+        };
+      try {
+        const response = yield call(
+          fireAjax,
+          "DELETE",
+          `portfolio/${action.payload.id}`,
+          header,
+          ''
+        );
+      
+        if (response) {
+            yield put(actions.deletePortfolioSuccess(response.data));
+        }
+      } catch (e) {
+          if(e.response){
+          yield put(actions.deletePortfolioError(e.response.data));
+          }
+          else if(e.message){
+            yield put(actions.deletePortfolioError("Network error"));
+          }else{
+            yield put(actions.deletePortfolioError());
+          }
+        }
+      }

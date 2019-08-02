@@ -21,5 +21,7 @@ export default function fireAjax(method, URL, headers, data) {
     return axios.post(url,data, config);
   } else if (method === "PUT") {
     return axios.put(url, data, config);
+  }else if (method === "DELETE") {
+    return axios.delete(url, config, data);
   }
 }

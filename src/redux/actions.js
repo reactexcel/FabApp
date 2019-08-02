@@ -47,3 +47,8 @@ export const clearUserProfileSuccess = createAction(constants.CLEAR_USERPROFILE_
 export const uploadPortfolioequest= createAction(constants.UPLOAD_PORTFOLIO_REQUEST);
 export const uploadPortfolioSuccess = createAction(constants.UPLOAD_PORTFOLIO_SUCCESS);
 export const uploadPortfolioError = createAction(constants.UPLOAD_PORTFOLIO_ERROR);
+
+//constants to upload portfolio(fabricator)
+export const deletePortfolioequest= createAction(constants.DELETE_PORTFOLIO_REQUEST);
+export const deletePortfolioSuccess = createAction(constants.DELETE_PORTFOLIO_SUCCESS);
+export const deletePortfolioError = createAction(constants.DELETE_PORTFOLIO_ERROR);
