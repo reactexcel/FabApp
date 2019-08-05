@@ -44,6 +44,10 @@ export default class ExhibitorForm extends Component {
         this.props.onRadioButtonPress(index,categoryIndex,item, selected)
     }
 
+    onChange=(index, categoryIndex,value,item,selected)=>{
+        this.props.onChange(index, categoryIndex,value,item,selected)
+    }
+
     _renderItem=({item,index})=>{
         const {isDropDown} =this.state;
         const {exhibitorDetail,products,extraDataForProducts,errors, furnitures, extraDataForFurnitures, brandings, extraDataForBrandings} =this.props;
@@ -96,13 +100,14 @@ export default class ExhibitorForm extends Component {
 
                         </View>
                     </TouchableOpacity>
-                     <View style={styles.horizontalLinee}></View>
+                     <View style={[styles.horizontalLinee,{marginBottom:10}]}></View>
                      <Animated.View style={{postion:"absolute",flex:1,top:this.state.postion}} >
                         <FormProducts 
                             item={index == 3 ? brandings : index == 5 ? products : furnitures }
                             extraDataFormProduct={index == 3 ? extraDataForBrandings : index == 5 ? extraDataForProducts : extraDataForFurnitures}
                             categoryIndex={index}
                             onRadioButtonPress={this.onRadioButtonPress}
+                            onChange={this.onChange}
                         />
                      </Animated.View>
                 </View>
@@ -113,6 +118,7 @@ export default class ExhibitorForm extends Component {
                     exhibitorDetail={exhibitorDetail}
                     exhibitorForm={true}
                     errors={errors}
+                    
                 />
              }
 

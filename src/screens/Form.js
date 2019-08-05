@@ -41,8 +41,7 @@ import alert from "../helper/alert";
                       email:'',
                       aboutYourSelf:''
                     },
-    userToken:""
-
+    userToken:"",
   };
 
   goBack=()=>{
@@ -106,6 +105,9 @@ import alert from "../helper/alert";
         }
         if(addQuote? length-1>index : length > index){
             this.setState({scrollToIndex:scrollToIndex+1})
+        }
+        if(scrollToIndex == 5){
+            this.quantityFilter()
         }
         if(scrollToIndex == 8 ){
           this.onSubmit();
@@ -185,9 +187,9 @@ import alert from "../helper/alert";
       stall_no:exhibitorDetail.stallNo ,
       color_theme : exhibitorDetail.colorTheme,
       carpet: exhibitorDetail.carpetColor,
-      products: [{product:"bulb"},{product:"light"}],
-      brandings: [{branding:"TV"},{branding:"LED"}],
-      furnitures: [{furniture:"sofa"},{furniture:"bed"}],
+      products: exhibitorProducts,
+      brandings: exhibitorBranding,
+      furnitures:exhibitorFurniture,
       website_link: `https://${exhibitorDetail.websiteLink}`
     }
    this.props.createExhibitionRequest({data:payload,userToken:token,exhibitionToken:this.props.navigation.state.params.id})
@@ -221,9 +223,10 @@ import alert from "../helper/alert";
             this.setState({extraDataForBrandings})
             if(selected){
               let exhibitorBranding=this.state.exhibitorBranding
-              exhibitorBranding.push(item)
+              exhibitorBranding.push({id:item.id, branding:item.branding,quantity:1})
               this.setState({exhibitorBranding})
             }else{
+              delete extraDataForBrandings[index].quantity 
               let exhibitorBranding = this.state.exhibitorBranding.filter((list,i)=>item.id !==list.id)
               this.setState({exhibitorBranding})
             }
@@ -234,9 +237,10 @@ import alert from "../helper/alert";
           this.setState({extraDataForFurnitures})
           if(selected){
             let exhibitorFurniture=this.state.exhibitorFurniture
-            exhibitorFurniture.push(item)
+            exhibitorFurniture.push({id:item.id, furniture:item.furniture,quantity:1})
             this.setState({exhibitorFurniture})
           }else{
+            delete extraDataForFurnitures[index].quantity
             let exhibitorFurniture = this.state.exhibitorFurniture.filter((list,i)=>item.id !==list.id)
             this.setState({exhibitorFurniture})
           }
@@ -247,13 +251,75 @@ import alert from "../helper/alert";
             this.setState({extraDataForProducts})
             if(selected){
               let exhibitorProducts=this.state.exhibitorProducts
-              exhibitorProducts.push(item)
+              exhibitorProducts.push({id:item.id, product:item.product,quantity:1})
               this.setState({exhibitorProducts})
             }else{
+               delete extraDataForProducts[index].quantity
               let exhibitorProducts = this.state.exhibitorProducts.filter((list,i)=>item.id !==list.id)
               this.setState({exhibitorProducts})
             }
         }
+  }
+
+  quantityFilter=()=>{
+    const {extraDataForBrandings,extraDataForFurnitures,extraDataForProducts,exhibitorBranding,exhibitorFurniture,exhibitorProducts } = this.state;
+    const brand = Object.values(extraDataForBrandings).filter((item,i)=>item.quantity)
+    const furniture = Object.values(extraDataForFurnitures).filter((item,i)=>item.quantity)
+    const product = Object.values(extraDataForProducts).filter((item,i)=>item.quantity)
+      let b = [], f =[], p =[]
+       brand.forEach((element,index)=>{
+        exhibitorBranding.forEach((list,index)=>{
+          if(element.id === list.id){
+              b.push({branding:element.branding,quantity:parseInt(element.quantity)})
+          }
+        })
+       })
+       furniture.forEach((element,index)=>{
+        exhibitorFurniture.forEach((list,index)=>{
+          if(element.id === list.id){
+              f.push({ furniture:element.furniture,quantity:parseInt(element.quantity)})
+          }
+        })
+       })
+       product.forEach((element,index)=>{
+        exhibitorProducts.forEach((list,index)=>{
+          if(element.id === list.id){
+              p.push({ product:element.product,quantity:parseInt(element.quantity)})
+          }
+        })
+       })
+       this.setState({exhibitorBranding:b,exhibitorFurniture:f,exhibitorProducts:p})
+  }
+
+  onChange=(index, categoryIndex,value,item,selected)=>{
+    if(categoryIndex == 4){
+      if(selected){
+        let  extraDataForFurnitures =  Object.assign({}, this.state.extraDataForFurnitures);
+          extraDataForFurnitures[index].quantity = value
+          this.setState({extraDataForFurnitures,})
+      }else{
+        alert("Select item first!");
+     }
+      
+    }
+    else if(categoryIndex == 3){
+        if(selected){
+          let  extraDataForBrandings =  Object.assign({}, this.state.extraDataForBrandings);
+           extraDataForBrandings[index].quantity = value;
+          this.setState({extraDataForBrandings})
+        }else{
+           alert("Select item first!");
+        }
+    }
+    else if(categoryIndex == 5){
+      if(selected){
+        let  extraDataForProducts =  Object.assign({}, this.state.extraDataForProducts);
+        extraDataForProducts[index].quantity = value
+          this.setState({extraDataForProducts})
+      }else{
+        alert("Select item first!");
+     }
+    }
   }
  
   render() {
@@ -266,9 +332,11 @@ import alert from "../helper/alert";
       extraDataForFurnitures,
       brandings,
       extraDataForBrandings,
-      errors
+      errors,
+      exhibitorBranding,exhibitorFurniture,exhibitorProducts
     } =this.state;
     const { user,createExhibition,userProfile,fabList} =this.props;
+    const addQuote = this.props.navigation.state.params && this.props.navigation.state.params.addQuote
     return (
         <>
         <Header
@@ -297,7 +365,7 @@ import alert from "../helper/alert";
             <TouchableOpacity
              activeOpacity={.7}
               style={styles.tabItem}
-              onPress={() => this.setState({ index: 1,})}>
+              onPress={addQuote ? ()=>null : () =>  this.setState({ index: 1,})}>
               <Text style={ {color:this.state.index ==1 ? "#000000" :"#a59e9e"}}>Fabricator</Text>
               <View style={[styles.tabBottomLine,{borderBottomColor:this.state.index ==1 ? "#000000" :"#a59e9e",}]}></View>
             </TouchableOpacity>
@@ -316,16 +384,15 @@ import alert from "../helper/alert";
           brandings={brandings}
           extraDataForBrandings={extraDataForBrandings}
           errors={errors}
-          // fabList={fabList}
+          onChange={this.onChange}
         />
       }{index ==1 &&
-        <></>
-        // <FabricatorForm
-        //   onSubmit={this.onSubmit}
-        //   onTextChange={this.onTextChange}
-        //   exhibitorDetail={exhibitorDetail}
-        //   errors={errors}
-        // />
+        <FabricatorForm
+          onSubmit={this.onSubmit}
+          onTextChange={this.onTextChange}
+          exhibitorDetail={exhibitorDetail}
+          errors={errors}
+        />
       }
       </>
     );

@@ -25,9 +25,11 @@ export default class FormProducts extends Component {
                             keyboardType={"phone-pad"}
                             placeholderTextColor="#E6E5E2"
                             maxLength={5}
+                            value={item.quantity ? item.quantity.toString() : " " }
+                            onChangeText={(value)=>this.props.onChange(index, categoryIndex,value,item,item.selected)}
                             onFocus={index > 6 ?  ()=>this.scrollView.scrollToEnd() : ()=> console.log()}
                         />
-                        <Text style={styles.errorText}>*add quantity</Text>
+                        {/* <Text style={styles.errorText}>*add quantity</Text> */}
                     </View>
                 </View>
                 <View style={styles.horizontalLine}></View>
@@ -103,7 +105,7 @@ const styles= StyleSheet.create({
     fablistIem:{
         flexDirection:"row",
         paddingHorizontal:20,
-        alignItems:'center'
+        alignItems:'center',
     },
     listIem:{
         flexDirection:"row",
