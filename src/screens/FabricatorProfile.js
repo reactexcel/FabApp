@@ -492,6 +492,7 @@ import  DocumentPickerUtil from "react-native-document-picker"
                                        isApiData ={userProfile.data.length > 1 && userProfile.data[2].Portfolio.length ? true : false }
                                        fabExtraData={fabExtraData}
                                        removeOrDelete={this.removeOrDelete}
+                                       from = "potfolio"
                                     /> :
                                     <View style={styles.noPortfolioView}>
                                         <Text style={styles.noPortfolioText} >

@@ -15,7 +15,13 @@ const initialState = {
     isError: false,
     isSuccess: false,
     products:[]
-   }
+   },
+   fabList:{
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      list:[]
+     }
 };
 
 const exhibitionListRequest = (state, action) =>{
@@ -84,6 +90,37 @@ const productListSuccess = (state, action) =>
      products: { $set: action.payload }
     }
  });
+
+ const fabricatorListRequest = (state, action) =>{
+   return(
+update(state, {
+   fabList:{
+    isLoading: { $set: true },
+    isError: { $set: false },
+    isSuccess: { $set: false },
+    products:{$set:[]}
+   }
+}))};
+
+const fabricatorListSuccess = (state, action) =>
+update(state, {
+    fabList:{
+       isLoading: { $set: false },
+       isError: { $set: false },
+       isSuccess: { $set: true },
+       products: { $set: action.payload }
+   }
+});
+
+const fabricatorListError = (state, action) =>
+update(state, {
+   fabList:{
+    isLoading: { $set: false },
+    isError: { $set: true },
+    isSuccess: { $set: false },
+    products: { $set: action.payload }
+   }
+});
 export default handleActions(
  {
    [constants.EXHIBITION_LIST_REQUEST]: exhibitionListRequest,
@@ -92,7 +129,11 @@ export default handleActions(
 
    [constants.PRODUCT_LIST_REQUEST]: productListRequest,
    [constants.PRODUCT_LIST_SUCCESS]: productListSuccess,
-   [constants.PRODUCT_LIST_ERROR]: productListError
+   [constants.PRODUCT_LIST_ERROR]: productListError,
+
+   [constants.FABRICATOR_LIST_REQUEST]: fabricatorListRequest,
+   [constants.FABRICATOR_LIST_SUCCESS]: fabricatorListSuccess,
+   [constants.FABRICATOR_LIST_ERROR]: fabricatorListError
  },
  initialState
 );

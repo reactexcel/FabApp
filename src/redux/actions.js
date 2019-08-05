@@ -21,34 +21,39 @@ export const createExhibitionRequest= createAction(constants.CREATE_EXHIBITION_R
 export const createExhibitionSuccess = createAction(constants.CREATE_EXHIBITION_SUCCESS);
 export const createExhibitionError = createAction(constants.CREATE_EXHIBITION_ERROR);
 
-//constants to get profile(exhibitor/fabricator)
+//actions to get profile(exhibitor/fabricator)
 export const userProfileRequest= createAction(constants.USER_PROFILE_REQUEST);
 export const userProfileSuccess = createAction(constants.USER_PROFILE_SUCCESS);
 export const userProfileError = createAction(constants.USER_PROFILE_ERROR);
 
-//constants to update profile(exhibitor/fabricator)
+//actions to update profile(exhibitor/fabricator)
 export const updateProfileRequest= createAction(constants.UPDATE_PROFILE_REQUEST);
 export const updateProfileSuccess = createAction(constants.UPDATE_PROFILE_SUCCESS);
 export const updateProfileError = createAction(constants.UPDATE_PROFILE_ERROR);
 
-//constants to get  profile(exhibitor/fabricator) after update
+//actions to get  profile(exhibitor/fabricator) after update
 export const userProfileAfterUpdateRequest= createAction(constants.USER_PROFILE_AFTER_UPDATE_REQUEST);
 export const userProfileAfterUpdateSuccess = createAction(constants.USER_PROFILE_AFTER_UPDATE_SUCCESS);
 
-//constants to clear  update reducer
+//actions to clear  update reducer
 export const clearUpdateRequest= createAction(constants.CLEAR_UPDATE_REQUEST);
 export const clearUpdateSuccess = createAction(constants.CLEAR_UPDATE_SUCCESS);
 
-//constants to clear  user profile reducer
+//actions to clear  user profile reducer
 export const clearUserProfileRequest= createAction(constants.CLEAR_USERPROFILE_REQUEST);
 export const clearUserProfileSuccess = createAction(constants.CLEAR_USERPROFILE_SUCCESS);
 
-//constants to upload portfolio(fabricator)
+//actions to upload portfolio(fabricator)
 export const uploadPortfolioequest= createAction(constants.UPLOAD_PORTFOLIO_REQUEST);
 export const uploadPortfolioSuccess = createAction(constants.UPLOAD_PORTFOLIO_SUCCESS);
 export const uploadPortfolioError = createAction(constants.UPLOAD_PORTFOLIO_ERROR);
 
-//constants to upload portfolio(fabricator)
+//actions to upload portfolio(fabricator)
 export const deletePortfolioequest= createAction(constants.DELETE_PORTFOLIO_REQUEST);
 export const deletePortfolioSuccess = createAction(constants.DELETE_PORTFOLIO_SUCCESS);
 export const deletePortfolioError = createAction(constants.DELETE_PORTFOLIO_ERROR);
+
+//actions to get fabricator's list
+export const fabricatorListRequest= createAction(constants.FABRICATOR_LIST_REQUEST);
+export const fabricatorListSuccess = createAction(constants.FABRICATOR_LIST_SUCCESS);
+export const fabricatorListError = createAction(constants.FABRICATOR_LIST_ERROR);

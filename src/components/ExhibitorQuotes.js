@@ -10,10 +10,10 @@ export default class ExhibitorQuotes extends Component {
             <>
           {userProfile.isSuccess ? 
              <View style={{backgroundColor:"#ffffff",flex:1}}>
-                <Portfolio portfolioData={portfolioData} horizontal={false}/>
+                <Portfolio from="quote" portfolioData={portfolioData} horizontal={false}/>
             </View>
             :
-            <ErrorLoader handlerData={userProfile} />}
+            <ErrorLoader  handlerData={userProfile} />}
              </>
         )
     }

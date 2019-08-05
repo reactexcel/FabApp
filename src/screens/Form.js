@@ -70,20 +70,20 @@ import alert from "../helper/alert";
       errors = validate(exhibitorDetail.colorTheme,"colorTheme")
      this.setState({errors})
     }
-    // else if(mainIndex == 3){
-    //   errors = validate(exhibitorBranding,"brandings")
-    //  this.setState({errors})
-    //  alert(errors.error)
-    // }
-    // else if(mainIndex == 4){
-    //   errors = validate(exhibitorFurniture,"furnitures")
-    //  this.setState({errors})
-    //  alert(errors.error)
-    // }
-    // else if(mainIndex == 5 ){
-    //   errors = validate(exhibitorProducts, "products")
-    //   alert(errors.error)
-    // }
+    else if(mainIndex == 3){
+      errors = validate(exhibitorBranding,"brandings")
+     this.setState({errors})
+     alert(errors.error)
+    }
+    else if(mainIndex == 4){
+      errors = validate(exhibitorFurniture,"furnitures")
+     this.setState({errors})
+     alert(errors.error)
+    }
+    else if(mainIndex == 5 ){
+      errors = validate(exhibitorProducts, "products")
+      alert(errors.error)
+    }
     else if(mainIndex == 6){
       errors = validate(exhibitorDetail.carpetColor,"carpetColor")
      this.setState({errors})
@@ -149,6 +149,7 @@ import alert from "../helper/alert";
                   brandings:products.brandings,extraDataForBrandings:products.brandings
       })
     }
+    this.props.fabricatorListRequest({id:this.props.navigation.state.params.id})
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
 
@@ -209,8 +210,6 @@ import alert from "../helper/alert";
   }
 
   onTextChange=(value,name)=>{
-    console.log(value,name,'value,name');
-    
     let exhibitorDetail = {...this.state.exhibitorDetail}
     exhibitorDetail[name] =value
     this.setState({exhibitorDetail})

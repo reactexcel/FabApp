@@ -44,9 +44,9 @@ const transitionConfig = () => {
   };
 
   const Rootstack = createStackNavigator({
-      ChatRoom: {
-        screen: ChatRoom
-      },
+      // ChatRoom: {
+      //   screen: ChatRoom
+      // },
       Exebition: {
         screen:Exebition,
       },
@@ -61,7 +61,7 @@ const transitionConfig = () => {
       },
     },
     {
-      initialRouteName: "ChatRoom",
+      initialRouteName: "Exebition",
         transitionConfig
     })
 

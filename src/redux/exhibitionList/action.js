@@ -37,3 +37,32 @@ export function* exhibitionListRequest(action) {
       yield put(actions.productListError());
     }
   }
+
+  //action to get fabricator's list as per exhibition
+export function* fabricatorListRequest(action) {
+  // const header = {
+  //     "Authorization":`Token ${action.payload.userToken}`
+  //   };
+  try {
+    const response = yield call(
+      fireAjax,
+      "GET",
+      `fabricators/${action.payload.id}`,
+      '',
+      ''
+    );
+  
+    if (response) {
+        yield put(actions.fabricatorListSuccess(response.data));
+    }
+  } catch (e) {
+    if(e.response){
+      yield put(actions.fabricatorListError(e.response.data));
+      }
+      else if(e.message){
+        yield put(actions.fabricatorListError("Network error"));
+      }else{
+        yield put(actions.fabricatorListError());
+      }
+    }
+  }
