@@ -21,6 +21,13 @@ const initialState = {
       isError: false,
       isSuccess: false,
       list:[]
+     },
+
+     addFabricator:{
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      status:[]
      }
 };
 
@@ -98,7 +105,7 @@ update(state, {
     isLoading: { $set: true },
     isError: { $set: false },
     isSuccess: { $set: false },
-    products:{$set:[]}
+    list:{$set:[]}
    }
 }))};
 
@@ -108,7 +115,7 @@ update(state, {
        isLoading: { $set: false },
        isError: { $set: false },
        isSuccess: { $set: true },
-       products: { $set: action.payload }
+       list: { $set: action.payload }
    }
 });
 
@@ -118,7 +125,38 @@ update(state, {
     isLoading: { $set: false },
     isError: { $set: true },
     isSuccess: { $set: false },
-    products: { $set: action.payload }
+    list: { $set: action.payload }
+   }
+});
+
+const addFabricatorRequest = (state, action) =>{
+   return(
+update(state, {
+   addFabricator:{
+    isLoading: { $set: true },
+    isError: { $set: false },
+    isSuccess: { $set: false },
+    status:{$set:[]}
+   }
+}))};
+
+const addFabricatorSuccess = (state, action) =>
+update(state, {
+    addFabricator:{
+       isLoading: { $set: false },
+       isError: { $set: false },
+       isSuccess: { $set: true },
+       status: { $set: action.payload }
+   }
+});
+
+const addFabricatorError = (state, action) =>
+update(state, {
+   addFabricator:{
+    isLoading: { $set: false },
+    isError: { $set: true },
+    isSuccess: { $set: false },
+    status: { $set: action.payload }
    }
 });
 export default handleActions(
@@ -133,7 +171,11 @@ export default handleActions(
 
    [constants.FABRICATOR_LIST_REQUEST]: fabricatorListRequest,
    [constants.FABRICATOR_LIST_SUCCESS]: fabricatorListSuccess,
-   [constants.FABRICATOR_LIST_ERROR]: fabricatorListError
+   [constants.FABRICATOR_LIST_ERROR]: fabricatorListError,
+
+   [constants.ADD_FABRICATOR_REQUEST]: addFabricatorRequest,
+   [constants.ADD_FABRICATOR_SUCCESS]: addFabricatorSuccess,
+   [constants.ADD_FABRICATOR_ERROR]: addFabricatorError,
  },
  initialState
 );

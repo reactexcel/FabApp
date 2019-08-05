@@ -78,6 +78,13 @@ export default class Portfolio extends Component {
                         <Text style={styles.product}>{list.website_link}</Text>
                     </View>
                 </View>
+                <View style={styles.addFabBtn}>
+                    <TouchableOpacity onPress={()=> this.props.toFabList(list.exhibition.id,list.id)} activeOpacity={.7}>
+                        <View style={styles.btnWrapper}>
+                            <Text style={styles.btnText}>Add fabricator</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     }
@@ -210,6 +217,22 @@ const styles= StyleSheet.create({
         paddingHorizontal:10
     },
     messageText:{
+        color:"#ffffff"
+    },
+    addFabBtn:{
+        flexDirection:"row",
+        justifyContent:'flex-end',
+ 
+    },
+    btnWrapper:{
+        backgroundColor:"#000000",
+        borderRadius:5,
+        padding:3,
+        paddingHorizontal:10,
+        marginBottom:5,
+        marginTop:5
+    },
+    btnText:{
         color:"#ffffff"
     }
 })

@@ -57,3 +57,8 @@ export const deletePortfolioError = createAction(constants.DELETE_PORTFOLIO_ERRO
 export const fabricatorListRequest= createAction(constants.FABRICATOR_LIST_REQUEST);
 export const fabricatorListSuccess = createAction(constants.FABRICATOR_LIST_SUCCESS);
 export const fabricatorListError = createAction(constants.FABRICATOR_LIST_ERROR);
+
+//actions to add fabricator to quote by exhibitor
+export const addFabricatorRequest= createAction(constants.ADD_FABRICATOR_REQUEST);
+export const addFabricatorSuccess = createAction(constants.ADD_FABRICATOR_SUCCESS);
+export const addFabricatorError = createAction(constants.ADD_FABRICATOR_ERROR);

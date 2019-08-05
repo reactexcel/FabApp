@@ -149,7 +149,6 @@ import alert from "../helper/alert";
                   brandings:products.brandings,extraDataForBrandings:products.brandings
       })
     }
-    this.props.fabricatorListRequest({id:this.props.navigation.state.params.id})
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
 
@@ -269,7 +268,7 @@ import alert from "../helper/alert";
       extraDataForBrandings,
       errors
     } =this.state;
-    const { user,createExhibition,userProfile} =this.props;
+    const { user,createExhibition,userProfile,fabList} =this.props;
     return (
         <>
         <Header
@@ -317,6 +316,7 @@ import alert from "../helper/alert";
           brandings={brandings}
           extraDataForBrandings={extraDataForBrandings}
           errors={errors}
+          // fabList={fabList}
         />
       }{index ==1 &&
         <></>
@@ -337,7 +337,8 @@ const mapStateToProps = (state) => {
     productList:state.productNexhibition.product,
     user:state.user.user,
     createExhibition:state.user.createExhibition,
-    userProfile:state.user.userProfile
+    userProfile:state.user.userProfile,
+    fabList:state.productNexhibition.fabList,
   }
 }
 

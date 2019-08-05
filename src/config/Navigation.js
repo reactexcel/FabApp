@@ -6,6 +6,7 @@ import WorkerForm from "../screens/Form";
 import FabricatorProfile from "../screens/FabricatorProfile";
 import Exhibitor from "../screens/Exhibitor";
 import ChatRoom from "../screens/ChatRoom";
+import Fabricator from "../screens/Fabricator";
 
 
 const transitionConfig = () => {
@@ -44,11 +45,11 @@ const transitionConfig = () => {
   };
 
   const Rootstack = createStackNavigator({
-      // ChatRoom: {
-      //   screen: ChatRoom
-      // },
       Exebition: {
         screen:Exebition,
+      },
+      Fabricator: {
+        screen: Fabricator
       },
       WorkerForm:{
           screen:WorkerForm

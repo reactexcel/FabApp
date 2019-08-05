@@ -29,9 +29,9 @@ export default validate = (values,step) => {
     }
     if (!values && step === "websiteLink") {
       errors.error = "Enter your website link";
-    }else if(!values.includes("www") && step === "websiteLink"){
+    }/* else if(!values.includes("www") && step === "websiteLink"){
       errors.error = "Invalid website link, it must like eg: www.example.com";
-    }
+    } */
 
     if(step === "fromValidation"){
       if (!values.name) {

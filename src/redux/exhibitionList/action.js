@@ -66,3 +66,32 @@ export function* fabricatorListRequest(action) {
       }
     }
   }
+
+    //action to add fabricator to quote by exhibior
+export function* addFabricatorRequest(action) {
+  const header = {
+      "Authorization":`Token ${action.payload.userToken}`
+    };
+  try {
+    const response = yield call(
+      fireAjax,
+      "POST",
+      `create_bid/${action.payload.fabId}/${action.payload.exhibitionId}`,
+      header,
+      ''
+    );
+  
+    if (response) {
+        yield put(actions.addFabricatorSuccess(response.data));
+    }
+  } catch (e) {
+    if(e.response){
+      yield put(actions.addFabricatorError(e.response.data));
+      }
+      else if(e.message){
+        yield put(actions.addFabricatorError("Network error"));
+      }else{
+        yield put(actions.addFabricatorError());
+      }
+    }
+  }

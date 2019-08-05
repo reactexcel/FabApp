@@ -35,18 +35,47 @@ export default class FormProducts extends Component {
         )
     }
 
+    _fablist=({item,index})=>{
+        return(
+            <View key={index} style={styles.item}>
+                <View style={styles.fablistIem}> 
+                    <View style={styles.radioButton}>
+                        <Radio 
+                            color={"#f0ad4e"}
+                            selectedColor={"#5cb85c"}
+                            selected={item.selected}
+                            onPress={()=>this.props.onRadioButtonPress(index,item, !item.selected)}
+                        />
+                    </View>
+                    <View style={styles.fabDetailWrapper}>
+                        <View style={styles.detailRaw}>
+                            <Text>Name: </Text>
+                            <Text>{item.name}</Text>
+                        </View>
+                        <View style={styles.detailRaw}>
+                            <Text>Email: </Text>
+                            <Text>{item.email}</Text>
+                        </View>
+                        <View style={styles.detailRaw}>
+                            <Text>Rating: </Text>
+                            <Text>{item.avg_rating}</Text>
+                        </View>
+                    </View>
+                </View>
+                <View style={styles.horizontalLine}></View>
+            </View>
+        )
+    }
+
     render() {
-        const {item,extraDataFormProduct} = this.props;
+        const {item,extraDataFormProduct,fablist } = this.props;
         return (
             <View style={styles.listWrapper}> 
-                <View>
-                    <Text></Text>
-                </View>
                 <FlatList
                     ref={(ref) => { this.scrollView = ref; }}
                     data={item}
                     extraData={extraDataFormProduct}
-                    renderItem={this._renderItem}
+                    renderItem={fablist ? this._fablist : this._renderItem}
                     keyExtractor={(item,index)=>index.toString()}
                     horizontal={false}
                     showsVerticalScrollIndicator={false}
@@ -60,9 +89,21 @@ const styles= StyleSheet.create({
         // padding,
         marginBottom:20
     },
+    fabDetailWrapper:{
+        flexDirection:'column'
+    },
     listWrapper:{
         // paddingBottom:30,
         flex:1
+    },
+    detailRaw:{
+        flexDirection:"row",
+        marginLeft:10
+    },
+    fablistIem:{
+        flexDirection:"row",
+        paddingHorizontal:20,
+        alignItems:'center'
     },
     listIem:{
         flexDirection:"row",

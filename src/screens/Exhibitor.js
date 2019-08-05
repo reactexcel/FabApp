@@ -53,6 +53,9 @@ import { connect } from 'react-redux';
     this.props.navigation.navigate("Exebition")
   }
 
+  toFabList=(exhId, id)=>{
+    this.props.navigation.navigate("Fabricator",{exhId,id})
+  }
  
   render() {
     const {index,profileEdit} =this.state;
@@ -84,7 +87,7 @@ import { connect } from 'react-redux';
           }
           renderScene={SceneMap({
             profile:()=> <FabricatorProfile logoutFunction ={true} logout={this.logout} exhitorProfile={true}/>,
-            quotes:()=> <ExhibitorQuotes userProfile={userProfile} portfolioData={userProfile.data.length && userProfile.data.length >0  && userProfile.data[1].exhbhition_request} />,
+            quotes:()=> <ExhibitorQuotes  toFabList={this.toFabList} userProfile={userProfile} portfolioData={userProfile.data.length && userProfile.data.length >0  && userProfile.data[1].exhbhition_request} />,
           })}
           onIndexChange={index => this.setState({ index })}
           initialLayout={{ width: Dimensions.get('window').width }}
