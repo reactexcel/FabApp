@@ -67,6 +67,15 @@ export function* fabricatorListRequest(action) {
     }
   }
 
+// action to clear fabricator's list
+  export function* clearFabricatorListRequest(action) {
+    try{
+          yield put(actions.clearFabricatorListSuccess());
+    } catch (e) {
+
+      }
+    }
+
     //action to add fabricator to quote by exhibior
 export function* addFabricatorRequest(action) {
   const header = {

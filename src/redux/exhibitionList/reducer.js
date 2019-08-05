@@ -129,6 +129,16 @@ update(state, {
    }
 });
 
+const clearFabricatorListSuccess = (state, action) =>
+update(state, {
+    fabList:{
+       isLoading: { $set: false },
+       isError: { $set: false },
+       isSuccess: { $set: false },
+       list: { $set: [] }
+   }
+});
+
 const addFabricatorRequest = (state, action) =>{
    return(
 update(state, {
@@ -176,6 +186,8 @@ export default handleActions(
    [constants.ADD_FABRICATOR_REQUEST]: addFabricatorRequest,
    [constants.ADD_FABRICATOR_SUCCESS]: addFabricatorSuccess,
    [constants.ADD_FABRICATOR_ERROR]: addFabricatorError,
+
+   [constants.CLEAR_FABRICATOR_LIST_SUCCESS]: clearFabricatorListSuccess,
  },
  initialState
 );

@@ -19,6 +19,7 @@ class Fabricator extends Component {
       state ={fabExtraData:[],selectedFab:[],lastId:'',lastIndex:'',userToken:""}
 
     goBack=()=>{
+        this.props.clearFabricatorListRequest();
         this.props.navigation.goBack();
       }
       async componentDidMount(){
