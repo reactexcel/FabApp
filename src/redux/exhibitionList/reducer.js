@@ -129,6 +129,7 @@ update(state, {
    }
 });
 
+//data clearing for fab list
 const clearFabricatorListSuccess = (state, action) =>
 update(state, {
     fabList:{

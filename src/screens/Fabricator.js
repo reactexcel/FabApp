@@ -69,7 +69,11 @@ class Fabricator extends Component {
                         exhibitionId:this.props.navigation.state.params.id,
                         userToken:userToken.token
                     }
-        this.props.addFabricatorRequest(payload)
+        if(selectedFab.length>0){
+            this.props.addFabricatorRequest(payload)
+        }else{
+            alert("Select any fabricator to add")
+        }
     }
     render() {
         const {fabList,addFabricator} = this.props;
