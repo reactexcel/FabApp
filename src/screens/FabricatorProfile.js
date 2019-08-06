@@ -105,26 +105,26 @@ import alert from "../helper/alert";
         }
     }
 
-    static getDerivedStateFromProps(props,state){
-        const {userProfile} = props;
-        if(!state.navigatedFromForm){
-            if(userProfile.isSuccess && userProfile.data && userProfile.data.length && userProfile.data[0] ){
-                const userInfo =userProfile.data && userProfile.data.length && userProfile.data[0] 
-                return {
-                    name:userInfo.name,
-                    aboutYourSelf:userInfo.bio,
-                    mobileNumber:userInfo.phone.replace("+91",""),
-                    websiteLink:userInfo.website_link && userInfo.website_link.replace("https://","")
-                }
-            }
-            else{
-                return null
-            }
-        }
-        else{
-            return null
-        }
-    }
+    // static getDerivedStateFromProps(props,state){
+    //     const {userProfile} = props;
+    //     if(!state.navigatedFromForm){
+    //         if(userProfile.isSuccess && userProfile.data && userProfile.data.length && userProfile.data[0] ){
+    //             const userInfo =userProfile.data && userProfile.data.length && userProfile.data[0] 
+    //             return {
+    //                 name:userInfo.name,
+    //                 aboutYourSelf:userInfo.bio,
+    //                 mobileNumber:userInfo.phone.replace("+91",""),
+    //                 websiteLink:userInfo.website_link && userInfo.website_link.replace("https://","")
+    //             }
+    //         }
+    //         else{
+    //             return null
+    //         }
+    //     }
+    //     else{
+    //         return null
+    //     }
+    // }
 
     goBack=()=>{
          this.props.navigation.goBack()
@@ -266,9 +266,9 @@ import alert from "../helper/alert";
 
 
     render() {
-        const {exhitorProfile,userProfile,updateProfile,uploadPotfolio,deletePotfolio} =this.props;
+        const {exhitorProfile,userProfile,updateProfile,uploadPotfolio,deletePotfolio,uName,uAboutYourSelf,uWebsiteLink,uMobileNumber,uMobilefocus,uAboutYourSelfFocus,uWebsiteFocus,uProfileEdit,uerrors} =this.props;
         const {isBase64, base64Data, action, fabExtraData,zoomUri, facricatorPortFolio,zoomer,profileEdit,mobileNumber,websiteLink,name,aboutYourSelf,errors,Mobilefocus,aboutYourSelfFocus,websiteFocus}= this.state
-       const userInfo = userProfile.data && userProfile.data.length && userProfile.data[0]  
+       const userInfo = userProfile.data && userProfile.data.length && userProfile.data[0]
        const websiteError =  updateProfile.data &&  updateProfile.data.website_link && updateProfile.data.website_link[0]
        const phoneError =  updateProfile.data &&  updateProfile.data.phone && updateProfile.data.phone[0]   
         return (
@@ -317,7 +317,7 @@ import alert from "../helper/alert";
                                     <Image resizeMode="cover" style={styles.img} source={require("../../assets/images/avatar.png")} />
                                 </View>
                                 <View>
-                                    <Text style={styles.userNameText}>{name}</Text>
+                                    <Text style={styles.userNameText}>{uName ? uName : name}</Text>
                                     <View style={styles.starRatingView}>
                                         <Text style={styles.ratingText} >Rating:</Text>
                                         <StarRating
@@ -342,17 +342,17 @@ import alert from "../helper/alert";
                                         placeholder={'Your mobile no...'}      
                                         placeholderTextColor="#E6E5E2"
                                         // maxLength={10}
-                                        value={websiteLink}
-                                        editable={profileEdit}
-                                        onFocus={()=>{this.setState({websiteFocus:true, Mobilefocus:false,aboutYourSelfFocus:false})}}
-                                        onSubmitEditing={(e)=>this.onFieldSubmitting("mobileno")}
-                                        onBlur={(e)=>this.onFieldSubmitting("")}
-                                        onChangeText={(websiteLink)=>this.setState({websiteLink})}
+                                        value={uWebsiteLink ? uWebsiteLink : websiteLink}
+                                        editable={uProfileEdit ? uProfileEdit : profileEdit}
+                                        onFocus={profileEdit ? ()=>{this.setState({websiteFocus:true, Mobilefocus:false,aboutYourSelfFocus:false})} : ()=>this.props.onFocus("web")}
+                                        onSubmitEditing={/* profileEdit ? */ (e)=>this.onFieldSubmitting("mobileno") /* : ()=>this.props.onFieldSubmitting("mobileno") */}
+                                        onBlur={/* profileEdit ? */ (e)=>this.onFieldSubmitting("") /* :()=> this.props.onFieldSubmitting("") */}
+                                        onChangeText={profileEdit ? (websiteLink)=>this.setState({websiteLink}) : (value)=>this.props.onChange(value,'web')}
                                     />
                                 </Item>
                             </View>
-                            <View style={[styles.horizontalLine,{borderBottomColor:websiteFocus ? "#000000" : "#D7DBDD",borderBottomWidth:websiteFocus ? 2 : 1}]}/>
-                            {profileEdit &&<Text style={styles.error}>{websiteError} {errors.websiteLink}</Text>}
+                            <View style={[styles.horizontalLine,{borderBottomColor:(websiteFocus || uWebsiteFocus) ? "#000000" : "#D7DBDD",borderBottomWidth:(websiteFocus || uWebsiteFocus) ? 2 : 1}]}/>
+                            {profileEdit &&<Text style={styles.error}>{websiteError} {uProfileEdit ? uerrors.websiteLink : errors.websiteLink}</Text>}
                             
                             <View style={styles.itemWrapper}>
                                 <Item style={{borderColor:"transparent"}} stackedLabel>
@@ -364,42 +364,43 @@ import alert from "../helper/alert";
                                         keyboardType="phone-pad"
                                         placeholderTextColor="#E6E5E2"
                                         maxLength={10}
-                                        value={mobileNumber}
-                                        editable={profileEdit}
-                                        onFocus={()=>{this.setState({websiteFocus:false,Mobilefocus:true,aboutYourSelfFocus:false})}}
-                                        onSubmitEditing={(e)=>this.onFieldSubmitting("aboutYourSelf")}
-                                        onBlur={(e)=>this.onFieldSubmitting("")}
-                                        onChangeText={(mobileNumber)=>this.setState({mobileNumber})}
+                                        value={uMobileNumber ? uMobileNumber : mobileNumber}
+                                        editable={uProfileEdit ? uProfileEdit : profileEdit}
+                                        onFocus={profileEdit ? ()=>{this.setState({websiteFocus:false,Mobilefocus:true,aboutYourSelfFocus:false})} : ()=>this.props.onFocus("mobile")}
+                                        onSubmitEditing={/* profileEdit ?  */(e)=>this.onFieldSubmitting("aboutYourSelf") /* : ()=>this.props.onFieldSubmitting("aboutYourSelf") */}
+                                        onBlur={/* profileEdit ? */ (e)=>this.onFieldSubmitting("") /*  :()=> this.props.onFieldSubmitting("") */}
+                                        onChangeText={profileEdit ? (mobileNumber)=>this.setState({mobileNumber}) : (value)=>this.props.onChange(value,'mobile')}
                                     />
                                 </Item>
                             </View>
-                            <View style={[styles.horizontalLine,{borderBottomColor:Mobilefocus ? "#000000" : "#D7DBDD",borderBottomWidth:Mobilefocus ? 2 : 1}]}/>
-                            {profileEdit && <Text style={styles.error}> {phoneError}{errors.mobileNumber}</Text>}
+                            <View style={[styles.horizontalLine,{borderBottomColor:(Mobilefocus || uMobilefocus) ? "#000000" : "#D7DBDD",borderBottomWidth:(Mobilefocus || uMobilefocus) ? 2 : 1}]}/>
+                            {profileEdit && <Text style={styles.error}> {phoneError}{uProfileEdit ? uerrors.mobileNumber : errors.mobileNumber}</Text>}
                            
                             
                             <View style={styles.itemWrapper}>
                                 <Item style={[styles.fromItem,{borderColor:"transparent"}]} stackedLabel>
                                 <Label style={styles.title}>{exhitorProfile ? "Address" : "About your self"}</Label>
-                                    {!profileEdit ? 
-                                     <Text style={[styles.item,{width:"100%",paddingLeft:5,marginBottom:8}]} >{aboutYourSelf}</Text> : 
+                                    {(profileEdit  || uProfileEdit ) ? 
+                                      
                                         <Textarea 
                                             ref="aboutYourSelf"
                                             numberOfLines={20}
-                                            value= {aboutYourSelf}
-                                            style={[styles.inputTextAreaSize,{marginTop:profileEdit ? 15 : -10,borderWidth:profileEdit ? 1 : 0,}]}
+                                            value= {uAboutYourSelf ? uAboutYourSelf : aboutYourSelf}
+                                            style={[styles.inputTextAreaSize,{marginTop:(profileEdit || uProfileEdit) ? 15 : -10,borderWidth:(profileEdit || uProfileEdit) ? 1 : 0,}]}
                                             placeholder={'About yourself...'}      
                                             placeholderTextColor="#E6E5E2"
-                                            disabled={!profileEdit}
-                                            onFocus={()=>{this.setState({websiteFocus:false, Mobilefocus:false,aboutYourSelfFocus:true})}}
-                                            onBlur={(e)=>this.onFieldSubmitting("")}
-                                            onChangeText={(aboutYourSelf)=>this.setState({aboutYourSelf})}
+                                            disabled={(uProfileEdit !==undefined ) ? !uProfileEdit : !profileEdit}
+                                            onFocus={/* profileEdit ? */ ()=>{this.setState({websiteFocus:false, Mobilefocus:false,aboutYourSelfFocus:true})} /* : ()=>this.props.onFocus("about") */}
+                                            onBlur={/* profileEdit ? */ (e)=>this.onFieldSubmitting("") /* :()=> this.props.onFieldSubmitting("") */}
+                                            onChangeText={profileEdit ? (aboutYourSelf)=>this.setState({aboutYourSelf}) : (value)=>this.props.onChange(value,'about')}
                                         /> 
+                                        :<Text style={[styles.item,{width:"100%",paddingLeft:5,marginBottom:8}]} >{uAboutYourSelf ? uAboutYourSelf : aboutYourSelf}</Text> 
                                     }
                             </Item>
                             </View>
                             
-                            <View style={[styles.horizontalLine,{borderBottomColor:aboutYourSelfFocus ? "#000000" : "#D7DBDD",borderBottomWidth:aboutYourSelfFocus ? 2 : 1}]}/>
-                            {profileEdit &&<Text style={styles.error}>{errors.aboutYourSelf}</Text>}
+                            <View style={[styles.horizontalLine,{borderBottomColor:(aboutYourSelfFocus || uAboutYourSelfFocus) ? "#000000" : "#D7DBDD",borderBottomWidth:(aboutYourSelfFocus || uAboutYourSelfFocus) ? 2 : 1}]}/>
+                            {profileEdit &&<Text style={styles.error}>{uProfileEdit ? uerrors.aboutYourSelf : errors.aboutYourSelf}</Text>}
                             {(!exhitorProfile && userProfile.data.length && userProfile.data[0].role === "fabricator") &&
                             <>
                             <View style={styles.portfolioWrapper}>
@@ -447,8 +448,8 @@ import alert from "../helper/alert";
                         </View>
                     </ScrollView>  : <ErrorLoader handlerData={userProfile} />}
                 </LinearGradient>
-                {(profileEdit && userInfo && (userInfo.name !== name || userInfo.website_link !== websiteLink || userInfo.phone.replace("+91","") !== mobileNumber || aboutYourSelf !== userInfo.bio) ) &&
-                <TouchableOpacity onPress={this.updateProfile} activeOpacity={.7}>
+                {(profileEdit && userInfo && (userInfo.name !== name || userInfo.website_link !== websiteLink || userInfo.phone.replace("+91","") !== mobileNumber || aboutYourSelf !== userInfo.bio) || uProfileEdit ) &&
+                <TouchableOpacity onPress={uProfileEdit ? ()=>this.props.updateProfile() : this.updateProfile} activeOpacity={.7}>
                         <View style={styles.tapToContinueButtonView}>
                             <Text style={styles.continueText}>Update</Text>
                         </View>
