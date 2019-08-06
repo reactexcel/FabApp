@@ -64,7 +64,7 @@ import alert from "../helper/alert";
                 this.setState({name:userInfo.name,
                             aboutYourSelf:userInfo.bio,
                             mobileNumber:userInfo.phone.replace("+91",""),
-                        websiteLink:userInfo.website_link,
+                        websiteLink:userInfo.website_link && userInfo.website_link.replace("https://",""),
                         facricatorPortFolio:userProfile.data[2] ? userProfile.data[2].Portfolio :[],
                         fabExtraData:userProfile.data[2] ? userProfile.data[2].Portfolio :[],
                         })
@@ -114,7 +114,7 @@ import alert from "../helper/alert";
                     name:userInfo.name,
                     aboutYourSelf:userInfo.bio,
                     mobileNumber:userInfo.phone.replace("+91",""),
-                    websiteLink:userInfo.website_link
+                    websiteLink:userInfo.website_link && userInfo.website_link.replace("https://","")
                 }
             }
             else{
@@ -447,7 +447,7 @@ import alert from "../helper/alert";
                         </View>
                     </ScrollView>  : <ErrorLoader handlerData={userProfile} />}
                 </LinearGradient>
-                {(profileEdit && userInfo && (userInfo.name !== name || userInfo.website_link !== websiteLink || userInfo.phone.replace("+91","") !== mobileNumber) ) &&
+                {(profileEdit && userInfo && (userInfo.name !== name || userInfo.website_link !== websiteLink || userInfo.phone.replace("+91","") !== mobileNumber || aboutYourSelf !== userInfo.bio) ) &&
                 <TouchableOpacity onPress={this.updateProfile} activeOpacity={.7}>
                         <View style={styles.tapToContinueButtonView}>
                             <Text style={styles.continueText}>Update</Text>

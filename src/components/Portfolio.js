@@ -11,7 +11,7 @@ export default class Portfolio extends Component {
         return(
             <View>
                 <View style={[styles.portfolioView,{marginLeft:index ==0 ? 10 : 0, marginRight:index == portfolio.length-1 ? 40 : list.newId ? 15 :  10 }]}>
-                    <TouchableOpacity onLongPress={()=>this.props.removeOrDelete(list.id,"longPress",index)} activeOpacity={.7} onPress={()=>this.onPortfolioImagePress(isApiData ? list.image.replace("image/upload/","") : list.image)}>
+                    <TouchableOpacity  onLongPress={()=>this.props.removeOrDelete(list.id,"longPress",index)} activeOpacity={.7} onPress={()=>this.onPortfolioImagePress(isApiData ? list.image.replace("image/upload/","") : list.image)}>
                             {list.selected && <View style={styles.deletingOverlay}/>}
                            {list.newId && <View style={styles.removePortFolio}>
                                 <Icon
@@ -132,7 +132,7 @@ export default class Portfolio extends Component {
                     horizontal={!horizontal ? false : true }
                     getItemCount={this._getItemCount}
                     // onLayout={this.scrollToEnd}
-                    onEndReached={this.scrollToEnd}
+                    onEndReached={from ==="potfolio" ? this.scrollToEnd : ()=>null}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     extraData={fabExtraData}

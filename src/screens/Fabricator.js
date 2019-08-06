@@ -42,8 +42,10 @@ class Fabricator extends Component {
               }
           }
           if(addFabricator.isError !== preProps.addFabricator.isError){
-            if(addFabricator.isError){
+            if(addFabricator.isError && addFabricator.status !== "Network error"){
                 alert("This fabricator has already added!")
+            }else if(addFabricator.isError && addFabricator.status === "Network error"){
+                alert("Network error")
             }
           }
       }
