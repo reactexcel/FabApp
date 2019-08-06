@@ -16,7 +16,8 @@ import validate from "../helper/validation";
 import Permissions from "react-native-permissions";
 import  DocumentPicker from "react-native-document-picker";
 import  DocumentPickerUtil from "react-native-document-picker"
-  import RNFetchBlob from "rn-fetch-blob";
+import RNFetchBlob from "rn-fetch-blob";
+import alert from "../helper/alert";
 
  class FabricatorProfile extends Component {
     static navigationOptions = {
@@ -40,7 +41,8 @@ import  DocumentPickerUtil from "react-native-document-picker"
                     base64Data:[],
                     fabExtraData:[],
                     imgId:"",
-                    action:"Upload"
+                    action:"Upload",
+                    isBase64:false
                 }
       }
     
@@ -72,13 +74,7 @@ import  DocumentPickerUtil from "react-native-document-picker"
             this.setState({profileEdit:false,Mobilefocus:false,aboutYourSelfFocus:false,websiteFocus:false})
             this.props.userProfileAfterUpdateRequest({userToken:userToken.token})
             if(Platform.OS == 'android') {
-                ToastAndroid.showWithGravityAndOffset(
-                  'Your profile is successfully updated.',
-                  ToastAndroid.LONG,
-                  ToastAndroid.BOTTOM,
-                  25,
-                  50,
-                );
+                alert("Your profile is successfully updated.");
               } else if( Platform.OS == 'ios'){
                 Alert.alert(
                   'Alert',
@@ -97,12 +93,13 @@ import  DocumentPickerUtil from "react-native-document-picker"
         }
         if(uploadPotfolio.isSuccess !== preProps.uploadPotfolio.isSuccess){
             if(uploadPotfolio.isSuccess && uploadPotfolio.data){
+                this.setState({isBase64:false,base64Data:[],fabExtraData:[]})
                 this.props.userProfileRequest({userToken:userToken.token})
             }
         }
         if(deletePotfolio.isSuccess !== preProps.deletePotfolio.isSuccess){
-            if(deletePotfolio.data && deletePotfolio.Success ){
-                this.setState({action:"Upload"})
+            if(deletePotfolio.data && deletePotfolio.isSuccess ){
+                this.setState({action:"Upload",isBase64:false,base64Data:[],fabExtraData:[]})
                 this.props.userProfileRequest({userToken:userToken.token})
             }
         }
@@ -209,7 +206,7 @@ import  DocumentPickerUtil from "react-native-document-picker"
                 });
                 if(res && res.length){
                     res.map((img,i)=>{
-                    let index = fabExtraData[fabExtraData.length-1].newId ? fabExtraData[fabExtraData.length-1].newId+1 : i+1
+                    let index = (fabExtraData.length && fabExtraData[fabExtraData.length-1].newId) ? fabExtraData[fabExtraData.length-1].newId+1 : i+1
                         fabExtraData.push({newId: index, image:img.uri})
                         RNFetchBlob.fs.readFile(img.uri, "base64").then(
                             data => {
@@ -217,11 +214,11 @@ import  DocumentPickerUtil from "react-native-document-picker"
                             })
                     })
                 }
-                this.setState({fabExtraData,base64Data})
+                this.setState({fabExtraData,base64Data,isBase64:true})
+
             } catch (err) {
                 if (DocumentPicker.isCancel(err)) {
-                    console.log('errorrrrrrrrrrrr');
-                    
+                    alert("Canceled")
                 // User cancelled the picker, exit any dialogs or menus and move on
                 } else {
                 throw err;
@@ -260,15 +257,20 @@ import  DocumentPickerUtil from "react-native-document-picker"
         this.props.deletePortfolioequest({userToken:userToken.token,id:imgId})
     }
 
+    scrollToEnd=(flatListRef)=>{
+        const {fabExtraData,isBase64} = this.state;
+        if(fabExtraData.length && isBase64){
+            flatListRef.scrollToIndex({animated: true, index:fabExtraData.length-1});
+        }
+    }
+
 
     render() {
         const {exhitorProfile,userProfile,updateProfile,uploadPotfolio,deletePotfolio} =this.props;
-        const {base64Data, action, fabExtraData,zoomUri, facricatorPortFolio,zoomer,profileEdit,mobileNumber,websiteLink,name,aboutYourSelf,errors,Mobilefocus,aboutYourSelfFocus,websiteFocus}= this.state
+        const {isBase64, base64Data, action, fabExtraData,zoomUri, facricatorPortFolio,zoomer,profileEdit,mobileNumber,websiteLink,name,aboutYourSelf,errors,Mobilefocus,aboutYourSelfFocus,websiteFocus}= this.state
        const userInfo = userProfile.data && userProfile.data.length && userProfile.data[0]  
        const websiteError =  updateProfile.data &&  updateProfile.data.website_link && updateProfile.data.website_link[0]
        const phoneError =  updateProfile.data &&  updateProfile.data.phone && updateProfile.data.phone[0]   
-           console.log(this.state.base64Data,fabExtraData,'base64Data');
-           
         return (
             <View style={styles.container}>
                 {!exhitorProfile &&
@@ -410,7 +412,7 @@ import  DocumentPickerUtil from "react-native-document-picker"
                                             name={"plus"}
                                             style={styles.plusIcon}
                                         />
-                                       {(action ==="Delete" || base64Data.length>0) &&
+                                       {(action ==="Delete" || isBase64) &&
                                             <TouchableOpacity onPress={action ==="Delete" ? this.deletePotfolio : this.uploadPortfolio}>
                                                 <Text  style={styles.portfoliotitle}>{action}</Text>
                                             </TouchableOpacity>
@@ -427,6 +429,7 @@ import  DocumentPickerUtil from "react-native-document-picker"
                                        fabExtraData={fabExtraData}
                                        removeOrDelete={this.removeOrDelete}
                                        from = "potfolio"
+                                       scrollToEnd={this.scrollToEnd}
                                     /> :
                                     <View style={styles.noPortfolioView}>
                                         <Text style={styles.noPortfolioText} >

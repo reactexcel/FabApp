@@ -210,6 +210,10 @@ import alert from "../helper/alert";
         }
   }
 
+  clearState=()=>{
+    
+  }
+
   onTextChange=(value,name)=>{
     let exhibitorDetail = {...this.state.exhibitorDetail}
     exhibitorDetail[name] =value

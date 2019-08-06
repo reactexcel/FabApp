@@ -10,7 +10,7 @@ export default class Portfolio extends Component {
         const {isApiData} =this.props;
         return(
             <View>
-                <View style={[styles.portfolioView,{marginLeft:index ==0 ? 10 : 0, marginRight:index == portfolio.length-1 ? 40 : 10 }]}>
+                <View style={[styles.portfolioView,{marginLeft:index ==0 ? 10 : 0, marginRight:index == portfolio.length-1 ? 40 : list.newId ? 15 :  10 }]}>
                     <TouchableOpacity onLongPress={()=>this.props.removeOrDelete(list.id,"longPress",index)} activeOpacity={.7} onPress={()=>this.onPortfolioImagePress(isApiData ? list.image.replace("image/upload/","") : list.image)}>
                             {list.selected && <View style={styles.deletingOverlay}/>}
                            {list.newId && <View style={styles.removePortFolio}>
@@ -111,11 +111,16 @@ export default class Portfolio extends Component {
         this.props.onPortfolioImagePress(uri)
     }
 
+    scrollToEnd=()=>{
+        this.props.scrollToEnd(this.flatListRef)
+    }
+
     render() {
         const {horizontal,portfolioData,fabExtraData,from} = this.props;
         return (
             <View style={styles.portfolioWrapper}>
                 <VirtualizedList
+                    ref={(ref) => { this.flatListRef = ref; }}
                    style={{paddingVertical:12}}
                     data={portfolioData ? portfolioData : []}
                     renderItem={from ==="quote" ? this._exhibitorQuotes : from ==="potfolio" ? this._renderItem : this.chatRender }
@@ -126,7 +131,8 @@ export default class Portfolio extends Component {
                     maxToRenderPerBatch={20}
                     horizontal={!horizontal ? false : true }
                     getItemCount={this._getItemCount}
-                    onEndReached={()=>{console.log("onEndReached")}}
+                    // onLayout={this.scrollToEnd}
+                    onEndReached={this.scrollToEnd}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     extraData={fabExtraData}
