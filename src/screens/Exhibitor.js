@@ -10,7 +10,7 @@ import { bindActionCreators } from "redux";
 import * as actions from '../redux/actions';
 import { connect } from 'react-redux';
 import validate from "../helper/validation";
-
+import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 
  class Exhibitor extends React.Component {
     static navigationOptions = {
@@ -39,6 +39,7 @@ import validate from "../helper/validation";
   
  async componentDidMount() {
     const userToken = await getItem("userInfo")
+    this.setState({userToken})
         SplashScreen.hide();
         this.props.userProfileRequest({userToken:userToken.token})
   }
@@ -56,23 +57,25 @@ import validate from "../helper/validation";
       }
       else{
           this.props.clearUpdateRequest()
-          this.setState({errors:{}, profileEdit:!this.state.profileEdit,Mobilefocus:false,aboutYourSelfFocus:false,
-              name:userInfo.name,
-              aboutYourSelf:userInfo.bio,
-              mobileNumber:userInfo.phone.replace("+91",""),
-              websiteLink:userInfo.website_link,profileEdit:!this.state.profileEdit})
+          this.setState({errors:{}, 
+                    profileEdit:!this.state.profileEdit,
+                    Mobilefocus:false,
+                    aboutYourSelfFocus:false,
+                    websiteFocus:false,
+                    Mobilefocus:false,
+                    aboutYourSelfFocus:false,
+                    name:userInfo.name,
+                    aboutYourSelf:userInfo.bio,
+                    mobileNumber:userInfo.phone.replace("+91",""),
+                    websiteLink:userInfo.website_link.replace("https://",""),profileEdit:!this.state.profileEdit})
       }
     }
-
 }
 
    componentDidUpdate(preProps){
-
-    const {userProfile,} = this.props;
+    const {userProfile,updateProfile} = this.props;
     if(userProfile.isSuccess !== preProps.userProfile.isSuccess){
         if(userProfile.isSuccess && userProfile.data && userProfile.data.length){
-          console.log(">>>>>>>>>>>>>>>>>>>>>>>update");
-          
             const userInfo = userProfile.data[0] 
             this.setState({name:userInfo.name,
                           aboutYourSelf:userInfo.bio,
@@ -80,6 +83,20 @@ import validate from "../helper/validation";
                           websiteLink:userInfo.website_link && userInfo.website_link.replace("https://",""),
                     })
         }
+    }
+    if(userProfile.afterProfileUpdate !== preProps.userProfile.afterProfileUpdate){
+      if(userProfile.isSuccess && userProfile.data && userProfile.data.length){
+          const userInfo = userProfile.data[0] 
+          this.setState({name:userInfo.name,
+                        aboutYourSelf:userInfo.bio,
+                        mobileNumber:userInfo.phone.replace("+91",""),
+                        websiteLink:userInfo.website_link && userInfo.website_link.replace("https://",""),
+                        websiteFocus:false,
+                        Mobilefocus:false,
+                        aboutYourSelfFocus:false,
+                        profileEdit:false
+                  })
+      }
     }
    }
 
@@ -102,31 +119,29 @@ import validate from "../helper/validation";
     }
   }
   onFocus=(type)=>{
-    // if(type === "web"){
-    //   this.setState({websiteFocus:true, Mobilefocus:false,aboutYourSelfFocus:false})
-    // }
-    // else if(type === "mobile"){
-    //   this.setState({websiteFocus:false,Mobilefocus:true,aboutYourSelfFocus:false})
-    // }
-    // else{
-    //   this.setState({websiteFocus:false, Mobilefocus:false,aboutYourSelfFocus:true})
-    // }
+    if(type === "web"){
+      this.setState({websiteFocus:true, Mobilefocus:false,aboutYourSelfFocus:false})
+    }
+    else if(type === "mobile"){
+      this.setState({websiteFocus:false,Mobilefocus:true,aboutYourSelfFocus:false})
+    }
+    else{
+      this.setState({websiteFocus:false, Mobilefocus:false,aboutYourSelfFocus:true})
+    }
   }
   
   onFieldSubmitting=(field)=>{
-    console.log("rdtfgyuhjikolp;");
-    
-    // if(field === "aboutYourSelf"){
-    //     this.setState({Mobilefocus:false,aboutYourSelfFocus:false,websiteFocus:false})
-    //     // this.refs.aboutYourSelf._root.focus()
-    // }
-    // else if(field === "mobileno"){
-    //     this.setState({Mobilefocus:false,aboutYourSelfFocus:false,websiteFocus:false})
-    //     // this.refs.mobileNumber._root.focus()
-    // }
-    // else{
-    //     this.setState({Mobilefocus:false,aboutYourSelfFocus:false,websiteFocus:false})
-    // }
+    if(field === "aboutYourSelf"){
+        this.setState({Mobilefocus:false,aboutYourSelfFocus:false,websiteFocus:false})
+        // this.refs.aboutYourSelf._root.focus()
+    }
+    else if(field === "mobileno"){
+        this.setState({Mobilefocus:false,aboutYourSelfFocus:false,websiteFocus:false})
+        // this.refs.mobileNumber._root.focus()
+    }
+    else{
+        this.setState({Mobilefocus:false,aboutYourSelfFocus:false,websiteFocus:false})
+    }
 }
 
 updateProfile=()=>{
@@ -144,10 +159,8 @@ updateProfile=()=>{
 }
  
   render() {
-    const {index,profileEdit,name,aboutYourSelf,mobileNumber,websiteLink,Mobilefocus,aboutYourSelfFocus,websiteFocus,errors} =this.state;
-    const {userProfile} = this.props
-    console.log(this.state,'>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-    
+    const {userToken, index,profileEdit,name,aboutYourSelf,mobileNumber,websiteLink,Mobilefocus,aboutYourSelfFocus,websiteFocus,errors} =this.state;
+    const {userProfile,updateProfile} = this.props
     return (
         <>
         <Header
@@ -162,7 +175,44 @@ updateProfile=()=>{
           goBack={this.goBack}
           onPressRight={this.onProfileEdit}
         />
-        <TabView
+         <ScrollableTabView
+                    style={{marginTop: 20, }}
+                    initialPage={0}
+                    renderTabBar={() => <ScrollableTabBar />}
+                >
+                    < View tabLabel='Profile' style={{flex:1}}>
+                    <FabricatorProfile 
+                            logoutFunction ={true} 
+                            logout={this.logout} 
+                            exhitorProfile={true}
+                            uName={name}
+                            uAboutYourSelf={aboutYourSelf}
+                            uWebsiteLink={websiteLink}
+                            uMobileNumber={mobileNumber}
+                            uMobilefocus={Mobilefocus}
+                            uAboutYourSelfFocus={aboutYourSelfFocus}
+                            uWebsiteFocus={websiteFocus}
+                            uProfileEdit={profileEdit}
+                            onChange={this.onChange}
+                            onFocus={this.onFocus}
+                            onFieldSubmitting={this.onFieldSubmitting}
+                            uerrors={errors}
+                            updateUserProfile={this.updateProfile}
+                            token={userToken}
+                            websiteError =  {updateProfile.data &&  updateProfile.data.website_link && updateProfile.data.website_link[0]}
+                            phoneError =  {updateProfile.data &&  updateProfile.data.phone && updateProfile.data.phone[0]}
+
+                          />
+                    </View>
+                    <View style={{flex:1}} tabLabel='Quotes'>
+                    <ExhibitorQuotes  
+                            toFabList={this.toFabList} 
+                            userProfile={userProfile} 
+                            portfolioData={userProfile.data.length && userProfile.data.length >0  && userProfile.data[1].exhbhition_request} 
+                        />
+                    </View>
+                </ScrollableTabView>
+        {/* <TabView
           navigationState={this.state}
           renderTabBar={props =>
             <TabBar
@@ -205,7 +255,7 @@ updateProfile=()=>{
           initialLayout={{ width: Dimensions.get('window').width }}
           indicatorStyle={{backgroundColor:'red',width:500}}
           
-      />
+      /> */}
       </>
     );
   }
@@ -214,6 +264,7 @@ updateProfile=()=>{
 const mapStateToProps = (state) => {
   return {
       userProfile:state.user.userProfile,
+      updateProfile:state.user.updateProfile
   }
 }
 

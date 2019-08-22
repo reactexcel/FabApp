@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Text, View,StyleSheet } from 'react-native'
+import { Text, View,StyleSheet ,TextInput} from 'react-native'
 import { Container, Content, Button, } from 'native-base';
 import Header from "../generic/Header";
 import LinearGradient from 'react-native-linear-gradient';
 import SplashScreen from 'react-native-splash-screen'
+import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 
 export default class HomePage extends Component {
     static navigationOptions = {
@@ -21,7 +22,15 @@ export default class HomePage extends Component {
         return (
             <View style={styles.wrapper}>
                 {/* <Header/> */}
-                <LinearGradient colors={['#000000', '#000000']} style={styles.wrapper}>
+                <ScrollableTabView
+                    style={{marginTop: 20, }}
+                    initialPage={0}
+                    renderTabBar={() => <ScrollableTabBar />}
+                >
+                    < View tabLabel='Tab #1'><Text>hello</Text></View>
+                    <View tabLabel='Tab #2 word word'><TextInput placeholder="jdbkjdbvk" /></View>
+                </ScrollableTabView>
+                {/* <LinearGradient colors={['#000000', '#000000']} style={styles.wrapper}>
                     <View style={styles.buttonsWrapper}>
                         <Button onPress={()=>this.onCategorySelect("Exebition")} block style={styles.button1}>
                             <Text style={styles.text}>Admin</Text>
@@ -33,7 +42,7 @@ export default class HomePage extends Component {
                             <Text style={styles.text}>Fabricator</Text>
                         </Button>
                     </View>
-                 </LinearGradient>
+                 </LinearGradient> */}
             </View>
         )
     }

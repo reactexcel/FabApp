@@ -45,6 +45,9 @@ const transitionConfig = () => {
   };
 
   const Rootstack = createStackNavigator({
+    // HomePage:{
+    //   screen:HomePage,
+    // },
       Exebition: {
         screen:Exebition,
       },

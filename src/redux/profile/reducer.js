@@ -21,7 +21,8 @@ const initialState = {
       isError: false,
       isSuccess: false,
       data:'',
-      isUpdateLoading:false
+      isUpdateLoading:false,
+      afterProfileUpdate:false
      },
      updateProfile:{
       isLoading: false,
@@ -195,6 +196,7 @@ update(state, {
     isSuccess: { $set: true },
     errorMessage:{ $set: "" },
     isUpdateLoading:{ $set: false },
+    afterProfileUpdate:{$set:true},
     data: { $set: action.payload }
    }
 });

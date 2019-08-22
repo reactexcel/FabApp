@@ -56,7 +56,7 @@ import alert from "../helper/alert";
     }
 
     componentDidUpdate(preProps){
-        const {userProfile,updateProfile,uploadPotfolio,deletePotfolio} = this.props;
+        const {userProfile,updateProfile,uploadPotfolio,deletePotfolio,uProfileEdit} = this.props;
         const {userToken} = this.state;
         if(userProfile.isSuccess !== preProps.userProfile.isSuccess){
             if(userProfile.data && userProfile.data.length){
@@ -72,7 +72,7 @@ import alert from "../helper/alert";
         }
         if(updateProfile.isSuccess !== preProps.updateProfile.isSuccess){
             this.setState({profileEdit:false,Mobilefocus:false,aboutYourSelfFocus:false,websiteFocus:false})
-            this.props.userProfileAfterUpdateRequest({userToken:userToken.token})
+            this.props.userProfileAfterUpdateRequest({userToken:this.props.token ? this.props.token.token : userToken.token})
             if(Platform.OS == 'android') {
                 alert("Your profile is successfully updated.");
               } else if( Platform.OS == 'ios'){
@@ -270,7 +270,9 @@ import alert from "../helper/alert";
         const {isBase64, base64Data, action, fabExtraData,zoomUri, facricatorPortFolio,zoomer,profileEdit,mobileNumber,websiteLink,name,aboutYourSelf,errors,Mobilefocus,aboutYourSelfFocus,websiteFocus}= this.state
        const userInfo = userProfile.data && userProfile.data.length && userProfile.data[0]
        const websiteError =  updateProfile.data &&  updateProfile.data.website_link && updateProfile.data.website_link[0]
-       const phoneError =  updateProfile.data &&  updateProfile.data.phone && updateProfile.data.phone[0]   
+       const phoneError =  updateProfile.data &&  updateProfile.data.phone && updateProfile.data.phone[0] 
+       console.log(this.props,'MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM');
+         
         return (
             <View style={styles.container}>
                 {!exhitorProfile &&
@@ -345,14 +347,14 @@ import alert from "../helper/alert";
                                         value={uWebsiteLink ? uWebsiteLink : websiteLink}
                                         editable={uProfileEdit ? uProfileEdit : profileEdit}
                                         onFocus={profileEdit ? ()=>{this.setState({websiteFocus:true, Mobilefocus:false,aboutYourSelfFocus:false})} : ()=>this.props.onFocus("web")}
-                                        onSubmitEditing={/* profileEdit ? */ (e)=>this.onFieldSubmitting("mobileno") /* : ()=>this.props.onFieldSubmitting("mobileno") */}
-                                        onBlur={/* profileEdit ? */ (e)=>this.onFieldSubmitting("") /* :()=> this.props.onFieldSubmitting("") */}
+                                        onSubmitEditing={profileEdit ? (e)=>this.onFieldSubmitting("mobileno") : ()=>this.props.onFieldSubmitting("mobileno")}
+                                        onBlur={profileEdit ? (e)=>this.onFieldSubmitting("") :()=> this.props.onFieldSubmitting("")}
                                         onChangeText={profileEdit ? (websiteLink)=>this.setState({websiteLink}) : (value)=>this.props.onChange(value,'web')}
                                     />
                                 </Item>
                             </View>
                             <View style={[styles.horizontalLine,{borderBottomColor:(websiteFocus || uWebsiteFocus) ? "#000000" : "#D7DBDD",borderBottomWidth:(websiteFocus || uWebsiteFocus) ? 2 : 1}]}/>
-                            {profileEdit &&<Text style={styles.error}>{websiteError} {uProfileEdit ? uerrors.websiteLink : errors.websiteLink}</Text>}
+                            {(profileEdit || uProfileEdit) &&<Text style={styles.error}>{uProfileEdit ? this.props.websiteError : websiteError} {uProfileEdit ? uerrors.websiteLink : errors.websiteLink}</Text>}
                             
                             <View style={styles.itemWrapper}>
                                 <Item style={{borderColor:"transparent"}} stackedLabel>
@@ -367,14 +369,14 @@ import alert from "../helper/alert";
                                         value={uMobileNumber ? uMobileNumber : mobileNumber}
                                         editable={uProfileEdit ? uProfileEdit : profileEdit}
                                         onFocus={profileEdit ? ()=>{this.setState({websiteFocus:false,Mobilefocus:true,aboutYourSelfFocus:false})} : ()=>this.props.onFocus("mobile")}
-                                        onSubmitEditing={/* profileEdit ?  */(e)=>this.onFieldSubmitting("aboutYourSelf") /* : ()=>this.props.onFieldSubmitting("aboutYourSelf") */}
-                                        onBlur={/* profileEdit ? */ (e)=>this.onFieldSubmitting("") /*  :()=> this.props.onFieldSubmitting("") */}
+                                        onSubmitEditing={profileEdit ? (e)=>this.onFieldSubmitting("aboutYourSelf") : ()=>this.props.onFieldSubmitting("aboutYourSelf")}
+                                        onBlur={profileEdit ? (e)=>this.onFieldSubmitting("")  :()=> this.props.onFieldSubmitting("")}
                                         onChangeText={profileEdit ? (mobileNumber)=>this.setState({mobileNumber}) : (value)=>this.props.onChange(value,'mobile')}
                                     />
                                 </Item>
                             </View>
                             <View style={[styles.horizontalLine,{borderBottomColor:(Mobilefocus || uMobilefocus) ? "#000000" : "#D7DBDD",borderBottomWidth:(Mobilefocus || uMobilefocus) ? 2 : 1}]}/>
-                            {profileEdit && <Text style={styles.error}> {phoneError}{uProfileEdit ? uerrors.mobileNumber : errors.mobileNumber}</Text>}
+                            {(profileEdit || uProfileEdit) && <Text style={styles.error}> {uProfileEdit ? this.props.phoneError : phoneError}{uProfileEdit ? uerrors.mobileNumber : errors.mobileNumber}</Text>}
                            
                             
                             <View style={styles.itemWrapper}>
@@ -390,8 +392,8 @@ import alert from "../helper/alert";
                                             placeholder={'About yourself...'}      
                                             placeholderTextColor="#E6E5E2"
                                             disabled={(uProfileEdit !==undefined ) ? !uProfileEdit : !profileEdit}
-                                            onFocus={/* profileEdit ? */ ()=>{this.setState({websiteFocus:false, Mobilefocus:false,aboutYourSelfFocus:true})} /* : ()=>this.props.onFocus("about") */}
-                                            onBlur={/* profileEdit ? */ (e)=>this.onFieldSubmitting("") /* :()=> this.props.onFieldSubmitting("") */}
+                                            onFocus={profileEdit ? ()=>{this.setState({websiteFocus:false, Mobilefocus:false,aboutYourSelfFocus:true})} : ()=>this.props.onFocus("about")}
+                                            onBlur={profileEdit ? (e)=>this.onFieldSubmitting("") :()=> this.props.onFieldSubmitting("")}
                                             onChangeText={profileEdit ? (aboutYourSelf)=>this.setState({aboutYourSelf}) : (value)=>this.props.onChange(value,'about')}
                                         /> 
                                         :<Text style={[styles.item,{width:"100%",paddingLeft:5,marginBottom:8}]} >{uAboutYourSelf ? uAboutYourSelf : aboutYourSelf}</Text> 
@@ -449,7 +451,7 @@ import alert from "../helper/alert";
                     </ScrollView>  : <ErrorLoader handlerData={userProfile} />}
                 </LinearGradient>
                 {(profileEdit && userInfo && (userInfo.name !== name || userInfo.website_link !== websiteLink || userInfo.phone.replace("+91","") !== mobileNumber || aboutYourSelf !== userInfo.bio) || uProfileEdit ) &&
-                <TouchableOpacity onPress={uProfileEdit ? ()=>this.props.updateProfile() : this.updateProfile} activeOpacity={.7}>
+                <TouchableOpacity onPress={uProfileEdit ? ()=>this.props.updateUserProfile() : this.updateProfile} activeOpacity={.7}>
                         <View style={styles.tapToContinueButtonView}>
                             <Text style={styles.continueText}>Update</Text>
                         </View>
