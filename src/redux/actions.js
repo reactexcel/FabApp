@@ -66,3 +66,8 @@ export const clearFabricatorListSuccess = createAction(constants.CLEAR_FABRICATO
 export const addFabricatorRequest= createAction(constants.ADD_FABRICATOR_REQUEST);
 export const addFabricatorSuccess = createAction(constants.ADD_FABRICATOR_SUCCESS);
 export const addFabricatorError = createAction(constants.ADD_FABRICATOR_ERROR);
+
+//actions to userlogin
+export const userLoginRequest= createAction(constants.USER_LOGIN_REQUEST);
+export const userLoginSuccess = createAction(constants.USER_LOGIN_SUCCESS);
+export const userLoginError = createAction(constants.USER_LOGIN_ERROR);

@@ -179,6 +179,8 @@ updateProfile=()=>{
                     style={{marginTop: 20, }}
                     initialPage={0}
                     renderTabBar={() => <ScrollableTabBar />}
+                    onChangeTab={(page)=>this.setState({index:page.i})
+                    }
                 >
                     < View tabLabel='Profile' style={{flex:1}}>
                     <FabricatorProfile 

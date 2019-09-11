@@ -58,6 +58,9 @@ import {setItem, getItem,removeItem} from "../helper/storage";
         }
       }
     }
+    onPressRight=()=>{
+      this.props.navigation.navigate("Login")
+    }
 
     render() {
       const {alleEhibitionList} = this.props;
@@ -66,12 +69,18 @@ import {setItem, getItem,removeItem} from "../helper/storage";
             <>
                 <Header 
                     isLeft={true}
-                    isCenter={true}
-                    centerText={addQuote ? "Add Quote" : "All Exhibititions"}
+                    isLeftText={addQuote ? false : true}
+                    isRight={addQuote ? false : true}
+                    isRightText={true}
+                    rightText={"Login"}
+                    leftText={addQuote ? "" : "Exhibitions & Expose"}
+                    isCenter={ addQuote ? true : false }
+                    centerText={addQuote ? "Add Quote" : "Exhibitions & Expose"}
                     leftIcon={addQuote ? "arrowleft" : null}
                     leftIconCategory={"AntDesign"}
-                    isNotRightThenWidth={addQuote ? "70%" : "75%"}
+                    isNotRightThenWidth={addQuote ? "70%" : "79%"}
                     goBack={this.goBack}
+                    onPressRight={this.onPressRight}
                  />
                 {(alleEhibitionList.isLoading || alleEhibitionList.isError) &&
                   <ErrorLoader handlerData={alleEhibitionList} />

@@ -1,11 +1,11 @@
 export default validate = (values,step) => { 
     const errors = {};
+    //validation during creating quote 
     if (!values && step === "stallSize" ) {
       errors.error = "Enter your stall size that you want";
     }else if((values == "0" || values == "00" || values == "000" || values == "0000" || values == "00000") &&  step === "stallSize"){
       errors.error = "Enter a valid stall no";
     }
-
     if (!values &&  step === "stallNo") {
       errors.error = "Enter your stallno that you want";
     }else if((values == "0" || values == "00" || values == "000" || values == "0000" || values == "00000") &&  step === "stallNo"){
@@ -29,10 +29,9 @@ export default validate = (values,step) => {
     }
     if (!values && step === "websiteLink") {
       errors.error = "Enter your website link";
-    }/* else if(!values.includes("www") && step === "websiteLink"){
-      errors.error = "Invalid website link, it must like eg: www.example.com";
-    } */
+    }
 
+    //validation during registation
     if(step === "fromValidation"){
       if (!values.name) {
         errors.name = "Enter your name";
@@ -54,6 +53,8 @@ export default validate = (values,step) => {
       }
   }
 
+  //validation during update profile
+
   if( step === "duringUpdate"){
     if (!values.aboutYourSelf) {
       errors.aboutYourSelf = "Tell us something about you";
@@ -71,6 +72,18 @@ export default validate = (values,step) => {
     if (!values.websiteLink) {
       errors.websiteLink = "Enter your website link";
     }
+  }
+
+  //validation during login
+  if( step === "auth"){
+    if (!values.email) {
+      errors.email = "Enter your email id ";
+    }
+    if (!values.password) {
+      errors.password = "Enter your password ";
+    }/* else if(values.password.length < 8){
+      errors.password = "Password must be of 8 characters long";
+    } */
   }
     
 

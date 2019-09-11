@@ -389,7 +389,7 @@ import alert from "../helper/alert";
                                             numberOfLines={20}
                                             value= {uAboutYourSelf ? uAboutYourSelf : aboutYourSelf}
                                             style={[styles.inputTextAreaSize,{marginTop:(profileEdit || uProfileEdit) ? 15 : -10,borderWidth:(profileEdit || uProfileEdit) ? 1 : 0,}]}
-                                            placeholder={'About yourself...'}      
+                                            placeholder={'Any other requirements'}      
                                             placeholderTextColor="#E6E5E2"
                                             disabled={(uProfileEdit !==undefined ) ? !uProfileEdit : !profileEdit}
                                             onFocus={profileEdit ? ()=>{this.setState({websiteFocus:false, Mobilefocus:false,aboutYourSelfFocus:true})} : ()=>this.props.onFocus("about")}

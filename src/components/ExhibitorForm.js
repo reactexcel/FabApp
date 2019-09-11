@@ -51,7 +51,7 @@ export default class ExhibitorForm extends Component {
     _renderItem=({item,index})=>{
         const {isDropDown} =this.state;
         const {exhibitorDetail,products,extraDataForProducts,errors, furnitures, extraDataForFurnitures, brandings, extraDataForBrandings} =this.props;
-        let cardText = index == 0 ? "Stall size" : index == 1 ? "Stall no" : index ==2 ? "Color theme" : index ==6 ?  "Carpet Color" : "Website Link"
+        let cardText = index == 0 ? "Booth size" : index == 1 ? "Booth no" : index ==2 ? "Color theme" : index ==6 ?  "Carpet Color" : "Website Link"
         let name = index == 0 ? "stallSize" : index == 1 ? "stallNo" : index ==2 ? "colorTheme" : index == 6 ? "carpetColor" : "websiteLink"
         return(
         <View key={index} style={styles.contentCard}>

@@ -31,7 +31,7 @@ export default class Headerr extends Component {
                     {isRight && 
                         <View>
                             {rightText ? 
-                                <Text style={styles.text}>{rightText}</Text>: 
+                                <Text onPress={()=>this.props.onPressRight()} style={styles.text}>{rightText}</Text>: 
                                 <Icon
                                     onPress={()=>this.props.onPressRight()}
                                     type={rightIconCategoty}
