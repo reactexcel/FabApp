@@ -39,7 +39,8 @@ import alert from "../helper/alert";
                       name:'',
                       mobileNo:'',
                       email:'',
-                      aboutYourSelf:''
+                      aboutYourSelf:'',
+                      ProductsNservices:''
                     },
     userToken:"",
   };
@@ -80,8 +81,11 @@ import alert from "../helper/alert";
      alert(errors.error)
     }
     else if(mainIndex == 5 ){
-      errors = validate(exhibitorProducts, "products")
-      alert(errors.error)
+      errors = validate(exhibitorDetail.ProductsNservices, "products")
+      this.setState({errors})
+      // alert(errors.error)
+      // console.log(errros,'Mmmmmmmmmmmmmmmmmmmmmm');
+      
     }
     else if(mainIndex == 6){
       errors = validate(exhibitorDetail.carpetColor,"carpetColor")
@@ -187,7 +191,7 @@ import alert from "../helper/alert";
       stall_no:exhibitorDetail.stallNo ,
       color_theme : exhibitorDetail.colorTheme,
       carpet: exhibitorDetail.carpetColor,
-      products: exhibitorProducts,
+      products: exhibitorDetail.ProductsNservices,
       brandings: exhibitorBranding,
       furnitures:exhibitorFurniture,
       website_link: `https://${exhibitorDetail.websiteLink}`

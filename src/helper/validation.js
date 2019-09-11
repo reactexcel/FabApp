@@ -11,8 +11,10 @@ export default validate = (values,step) => {
     }else if((values == "0" || values == "00" || values == "000" || values == "0000" || values == "00000") &&  step === "stallNo"){
       errors.error = "Enter a valid stall no";
     }
-    if (!values.length>0 && step === "products") {
-      errors.error = "*choose products";
+    if (!values && step === "products") {
+      errors.error = "Add Description";
+    }else if (values.length < 40 && step === "products") {
+      errors.error = "Description is too short";
     }
     if (!values.length>0 && step === "furnitures") {
       errors.error = "*choose furnitures";

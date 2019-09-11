@@ -51,16 +51,16 @@ export default class ExhibitorForm extends Component {
     _renderItem=({item,index})=>{
         const {isDropDown} =this.state;
         const {exhibitorDetail,products,extraDataForProducts,errors, furnitures, extraDataForFurnitures, brandings, extraDataForBrandings} =this.props;
-        let cardText = index == 0 ? "Booth size" : index == 1 ? "Booth no" : index ==2 ? "Color theme" : index ==6 ?  "Carpet Color" : "Website Link"
-        let name = index == 0 ? "stallSize" : index == 1 ? "stallNo" : index ==2 ? "colorTheme" : index == 6 ? "carpetColor" : "websiteLink"
+        let cardText = index == 0 ? "Booth size" : index == 1 ? "Booth no" : index ==2 ? "Color theme" : index ==6 ?  "Carpet Color" :index == 5 ? "Products & services" : "Website Link"
+        let name = index == 0 ? "stallSize" : index == 1 ? "stallNo" : index ==2 ? "colorTheme" : index == 6 ? "carpetColor" : index == 5 ? "ProductsNservices" : "websiteLink"
         return(
         <View key={index} style={styles.contentCard}>
-            {(index ==0 || index ==1 || index ==2 || index ==6 || index ==7) &&
+            {(index ==0 || index ==1 || index ==2 || index ==6 || index ==7 || index == 5) &&
                     <View style={styles.inputView}>
                     <Text style={styles.stallText}>{cardText}</Text>
                     <Item >
                         <Input 
-                            value={index == 0 ? exhibitorDetail.stallSize : index == 1 ? exhibitorDetail.stallNo : index ==2 ? exhibitorDetail.colorTheme : index ==6 ?  exhibitorDetail.carpetColor : exhibitorDetail.websiteLink}
+                            value={index == 0 ? exhibitorDetail.stallSize : index == 1 ? exhibitorDetail.stallNo : index ==2 ? exhibitorDetail.colorTheme : index ==6 ?  exhibitorDetail.carpetColor : index == 5 ? exhibitorDetail.ProductsNservices : exhibitorDetail.websiteLink}
                             style={styles.inputSize}
                             placeholder={index ==6 ? "Optional" : 'Type here..'}      
                             keyboardType={index ==1 ? "phone-pad" : "default"}
@@ -73,10 +73,10 @@ export default class ExhibitorForm extends Component {
                         <Text style={styles.errorText}>*{errors.error}</Text>
                     </View>}
                 </View>}
-               {(index ==3 || index ==4 || index ==5) &&
+               {(index ==3 || index ==4 ) &&
                 <View style={styles.furnitureWrapper}>
                     <View style={styles.furnitureTextView}>
-                         <Text style={styles.furnitureText}>{index ==3 ? "Branding" : index == 5 ? "Products/Services" : "Furniture"}</Text>
+                         <Text style={styles.furnitureText}>{index ==3 ? "Branding" /* : index == 5 ? "Products/Services" */ : "Furniture"}</Text>
                     </View>
                     <TouchableOpacity activeOpacity={.7} onPress={this.onDropDownPress}>
                         <View style={[styles.listIem,{marginTop:30}]}> 

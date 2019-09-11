@@ -65,7 +65,7 @@ export default class Portfolio extends Component {
                 <View style={styles.infoList}>
                     <View style={styles.item}>
                         <Text style={styles.title}>Product/Services: </Text>
-                        <Text style={styles.product}>{list.products.map((brand,i)=>{return `${brand.product}(${brand.quantity}), ` })}</Text>
+                        <Text style={styles.product}>{list.products/* .map((brand,i)=>{return `${brand.product}(${brand.quantity}), */  }</Text>
                     </View>
                     {/* <View style={styles.item}>
                         <Text style={styles.title}>Contact No: </Text>
@@ -190,8 +190,10 @@ const styles= StyleSheet.create({
         marginBottom:2
     },
     product:{
+        flex: 1,
         fontSize:15,
-        color:"rgba(0,0,0,.7)"
+        color:"rgba(0,0,0,.7)",
+        flexWrap: 'wrap'
     },
     deletingOverlay:{
         width:"100%",
