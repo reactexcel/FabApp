@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "669849523074",
+    "firebase_url": "https://fabapp-6160e.firebaseio.com",
+    "project_id": "fabapp-6160e",
+    "storage_bucket": "fabapp-6160e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669849523074:android:f773d39d1a27c23770b59b",
+        "android_client_info": {
+          "package_name": "com.fabapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669849523074-9iqur7jeua43u0eq9v0tlppcr9rgn8c0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fabapp",
+            "certificate_hash": "cfa327d68ad69c97ba12d4d5eff6b51b701625d5"
+          }
+        },
+        {
+          "client_id": "669849523074-v7oafjdn0bsrrnldgeaum6fks5bp9mmt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVX4wVqwNkUBhwxXAjIEKnKzxyEtz3I3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669849523074-v7oafjdn0bsrrnldgeaum6fks5bp9mmt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

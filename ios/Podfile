@@ -44,6 +44,8 @@ target 'fabApp' do
 
   pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
 
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+
   target 'fabAppTests' do
     inherit! :search_paths
     # Pods for testing
