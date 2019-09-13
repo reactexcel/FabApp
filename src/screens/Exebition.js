@@ -9,8 +9,7 @@ import * as actions from '../redux/actions';
 import ErrorLoader from "../generic/ErrorLoader";
 import NoData from "../generic/nodata";
 import {setItem, getItem,removeItem} from "../helper/storage";
-import firebase from 'react-native-firebase';
-
+import firebase from "react-native-firebase";
  class Exebition extends Component {
     static navigationOptions = {
         header: null
@@ -43,10 +42,7 @@ import firebase from 'react-native-firebase';
         this.props.exhibitionListRequest()
         this.props.productListRequest()
       }
-      console.log(">???????????????????????????????");
-      
-      const fcmToken = await firebase.messaging().getToken();
-      console.log(fcmToken,'>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      const notificationOpen = await firebase.notifications().getInitialNotification();
       
     }
 

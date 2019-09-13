@@ -10,6 +10,7 @@ import ErrorLoader from "../generic/ErrorLoader";
 import validate from "../helper/validation";
 import alert from "../helper/alert";
 import {setItem, getItem} from "../helper/storage";
+import firebase from 'react-native-firebase';
 
  class Login extends Component {
     static navigationOptions = {
@@ -20,12 +21,15 @@ import {setItem, getItem} from "../helper/storage";
           this.state={
                 email:"",
                 password:"",
-                errors:{}
+                errors:{},
+                fcm_token:""
             }
       }
 
-    componentDidMount(){
-        SplashScreen.hide()
+  async componentDidMount(){
+        SplashScreen.hide();
+        const fcm_token = await firebase.messaging().getToken();
+        this.setState({fcm_token})
     }
       
     componentDidUpdate(props){
@@ -49,11 +53,11 @@ import {setItem, getItem} from "../helper/storage";
    }
 
    loginHandler=()=>{
-    const {email, password} = this.state;
+    const {email, password,fcm_token} = this.state;
     const errors = validate({email,password}, "auth")
     this.setState({errors})
     if(!Object.keys(errors).length){
-        const payload = {email, password}
+        const payload = {email, password, fcm_token}
         this.props.userLoginRequest(payload)
     }
    }

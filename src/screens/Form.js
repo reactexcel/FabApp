@@ -11,6 +11,7 @@ import {setItem, getItem} from "../helper/storage";
 import Layout from '../helper/Layout';
 import ErrorLoader from "../generic/ErrorLoader";
 import alert from "../helper/alert";
+import firebase from 'react-native-firebase';
 
  class WorkerForm extends React.Component {
     static navigationOptions = {
@@ -30,6 +31,7 @@ import alert from "../helper/alert";
     exhibitorBranding:[],
     exhibitorFurniture:[],
     exhibitorProducts:[], 
+    fcmToken:"",
     exhibitorDetail:{
                       stallSize:'',
                       stallNo:'',
@@ -124,8 +126,9 @@ import alert from "../helper/alert";
   } 
 
   onSubmit=()=>{
-    const{exhibitorDetail, index} =this.state;
+    const{exhibitorDetail, index, fcmToken} =this.state;
     const payload={
+      fcm_token:fcmToken,
       email :exhibitorDetail.email ,
       password : "test",
       role:index ==0 ? "exhibitor" : "fabricator",
@@ -156,7 +159,10 @@ import alert from "../helper/alert";
       })
     }
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    const fcmToken = await firebase.messaging().getToken();
+    this.setState({fcmToken})
   }
+
 
   componentDidUpdate(preProps){
     const {user,createExhibition} =this.props
