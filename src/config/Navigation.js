@@ -46,10 +46,12 @@ const transitionConfig = () => {
   };
 
   const Rootstack = createStackNavigator({
-      
-      Exebition: {
-        screen:Exebition,
-      },
+    Exebition: {
+      screen:Exebition,
+    },
+          ChatRoom:{
+            screen:ChatRoom
+          },
       Login:{
         screen:Login,
       },

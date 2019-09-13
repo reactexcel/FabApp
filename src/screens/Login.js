@@ -36,7 +36,7 @@ import firebase from 'react-native-firebase';
         const {userLogin} = this.props;
         if(userLogin.isError !== props.userLogin.isError){
             if(userLogin.isError){
-                alert(userLogin.data);
+                alert(userLogin.data ? userLogin.data : "Error");
             }
         }
 
@@ -165,7 +165,8 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:"center",
         borderRadius:4,
-        alignItems:'center'
+        alignItems:'center',
+        marginBottom:10
     },
     continueText:{
         color:"#ffffff",

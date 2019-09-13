@@ -37,15 +37,18 @@ class Fabricator extends Component {
               }
           }
           if(addFabricator.isSuccess !== preProps.addFabricator.isSuccess){
-              if(addFabricator.isSuccess){
+              if(addFabricator.isSuccess && !addFabricator.status.is_already_added){
                   alert("Fabricator has added successfully!")
               }
+              if(addFabricator.isSuccess && addFabricator.status.is_already_added){
+                alert("This fabricator has already added!")
+            }
           }
           if(addFabricator.isError !== preProps.addFabricator.isError){
-            if(addFabricator.isError && addFabricator.status !== "Network error"){
-                alert("This fabricator has already added!")
-            }else if(addFabricator.isError && addFabricator.status === "Network error"){
+            if(addFabricator.isError && addFabricator.status === "Network error"){
                 alert("Network error")
+            }else{
+                alert("Something went wrong")
             }
           }
       }
@@ -77,6 +80,10 @@ class Fabricator extends Component {
             alert("Select any fabricator to add")
         }
     }
+
+    messageHandler=(user_id)=>{
+        this.props.navigation.navigate("ChatRoom",{user_id})
+    }
     render() {
         const {fabList,addFabricator} = this.props;
         const {fabExtraData} = this.state;        
@@ -102,6 +109,7 @@ class Fabricator extends Component {
                             extraDataFormProduct={fabExtraData}
                             onRadioButtonPress={this.onRadioButtonPress}
                             fablist={true}
+                            messageHandler={this.messageHandler}
                         />
                         <TouchableOpacity onPress={this.addFabricator} activeOpacity={.7}>
                             <View style={styles.tapToContinueButtonView}>
@@ -138,7 +146,8 @@ const mapStateToProps = (state) => {
         flexDirection:'row',
         justifyContent:"center",
         borderRadius:4,
-        alignItems:'center'
+        alignItems:'center',
+        marginBottom:10
     },
     continueText:{
         color:"#ffffff",

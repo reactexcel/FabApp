@@ -71,3 +71,8 @@ export const addFabricatorError = createAction(constants.ADD_FABRICATOR_ERROR);
 export const userLoginRequest= createAction(constants.USER_LOGIN_REQUEST);
 export const userLoginSuccess = createAction(constants.USER_LOGIN_SUCCESS);
 export const userLoginError = createAction(constants.USER_LOGIN_ERROR);
+
+//actions for messaging
+export const chatMessageRequest= createAction(constants.CHAT_MESSAGE_REQUEST);
+export const chatMessageSuccess = createAction(constants.CHAT_MESSAGE_SUCCESS);
+export const chatMessageError = createAction(constants.CHAT_MESSAGE_ERROR);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {  View,FlatList, StyleSheet } from 'react-native'
 import {Radio, ListItem,Left, Text,Input,Item, Right} from "native-base";
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default class FormProducts extends Component {
 
@@ -64,9 +65,16 @@ export default class FormProducts extends Component {
                         </View>
                     </View>
                 </View>
+                <TouchableOpacity onPress={()=>this.messageHandler(item.id)}>
+                    <Text style={styles.message}>Message</Text>
+                </TouchableOpacity>
                 <View style={styles.horizontalLine}></View>
             </View>
         )
+    }
+
+    messageHandler=(user_id)=>{
+        this.props.messageHandler(user_id)
     }
 
     render() {
@@ -138,5 +146,10 @@ const styles= StyleSheet.create({
     errorText:{
         fontSize:12,
         color:"red"
+    },
+    message:{
+        flexDirection:"row",
+        alignSelf:"flex-end",
+        marginRight:20
     }
 })
